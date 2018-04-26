@@ -1,0 +1,80 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Common.Serialization;
+@model Argosy.BusinessLogic.FrontEnd.Managers.Proofing.GlobalProfileManager.GlobalProfile
+@Html.Partial("Partials/Bundles/_jQueryUpload")
+<script type="text/javascript">
+    var categories = @Html.Raw(SerializerFactory.GetSerializer(SerializationType.JSON).Serialize(Model.Categories));
+</script>
+<section class="extra">
+    <div class="container">
+        @Html.HiddenFor(m => m.Id)
+        @using (Html.BeginForm("Edit", "GlobalProfiles", FormMethod.Post, new { role = "form", @class = "update-global-profile" }))
+            {
+            <div class="clearfix padb20 maru20">
+          
+                    <h1>~{ProfileName}~: <b>@Html.DisplayFor(m => m.Name)</b></h1>
+                    <h5>~{LastModifiedOn}~ @Html.DisplayFor(m => m.ModifiedBy) on @Html.DisplayFor(m => m.DateModified)</h5>
+              
+            </div>
+            <div class="row clearfix gp-columns">
+                <div class="col-md-4 nopadding marr20 bottommargin-sm">
+                    <div id="_GlobalFormsNavigationMenu"> </div>
+                    @if (ViewBag.IsAdminView)
+                    {
+                        <div class="maru20">
+                            <div class="maru10">
+                                <div data-argosy-control="GlobalProfileUserGroupsGridView" data-argosy-options-global-forms-profile-id="@Model.Id" data-argosy-view="GlobalProfileUserGroupsGridView"></div>
+                            </div>
+                            <div class="maru10">
+                                <div data-argosy-control="GlobalProfileUsersGridView" data-argosy-options-global-forms-profile-id="@Model.Id" data-argosy-view="GlobalProfileUsersGridView"></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <div class="col-md-7 white-box-sha pad20 bottommargin-lg" data-argosy-control="GlobalFormsDataStructView" data-argosy-view="GlobalFormsDataStructView" data-argosy-options-admin-grid-view="true" data-argosy-options-global-forms-id="@Model.GlobalFormsId" data-argosy-options-id="@Model.Id" data-argosy-options-category-data-source="categories">
+
+                </div>
+
+            </div>
+        }
+        <div class="hide">
+            <div data-argosy-control="GlobalMultiUpload" id="GlobalMultiUpload"></div>
+        </div>
+    </div><!--Container-->
+</section>
+
+<!--/********** FANCY BOX ADD USER GROUP TO GP ************/-->
+
+<div id="AddUserGroupToGlobalProfile" style="display:none;">
+    <div>
+        <h3>~{AddUserGroupsToProfile}~</h3>
+    </div>
+    <div class="padu10">
+        <div>
+            <div class="w98" data-argosy-control="AddUserGroupToGlobalProfile" data-argosy-view="AddUserGroupToGlobalProfile" data-argosy-options-global-forms-profile-id="@Model.Id"></div>
+        </div>
+    </div><br style="clear:both" />
+    <div class="padu20">
+        <div class="text-center">
+            <a class="btn btn-default" onclick="GlobalProfileUserGroupsGridView.prototype.addUserGroupsToProfile();" href="#"><i class="fa fa-save"></i> ~{Save}~</a>
+        </div>
+    </div>
+</div>
+
+<!--/********** FANCY BOX ADD USERS TO GP ************/-->
+
+<div id="AddUserToGlobalProfile" style="display:none;">
+    <div>
+        <h3>~{AddUsersToProfile}~</h3>
+    </div>
+    <div class="padu10">
+        <div>
+            <div class="w98" data-argosy-control="AddUserToGlobalProfile" data-argosy-view="AddUserToGlobalProfile" data-argosy-options-global-forms-profile-id="@Model.Id"></div>
+        </div>
+    </div><br style="clear:both" />
+    <div class="padu20">
+        <div class="text-center">
+            <a class="btn btn-default" onclick="GlobalProfileUsersGridView.prototype.addUsersToProfile();" href="#"><i class="fa fa-save"></i> ~{Save}~</a>
+        </div>
+    </div>
+</div>

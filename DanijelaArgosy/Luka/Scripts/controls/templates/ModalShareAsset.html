@@ -1,0 +1,30 @@
+﻿<script type="text/x-kendo-template" id="_ModalShareAssetTemplate">
+
+    <div class="col_full ">
+        <h3>Share "${Name}"</h3>
+        <div class="row mobile-center marb20">
+            <div class="col-md-4">
+                <img class="img-responsive padb10" style="max-height:150px;" title="Enlarge Image" alt="Asset" src="${ThumbnailPath}" />
+            </div>
+            <div class="col-md-8">
+                <p class="padu10"><b>${Extension} (${OriginalFileSize >0? kendo.toString(OriginalFileSize/1048576,"n") : 0}MB) ${Dpi} DPI</b></p>
+                <p>${Width} X ${Height}</p>
+                <p>${Dpi > 0? kendo.toString(Width/Dpi,"n") :0} x ${Dpi > 0? kendo.toString(Height/Dpi,"n") : 0} inches</p>
+                <p>Date Added: #= kendo.toString(kendo.parseDate(DateUploaded),'d') #</p>
+
+            </div>
+        </div>
+        <div class="col_full">
+            <h4>Recipient Email Address(es)</h4>
+            <p class="padb5 small_txt">Press "ENTER" after each email address.</p>
+            <div>
+                <span class="hide" data-bind="attr:{class:getErrorClass},text:getErrorMsgText"></span>
+                <select type="text" placeholder="Enter email(s) here..." data-role="multiselect" />
+            </div>
+            <div class="pull-left padu20">
+                <a class="btn btn-default" data-bind="click: onSendFile">Send File <i class="fa fa-chevron-right"></i></a>
+            </div>
+        </div>
+
+    </div>
+</script>

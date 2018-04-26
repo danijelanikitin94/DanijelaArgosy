@@ -1,0 +1,107 @@
+﻿<div class="content-wrap nopadding" id="_VerifyTemplate">
+    <div class="section nobg full-screen nopadding nomargin">
+        <div class="container vertical-middle divcenter clearfix">
+            <div class="panel panel-default divcenter noradius" style="max-width: 450px;">
+                <div class="panel-body">
+                    <div class="center">
+                        <img class="center" src="/Content/images/CarePlus/care-plus-logo.jpg" alt="Care Plus Logo" />
+                    </div>
+                    <h3 class="topmargin center">Login to your Account</h3>
+                    <div class="col_full" style="margin-top: 10px;">
+                        <label>SAN</label>
+                        <input type="text" id="txtSAN" maxlength="20" class="k-textbox" data-bind="value: carePlusModel.SystemAssignNumber" />
+                    </div>
+                    <div class="col_full topmargin">
+                        <label>Last Name</label>
+                        <input type="text" id="txtLName" maxlength="30" class="k-textbox" data-bind="value: carePlusModel.LastName" />
+                    </div>
+                    <div class="col_full topmargin center">
+                        <input id="btnLoginClient" class="button button-3d button-black nomargin" type="button" data-bind="click: getData" value="Login" />
+                    </div>
+                    <br style="clear: both" />
+                    <div class="topmargin red" style="font-weight: bold; display: none">
+                        Please order your 2017 enrollment materials by September 9, 2016 to guarantee delivery by September 23, 2016. Orders placed after September 9, 2016 are not guaranteed to arrive before October 1, 2016.
+                        Plans shown for 2017 are subject to change based on release of benchmarks. CarePlus reserves the right to substitute materials if pre-orders are placed for a discontinued plan.
+                    </div>
+                </div>
+            </div>
+            <div class="row center dark">
+                <small>Copyright &copy; 2017 All Rights Reserved.</small>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="content-wrap nopadding" id="_RegisterTemplate" style="display: none">
+    <div class="section nobg full-screen nopadding nomargin">
+        <div class="container vertical-middle divcenter clearfix">
+            <div class="panel panel-default divcenter noradius" style="max-width: 800px;">
+                <div class="panel-body">
+                    <img class="center" src="/Content/images/CarePlus/care-plus-logo.jpg" width="200" alt="Care Plus Logo" />
+                    <h3 class="topmargin center">Please Verify Your Information Below</h3>
+                    <div id="divAgentMessage" class="center clearfix">
+                        <div class="center">
+                            <label id='lblAgentMessage'>If you are an agent who had your face-to-face training prior to 2014 and has only recertified online, we would encourage you to contact your local CarePlus office for product training.</label>
+                        </div>
+                    </div>
+                    <br style="clear: both" />
+                    <p>
+                        <span class="red">*</span> Required
+                    </p>
+                    <div class="col_half">
+                        <label>First Name <span class="red">*</span></label>
+                        <input id="txtFirstName" maxlength="30" type="text" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.FirstName" />
+                    </div>
+                    <div class="col_half col_last">
+                        <label>Last Name <span class="red">*</span></label>
+                        <input id="txtLastName" maxlength="30" type="text" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.LastName" />
+                    </div>
+                    <div class="col_half ">
+                        <label>Address Line 1 <span class="red">*</span></label>
+                        <input id="txtAddress1" maxlength="30" type="text" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.Address1" />
+                    </div>
+                    <div class="col_half col_last ">
+                        <label>Address Line 2</label>
+                        <input id="txtAddress2" maxlength="30" type="text" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.Address2" />
+                    </div>
+                    <div class="col_one_third ">
+                        <label>City <span class="red">*</span></label>
+                        <input id="txtCity" maxlength="30" type="text" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.City" />
+                    </div>
+                    <div class="col_one_third">
+                        <label>State <span class="red">*</span></label>
+                        <div data-role="states" data-state-id="3409" data-country-id="~{DefaultCountryId}~" data-input-id="ddlState"></div>
+                    </div>
+                    <div class="col_one_third col_last ">
+                        <label>ZIP Code <span class="red">*</span></label>
+                        <input id="txtZip" maxlength="10" type="text" placeholder="99999-9999" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.ZipCode" />
+                    </div>
+                    <div class="col_one_fourth ">
+                        <label>Phone Number <span class="red">*</span></label>
+                        <input id="txtPhone" maxlength="15" type="text" placeholder="(999)999-9999" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.PhoneNumber" />
+                    </div>
+                    <div class="col_one_fourth ">
+                        <label>Fax Number</label>
+                        <input id="txtFax" maxlength="15" type="text" placeholder="(999)999-9999" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.Fax" />
+                    </div>
+                    <div class="col_half col_last ">
+                        <label>Email Address <span class="red">*</span></label>
+                        <input id="txtEmail" maxlength="30" type="text" placeholder="abc@xyz.com" class="k-textbox" style="width: 100%" data-bind="value: loginModel.RegistrationUser.User.Email" />
+                    </div>
+                    <div id="divAgency" style="display: block">
+                        <div class="col_one_fourth col_last ">
+                            <label>Number of Agents</label>
+                            <input id="txtAgentCount" maxlength="9" class="k-textbox" type="number" style="width: 100%" placeholder="Number" data-bind="value: loginModel.RegistrationUser.User.Custom03" />
+                        </div>
+                    </div>
+                    <div class="col_full topmargin center">
+                        <button type="submit" value="Save" class="button button-3d button-black nomargin" data-bind="click: verifyInputs">Submit</button>
+                    </div>
+                    <br style="clear: both;" />
+                </div>
+            </div>
+            <div class="row center dark">
+                <small>Copyright &copy; 2015 All Rights Reserved.</small>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1253 @@
+﻿<script type="text/javascript">
+    function renderProofingCustomizationOptionsTemplate(data) {
+        return kendo.Template.compile($('#_ProofingCustomizationOptionsTemplate').html())(data);
+    }
+
+    function renderProofingDesignTemplatesTemplate(data) {
+        return kendo.Template.compile($('#_ProofingDesignTemplatesTemplate').html())(data);
+    }
+
+    function renderProofingPersonalizeTemplate(data) {
+        return kendo.Template.compile($('#_ProofingPersonalizeTemplate').html())(data);
+    }
+
+    function renderProgressBarControl(data) {
+        return kendo.Template.compile($('#_ProofingVariableProgressBarControl').html())(data);
+    }
+
+    function renderProofingDownloadOptionsTemplate(data) {
+        return kendo.Template.compile($('#_ProofingDownloadOptionsTemplate').html())(data);
+    }
+
+    function renderPersonalizedProofsTemplate(data) {
+        return kendo.Template.compile($('#_PersonalizedProofsTemplate').html())(data);
+    }
+
+    function renderProofingPageNavigationTemplate(data) {
+        return kendo.Template.compile($('#_ProofingPageNavigationTemplate').html())(data);
+    }
+    function loadNextImage(currentImage, nextImage, nextImageNumber) {
+        if (nextImage != "" && $(currentImage).attr("src").indexOf("generic.gif") < 0) {
+            $('img[data-page-number=' + nextImageNumber + ']').attr('src',nextImage)
+        }
+    }
+    function renderMultiplePartsView(data) {
+        return kendo.Template.compile($('#_ProofingPartNavigationTemplate').html())(data);
+    }
+
+    function renderProofingPreviewTemplate(data) {
+        return kendo.Template.compile($('#_ProofingPreviewTemplate').html())(data);
+    }
+
+    function renderProofingVariableGroupsTemplate(data) {
+        return kendo.Template.compile($('#_ProofingVariableGroupsTemplate').html())(data);
+    }
+
+    function renderProofingVariablesTemplate(data) {
+        return kendo.Template.compile($('#_ProofingVariablesTemplate').html())(data);
+    }
+
+    function renderProofingVariableControlTemplate(variable) {
+        return kendo.Template.compile($('#_ProofingVariableControlTemplate').html())(variable);
+    }
+
+    function shouldHidePageNavigation(pages) {
+        if (pages <= 1) {
+            return "hide";
+        } else {
+            return "";
+        }
+    }
+
+    function getPageNavigationSize(pages) {
+        if (pages <= 1) {
+            return "hide";
+        } else if (pages === 2) {
+            return "col-md-12";
+        } else {
+            return "col-md-6";
+        }
+    }
+
+
+
+    function getProofingVariableGroupsByColumn(groups, currentColumn) {
+        var colGroups = [];
+        $(groups).each(function (i) {
+            if (this.ColumnNumber == currentColumn) {
+                colGroups.push(this);
+            }
+        });
+        return colGroups;
+    }
+
+    function getPartName(data) {
+        if (data.Part.PartName != null && data.Part.PartName != "") {
+            return data.Part.PartName;
+        } else {
+            return data.Part.Sku;
+        }
+    }
+
+    function checkVariablesForHidden(variables) {
+        var allHidden = true;
+        $(variables).each(function (e) {
+            if (!this.IsHidden) {
+                allHidden = false;
+            }
+        });
+        return allHidden;
+    }
+
+    function getProofingVariablesForGroup(variableGroups, variables) {
+        var variablesForGroup = [];
+
+        $(variableGroups).each(function (i) {
+            var group = this;
+            $(variables).each(function (x) {
+                if (group.VariableId == this.Id || group.VariableId == this.OverrideVariableId) {
+                    variablesForGroup.push(this);
+                }
+            });
+        });
+
+        return variablesForGroup;
+    }
+
+    function renderNonGroupVariables(data) {
+        var templateName = "#_ProofingNonGroupedVariables";
+        var variables = [];
+        $(data.Variables).each(function (i) {
+            var foundVariable = false;
+            var variable = this;
+            $(data.VariableGroups).each(function (z) {
+                var variableGroup = this;
+                $(variableGroup.Variables).each(function (x) {
+                    var groupVariable = this;
+                    if (groupVariable.VariableId == variable.Id || groupVariable.VariableId == variable.OverrideVariableId) {
+                        foundVariable = true;
+                    }
+                });
+            });
+
+            if (!foundVariable) {
+                variables.push(this);
+            }
+        });
+        return kendo.Template.compile($(templateName).html())(variables);
+    }
+
+    function renderProofingVariableControlType(variable) {
+        variable.ControlType = variable.ControlType.toLowerCase();
+        var controlType = variable.ControlType;
+        var templateName = null;
+        switch (controlType) {
+            case "qrcode":
+                templateName = "#_ProofingVariableQrCodeControl";
+                break;
+            case "imagebankorupload":
+                templateName = "#_ProofingVariableImageUploadControl";
+                break;
+            case "imagebanklistview":
+                templateName = "#_ProofingVariableImageBankListControl";
+                break;
+            case "map":
+                templateName = "#_ProofingVariableMapControl";
+                break;
+            case "textarea":
+            case "textbox":
+                if (variable.StatementGroupId != null && variable.StatementGroupId > 0) {
+                    templateName = "#_ProofingVariableStatementBuilderControl";
+                } else if (controlType == "textarea") {
+                    templateName = "#_ProofingVariableTextAreaControl";
+                } else {
+                    templateName = "#_ProofingVariableTextBoxControl";
+                }
+                break;
+            case "prepopulate":
+                templateName = "#_ProofingVariablePrePopulateControl";
+                break;
+            case "calendar":
+            case "datetime":
+                templateName = "#_ProofingVariableDateTimeControl";
+                break;
+            case "sku":
+                templateName = "#_ProofingVariableSkuControl";
+                break;
+            case "imagebank":
+                templateName = "#_ProofingVariableImageBankControl";
+                break;
+            case "dropdowntext":
+                templateName = "#_ProofingVariableDropDownTextControl";
+                break;
+            case "imageupload":
+                templateName = "#_ProofingVariableImageUploadControl";
+                break;
+            case "dropdownlist":
+                templateName = "#_ProofingVariableDropDownListControl";
+                break;
+            case "imagelist":
+                templateName = "#_ProofingVariableImageUploadControl";
+                break;
+        }
+        if (templateName != null) {
+            return kendo.Template.compile($(templateName).html())(variable);
+        } else {
+            return "";
+        }
+
+    }
+
+    function isUploadType(variable) {
+        variable.ControlType = variable.ControlType == null ? "" : variable.ControlType;
+        var controlType = variable.ControlType.toLowerCase();
+        switch (controlType) {
+            case "qrcode":
+            case "imagebankorupload":
+            case "imagebanklistview":
+            case "map":
+            case "imagebank":
+            case "imageupload":
+            case "imagelist":
+                return "true";
+            default:
+                return "false";
+        }
+    }
+
+    function getDataSource(variable) {
+        if (variable.DataSourceJson != null) {
+            return eval(variable.DataSourceJson);
+        }
+        return new Array();
+    }
+    function selectImages(modal) {
+        $.fancybox({
+            href: modal,
+            modal: true
+        });
+    }
+    function selectImage(value, input, preview, showEditor, isFixedAspectRatio, minHeight, minWidth) {
+        if (showEditor == null) {
+            showEditor = true;
+        }
+        $(input).val(value);
+        if (showEditor) {
+            $(document).trigger(argosyEvents.EVENT_SHOW_IMAGE_EDITOR, { imageUrl: value, input: input, preview: preview, returnHref: "#divPersonalize", isFixedAspectRatio: isFixedAspectRatio, minHeight: minHeight, minWidth: minWidth });
+        } else {
+            $(preview).attr("src", appendImageResizePart(value, 150, 150));
+        }
+    }
+    function editImage(input, preview, isFixedAspectRatio, minHeight, minWidth) {
+        $(document).trigger(argosyEvents.EVENT_SHOW_IMAGE_EDITOR, { imageUrl: $(input).val(), input: input, preview: preview, returnHref: "#divPersonalize", isFixedAspectRatio: isFixedAspectRatio, minHeight: minHeight, minWidth: minWidth });
+    }
+    function updateImagesBank(images, name, isFixedAspectRatio, minHeight, minWidth) {
+        var imageWrapper = $("#var_" + name + "_ListView").children("div");
+        imageWrapper.empty();
+        imageWrapper.append(renderImageBankImages(images, name, isFixedAspectRatio, minHeight, minWidth));
+    }
+    function renderImageBankImages(data, name, isFixedAspectRatio, minHeight, minWidth) {
+        return kendo.Template.compile($('#_ProofingVariableImageBankImages').html())({
+            files: data,
+            Name: name,
+            isFixedAspectRatio: isFixedAspectRatio,
+            minHeight: minHeight,
+            minWidth: minWidth
+        });
+    }
+
+    function appendImageResizePart(path, height, width) {
+        if (path != null && path.indexOf("?") > -1) {
+            return path + "&h=" + height + "&w=" + width;
+        } else if (path != null) {
+            return path + "?h=" + height + "&w=" + width;
+        } else {
+            return "";
+        }
+    }
+
+    function showFullsizeImage(image) {
+        var html = "<div id='imagePreview' style='position: absolute; z-index: 9999; top:0; left: 0; width: 100%; height:100%; display:table;'><div style='display:table-cell;vertical-align:middle; text-align:center;'><img style='max-width: 100%; padding:15px; background-color:white; border-radius: 5px; border: 5px solid #999999;' src='" + image + "'/></div></div>";
+        $(html).appendTo("body");
+        setTimeout(function () {
+            $("body").bind("click", function () {
+                $("#imagePreview").remove();
+                $("body").unbind("click");
+            });
+        }, 50);
+    }
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableImageListControl">
+    #
+    var dataSource = getDataSource(data);
+    #
+    <div id="var_${Name}_wrapper">
+        <div class="col-md-8">
+            <img src="${appendImageResizePart(DefaultValue, 150, 150)}" id="var_${Name}_ListView_thumb" />
+        </div>
+        <div class="col-md-4 block">
+            #if (dataSource.length > 0) {#
+            <a class="k-upload-action-remove btn btn-default" onclick="selectImages('\\#var_${Name}_ListView')"><i class="fa fa-remove hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{Replace}~</span></a>
+            #}
+            <a class="k-upload-action-remove btn btn-default maru10" onclick="editImage('\\#var_${Name}', '\\#var_${Name}_ListView_thumb', ${IsFixedAspectRatio}, ${ImageHeight}, ${ImageWidth})"><i class="fa fa-remove hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">Edit</span></a>
+            <a class="k-upload-action-remove btn btn-default" onclick="uploadImage('\\#var_${Name}_ListView')"><i class="fa fa-remove hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{Upload}~</span></a>
+        </div>
+        <input #if(IsRequired){#required#}#
+               data-argosy-proofing="var_${Name}"
+               id="var_${Name}"
+               name="var_${Name}"
+               type="hidden"
+               data-is-upload="#= isUploadType(data)#"
+               value="${DefaultValue}"
+               data-variable-id="${Id}"
+               data-control-type="${ControlType}"
+               data-display-name="${DisplayName}"
+               data-variable-name="${Name}"
+               data-fixed-aspect="${IsFixedAspectRatio}"
+               data-image-height="${ImageHeight}"
+               data-image-width="${ImageWidth}"
+               data-instance-id="${InstanceId}" />
+    </div>
+    <div id="var_${Name}_ListView" class='row hide'>
+        <h2>~{SelectanImage}~</h2>
+        <div class='col-md-12'>
+            #=renderImageBankImages(dataSource, Name, IsFixedAspectRatio, ImageHeight, ImageWidth)#
+        </div>
+    </div>
+
+</script>
+
+<script type="text/x-kendo-tmpl" id="_ProofingVariableImageBankImages">
+    #
+    if (files == null || files.length < 1) return;
+    for (var i = 0; i < files.length; i++) {
+    #
+    <div class='col-md-2'><img src='${appendImageResizePart(files[i], 200, 200)}' class="hover hand" onclick="selectImage('${files[i]}', '\\#var_${Name}', '\\#var_${Name}_ListView_thumb', true, ${isFixedAspectRatio}, ${minHeight}, ${minWidth})" /></div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingDropDownListImageValue">
+    #if (data.Rule == null) {#
+    <span>~{SelectOne}~</span>
+    #} else {#
+    <span><img src='${Option}?h=25&w=25&format=png' alt='${Rule}' /><span class="padl10">${Rule}</span></span>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingImageBankListTemplate">
+    #if (data.Rule == null) {#
+    <span>~{SelectOne}~</span>
+    #} else {#
+    <span><img src='${Option}?w=100&h=100&format=png' alt='${Rule}' /></span>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingImageBankListViewModalTemplate">
+    <div id="proofingImageBankListView" class="hide fancy1200">
+        <h3>~{SelectImage}~</h3>
+        <p class="padb10">~{ClickImagePressSelect}~</p>
+        <div class="designs_Div">
+            <div class="form-one clearfix padb20">
+                <div data-role="listview" data-selectable="single" data-template="_ProofingImageBankListViewTemplate" data-source="${data}">
+                </div>
+            </div>
+        </div>
+        <div class="text-center clearfix">
+            <div class="clearfix"><a onclick="$.fancybox.close()" class="btn btn-default">~{Select}~</a></div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingImageBankListViewTemplate">
+    <div class="floatl pad10 img-container" style="position:relative;">
+        <img class="information-np2 bkg-white img-container-max" src="${Option}?w=200&h=200&format=png" alt='${Rule}' />
+        <a onclick="showFullsizeImage('${Option}')">
+            <div style="background-color: black; opacity: .1;position: absolute; bottom: 10px; right:10px">
+                <div class="pad10">
+                    <i style="font-size: 16px;color: white;" class='fa fa-search'></i>
+                </div>
+            </div>
+        </a>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableDropDownListControl">
+    <select #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}# data-is-proof-name="${IsProofName}" data-argosy-proofing="var_${Name}" id="var_${Name}" name="var_${Name}" class="submitAction " data-text-field="Text" data-text-value="Value" data-bind="source: var_${Id}_DataSourceJson, events: {dataBound: onDropDownListDataBound}" data-role="dropdownlist" data-option-label="~{SelectOne}~" data-variable-id="${Id}" data-control-type="${ControlType}" data-display-name="${DisplayName}" data-variable-name="${Name}" data-value="${DefaultValue}"></select>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableImageUploadControl">
+    <div id="var_${Name}_wrapper">
+        <div #if(IsRequired){#data-required="true" #}#
+             #if(IsRequired){#required#}#
+             name="var_${Name}"
+             class="submitAction upload_special"
+             data-argosy-proofing="var_${Name}"
+             data-is-proof-name="${IsProofName}"
+             id="var_${Name}"
+             data-is-upload="true"
+             data-allow-upload="${AllowUpload}"
+             data-role="imageeditor"
+             data-default-value="${DefaultValue}"
+             data-min-height="${ImageHeight}"
+             data-min-width="${ImageWidth}"
+             data-fixed-aspect-ratio="${IsFixedAspectRatio}"
+             data-max-image-size="${MaxImageSize}"
+             data-show-fancybox-after-edit="true"
+             data-fancybox-after-edit-href="divPersonalize"
+             data-variable-id="${Id}"
+             data-control-type="${ControlType}"
+             data-display-name="${DisplayName}"
+             data-show-file-name="false"
+             data-variable-name="${Name}"
+             data-instance-id="${InstanceId}"></div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableImageBankListControl">
+    <select #if(!IsEditable){#disabled='disabled' #}#
+            #if(IsRequired){#required#}#
+            class="submitAction"
+            data-argosy-proofing="var_${Name}"
+            id="var_${Name}"
+            name="var_${Name}"
+            data-role="dropdownlist"
+            data-value="${DefaultValue}"
+            data-is-proof-name="${IsProofName}"
+            data-option-label="~{SelectOne}~"
+            data-value-field="Rule"
+            data-value-template="_ProofingDropDownListImageValue"
+            data-template="_ProofingImageBankListTemplate"
+            data-bind="events:{ open: onProofingImageBankListOpen }, source: var_${Id}_VariableOptionsJson"
+            data-variable-id="${Id}"
+            data-control-type="${ControlType}"
+            data-display-name="${DisplayName}"
+            data-variable-name="${Name}"
+            data-instance-id="${InstanceId}"></select>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableImageBankOrUpload">
+    <div #if(!IsEditable){#data-disabled="true" #}#
+         #if(IsRequired){#data-required="true" #}#
+         #if(IsRequired){#required#}#
+         data-default-value="${DefaultValue}"
+         data-value="${DefaultValue}"
+         class="submitAction"
+         data-argosy-input-id="var_${Name}"
+         id="parent_${Name}"
+         name="parent_${Name}"
+         data-role="dropdownlistorupload"
+         data-option-label="~{SelectOne}~"
+         data-value-field="Rule"
+         data-value-template="_ProofingDropDownListImageValue"
+         data-template="_ProofingImageBankListTemplate"
+         data-bind="source: var_${Id}_VariableOptionsJson"
+         data-variable-id="${Id}"
+         data-control-type="${ControlType}"
+         data-display-name="${DisplayName}"
+         data-variable-name="${Name}"
+         data-dropdown-text="Image Bank"
+         data-upload-text="Custom Upload"
+         data-instance-id="${InstanceId}">
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableStatementBuilderControl">
+    <div data-role="statementbuilder"
+         #if(IsRequired){#required#}#
+         data-value="${DefaultValue}"
+         data-disabled="${!IsEditable}"
+         data-required="${IsRequired}"
+         data-variable-id="${Id}"
+         data-control-type="${ControlType}"
+         data-display-name="${DisplayName}"
+         data-is-proof-name="${IsProofName}"
+         data-variable-name="${Name}"
+         data-default-statement-id="${DefaultStatementId}"
+         data-statement-group-id="${StatementGroupId}"
+         data-argosy-proofing="var_${Name}"
+         data-fancybox-href="\\#divPersonalize"
+         name="var_${Name}"
+         id="var_${Name}" />
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableImageBankControl">
+    <select #if(!IsEditable){#disabled='disabled' #}#
+            #if(IsRequired){#required#}#
+            class="submitAction"
+            data-value="${DefaultValue}"
+            data-argosy-proofing="var_${Name}"
+            id="var_${Name}"
+            name="var_${Name}"
+            data-bind="source: var_${Id}_VariableOptionsJson"
+            data-role="dropdownlist"
+            data-option-label="~{SelectOne}~"
+            data-value-field="Rule"
+            data-value-template="_ProofingDropDownListImageValue"
+            data-is-proof-name="${IsProofName}"
+            data-template="_ProofingImageBankListTemplate"
+            data-variable-id="${Id}"
+            data-control-type="${ControlType}"
+            data-display-name="${DisplayName}"
+            data-variable-name="${Name}"
+            data-instance-id="${InstanceId}"></select>
+
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableDropDownTextControl">
+    <select #if(IsRequired){#required#}#
+            data-is-proof-name="${IsProofName}"
+            data-argosy-proofing="var_${Name}"
+            id="var_${Name}"
+            name="var_${Name}"
+            class="submitAction"
+            data-text-field="Text"
+            data-text-value="Value"
+            data-bind="source: var_${Id}_DataSourceJson, events: {dataBound: onComboBoxDataBound}"
+            data-role="combobox"
+            data-option-label="~{SelectOne}~"
+            data-variable-id="${Id}"
+            data-control-type="${ControlType}"
+            data-display-name="${DisplayName}"
+            data-variable-name="${Name}"
+            data-value="${DefaultValue}"
+            data-instance-id="${InstanceId}"></select>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableSkuControl">
+    <input #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           class="submitAction"
+           data-is-upload="#= isUploadType(data)#"
+           type="hidden"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-instance-id="${InstanceId}" />
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableTextAreaControl">
+    <textarea #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}#
+              data-is-proof-name="${IsProofName}"
+              data-argosy-proofing="var_${Name}"
+              id="var_${Name}" name="var_${Name}"
+              # if (MaxLength> 0) {# maxlength="${MaxLength}" #}# 
+        # if (ImageHeight> 0) {# rows="${ImageHeight}" #}# 
+        class="submitAction k-textbox" 
+        data-variable-id="${Id}" 
+        data-control-type="${ControlType}" 
+        data-display-name="${DisplayName}" 
+        data-variable-name="${Name}"
+        data-instance-id="${InstanceId}">${DefaultValue}</textarea>
+    #if (MaxLength != null && MaxLength > 0) {#
+    #=renderProgressBarControl(data)#
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableTextBoxControl">
+    #if (Mask != null) {#
+    #if (Mask.KendoRules != "NumericTextBox") {#
+    <input #if(!IsEditable){#disabled='disabled' #}#
+           #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           class="submitAction"
+           type="text"
+           data-role="maskedtextbox"
+           data-value="${DefaultValue}"
+           data-mask="${Mask.KendoMask}"
+           data-prompt-char="${Mask.KendoPromptChar}"
+           data-rules="${Mask.KendoRules}"
+           tooltip="${Mask.Tooltip}"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-instance-id="${InstanceId}" />
+    #} else {#
+    <input #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           class="submitAction"
+           type="text"
+           data-role="numerictextbox"
+           data-value="${DefaultValue}"
+           data-format="${Mask.KendoMask}"
+           data-placeholder="${Mask.KendoPromptChar}"
+           tooltip="${Mask.Tooltip}"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-spinners="false"
+           data-step="1"
+           data-instance-id="${InstanceId}" />
+    #}#
+    #} else {#
+    <input #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           type="text"
+           class="submitAction k-textbox"
+           value="${DefaultValue}"
+           maxlength="#= (MaxLength != null && MaxLength > 0 ? MaxLength : '') #"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-instance-id="${InstanceId}" />
+    #}#
+    #if (MaxLength != null && MaxLength > 0) {#
+    #=renderProgressBarControl(data)#
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableProgressBarControl">
+    <div data-role="progressbar" style="max-height: 25px; width: 100%;" data-variable-control="var_${Name}" data-min="0" data-max="#= (MaxLength != null && MaxLength > 0 ? MaxLength : '') #" data-value="${DefaultValue.length}" data-type="value" data-show-status="true" data-bind="events: {change: onProgressChange}"></div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableDateTimeControl">
+    <input #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           class="submitAction"
+           data-role="datepicker"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-instance-id="${InstanceId}" />
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariablePrePopulateControl">
+    <select #if(!IsEditable){#disabled='disabled' #}# #if(IsRequired){#required#}# data-is-proof-name="${IsProofName}" data-argosy-proofing="var_${Name}" id="var_${Name}" name="var_${Name}" class="submitAction" data-role="dropdownlist" data-option-label="~{SelectOne}~" data-value-field="Key" data-text-field="Value" data-bind="events:{ change: onProofingPrePopChange }, source: var_${Id}_VariableOptionsJson" data-variable-id="${Id}" data-control-type="${ControlType}" data-display-name="${DisplayName}" data-variable-name="${Name}"></select>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableMapControl">
+    <div #if(!IsEditable){#disabled='disabled' #}# data-variable-id="${Id}" data-control-type="${ControlType}" data-display-name="${DisplayName}" data-variable-name="${Name}" data-show-fancybox-after-edit="true" data-fancybox-after-edit-href="divPersonalize" data-role="mapimage" data-default-address="${InitialValue}">
+        <input #if(IsRequired){#required#}# type="hidden" data-is-proof-name="${IsProofName}" data-argosy-proofing="var_${Name}" id="var_${Name}" name="var_${Name}" data-is-upload="true" value="${DefaultValue}">
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableQrCodeControl">
+    <button #if(!IsEditable){#disabled='disabled' #}# data-icon="plus" data-role="button" data-hidden-field-name="var_${Name}" data-hidden-field-id="var_${Name}" data-bind="events:{ click: showGenerateQrCode }" data-show-fancybox-after-edit="true" data-fancybox-after-edit-href="divPersonalize">~{AddQRCode}~</button>
+    <input #if(!IsEditable){#disabled='disabled' #}# type="hidden" data-is-proof-name="${IsProofName}" data-argosy-proofing="var_${Name}" id="var_${Name}" name="var_${Name}" data-is-upload="true" value="${DefaultValue}" data-variable-id="${Id}" data-control-type="${ControlType}" data-display-name="${DisplayName}" data-variable-name="${Name}">
+
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableControlTemplate">
+    # if (IsUserVariable && (!IsHidden)) {#
+    <div class="clearfix">
+        <div class="label-style padu5">
+            #=DisplayName#
+            #if(IsRequired){#<b class="co-warning">*</b>#}#
+            <div class="floatr padr10">#if(!IsEditable){#<i class="fa fa-lock"></i>#}else{##}#</div>
+            #if (TooltipText != null && TooltipText !='') {#
+            <div class="floatr padr10">
+                <i href="\\#" id="tooltip_${Id}" class="fa fa-question-circle-o" aria-hidden="true" style="float: right"></i>
+            </div>
+            #}#
+            #if (MaxLength != null && MaxLength > 0) {#
+            <br /><span class="small"><em>Max ${MaxLength} chars</em></span>
+            #}#
+        </div>
+        <div class="input-style padb10">
+            #= renderProofingVariableControlType(data) #
+
+        </div>
+
+    </div>
+    #} else {#
+    <input #if(IsRequired){#required#}#
+           data-is-proof-name="${IsProofName}"
+           data-argosy-proofing="var_${Name}"
+           id="var_${Name}"
+           name="var_${Name}"
+           type="hidden"
+           data-is-upload="#= isUploadType(data)#"
+           value="${DefaultValue}"
+           data-variable-id="${Id}"
+           data-control-type="${ControlType}"
+           data-display-name="${DisplayName}"
+           data-variable-name="${Name}"
+           data-instance-id="${InstanceId}" />
+
+    #}#
+
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariableGroupsTemplate">
+    #
+    var colClass = "col-sm-" + (12/GroupColumnCount);
+    #
+    #for (var i = 1; i <= GroupColumnCount; i++) {#
+    <div class="${colClass} padr10">
+        <div class="panel-group" id="accordion${i}" role="tablist" aria-multiselectable="true">
+            #   var currentColumnGroups = getProofingVariableGroupsByColumn(VariableGroups, i);#
+            #   for (var x = 0; x < currentColumnGroups.length; x++) {#
+            #       var currentVariables = getProofingVariablesForGroup(currentColumnGroups[x].Variables, Variables);#
+            #       var allHidden = checkVariablesForHidden(currentVariables);#
+            <div class="panel panel-default #if (allHidden) {#hide#} else {# #}#">
+                <div class="panel-heading group-heading" role="tab" id="heading${i}${x}">
+                    <a role="button" data-toggle="collapse" href="\\#collapse${i}${x}" aria-expanded="true" aria-controls="collapse${i}${x}">
+                        <h4 class="panel-title">
+                            ${currentColumnGroups[x].Name}
+                        </h4>
+                    </a>
+                </div>
+                <div id="collapse${i}${x}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="heading${i}${x}">
+                    <div class="panel-body padu10 #if (currentColumnGroups[x].InstanceId != null){# ${currentColumnGroups[x].InstanceId} #}#">
+                        # var inVariableGroup = false;
+                        for(var key in Object.keys(GlobalProfilesWithInstance)){
+                        if(currentColumnGroups[x].InstanceId != null && (currentColumnGroups[x].InstanceId).toString() == Object.keys(GlobalProfilesWithInstance)[key] && GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]].length > 0){#
+                        <div class="label-style padu5"><b>~{SelectProfile}~</b></div>
+                        <div class="input-style padb10">
+                            <select class="w1-proofing-profile" data-argosy-action="select-proofing-profile" data-instance-id="${Object.keys(GlobalProfilesWithInstance)[key]}"
+                                    data-form-id="${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][0].GLOBAL_FORMS_ID}">
+                                <option value="global-${Object.keys(GlobalProfilesWithInstance)[key]}-a">-- ~{GlobalProfiles}~ --</option>
+                                #for (var a = 0; a < GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]].length; a++){#
+                                <option value="global-${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][a].INSTANCE_ID}-${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][a].GLOBAL_FORMS_PROFILE_ID}">${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][a].NAME}</option>
+                                #}#
+                            </select>
+                        </div>
+                        #}
+                        }
+                        #
+                        #for (var z = 0; z < currentVariables.length; z++) {#
+                        #= renderProofingVariableControlTemplate(currentVariables[z]) #
+                        #}#
+                    </div>
+                </div>
+            </div>
+            #if (!allHidden) {#
+            <br />
+            #}#
+            #  } #
+        </div>
+    </div>
+    #}#
+    #=renderNonGroupVariables(data)#
+
+</script>
+<!--
+ -->
+<script type="text/x-kendo-tmp" id="_ProofingNonGroupedVariables">
+    #for (var i = 0; i < data.length; i++) {#
+    <input #if(!data[i].IsEditable){#disabled='disabled' #}# #if(data[i].IsRequired){#required#}#
+           data-argosy-proofing="var_${data[i].Name}"
+           id="var_${data[i].Name}"
+           name="var_${data[i].Name}"
+           type="hidden"
+           data-is-upload="#= isUploadType(data[i])#"
+           value="${data[i].DefaultValue}"
+           data-variable-id="${data[i].Id}"
+           data-control-type="${data[i].ControlType}"
+           data-display-name="${data[i].DisplayName}"
+           data-variable-name="${data[i].Name}"
+           data-instance-id="${data[i].InstanceId}" />
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingVariablesTemplate">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form padu10">
+                #for (var i = 0; i < Variables.length; i++) {#
+                #= renderProofingVariableControlTemplate(Variables[i]) #
+                #}#
+                <br style="clear:both" />
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingCustomizationOptionsTemplate">
+    #if (Parts != null && Parts.length > 1) {#
+    #=renderMultiplePartsView(data)#
+    #}#
+    #if (DesignTemplates != null && DesignTemplates.length > 0) {#
+    <div class="padb10">
+        <a href="\\#divDesignTemplates" class="fancybox btn btn-default btn-block maru5"><i class="fa fa-image"></i> ~{DesignTemplates}~</a>
+    </div>
+    #}#
+    #if (Variables != null && Variables.length > 0) {#
+    <div class="padb10">
+        <a href="\\#divPersonalize" class="fancybox btn btn-default btn-block maru5"><i class="fa fa-pencil"></i> ~{Personalize}~</a>
+        #if (Part.PersonalizationComments != null && Part.PersonalizationComments.trim() != "" && Part.PersonalizationComments.trim() != "null") {#
+        <div class="padu10">#= Part.PersonalizationComments#</div>
+        #}#
+    </div>
+    #}#
+    <div id="_ProofingContinueAndDownloadOptionsPlaceHolder"></div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingDesignTemplatesTemplate">
+    #if (DesignTemplates != null && DesignTemplates.length > 0) {#
+    <div id="divDesignTemplates" class="hide fancy800">
+        <h3>~{ChooseDesignTemplate}~</h3>
+        <p class="padb10">~{ClickTemplateToCustomize}~</p>
+        <div class="designs_Div">
+            <div class="form-one">
+
+                #for (var i = 0; i < DesignTemplates.length; i++) {#
+                <div class="floatl pad10 hand">
+                    <a>
+                        <!-- DON'T REMOVE THIS AGAIN IT BREAKS THE SELECT OF THE TEMPLATES -->
+                        <img class="information-np2" src="${DesignTemplates[i].ImageUrl}?w=150&h=150" data-argosy-action="select-design-template" data-argosy-value="${DesignTemplates[i].Value}" /><br />${DesignTemplates[i].Name}
+                    </a>
+                </div>
+                #}#
+            </div>
+        </div>
+        <div class="text-center">
+            <div class="padu10"><a href="\\#divPersonalize" class="fancybox btn btn-default">~{ProofContinue}~ <i class="fa fa-chevron-right"></i></a></div>
+        </div>
+    </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingPersonalizeTemplate">
+    #if (Variables != null && Variables.length > 0) {#
+    <div id="divPersonalize" class="hide ${(VariableGroups !=null && VariableGroups.length > 0 &&  GroupColumnCount > 1)?" fancy1200":"fancy600"}">
+        <div class="form-one">
+            <div class="col_full nobottommargin clearfix">
+                <div class="col_full nobottommargin">
+                    <h3>~{PersonalizeInformation}~</h3>
+                    <p class="padb10">~{EnterInformationToPersonalizeItems}~</p>
+                    #if (CustomMessage != null && CustomMessage.trim().length > 0) {#
+                    <p class="padb10">#=CustomMessage#</p>
+                    #}#
+                </div>
+                <div class="col_half nobottommargin">
+                    #if ((Profiles != null && Profiles.length > 0) || (GlobalProfiles != null && GlobalProfiles.length > 0)) {#
+                    #if (GlobalProfiles.length == 1) {#
+                    <div style="display:none;">
+                        #} else {#
+                        <div>
+                            #}#
+                            <div class="label-style padu5">~{SelectProfile}~</div>
+                            <div class="input-style padb10">
+                                <select class="w100" data-argosy-action="select-proofing-profile">
+                                    #if (Profiles != null && Profiles.length > 0) {#
+                                    <option value="-1">-- ~{UserProfiles}~ --</option>
+                                    #for (var i = 0; i < Profiles.length; i++) {#
+                                    <option value="profile-${Profiles[i].Id}">${Profiles[i].Name}</option>
+                                    #}#
+                                    #}#
+                                    #if (GlobalProfiles != null && GlobalProfiles.length > 0) {#
+                                    <option value="-1">-- ~{GlobalProfiles}~ --</option>
+                                    #for (var i = 0; i < GlobalProfiles.length; i++) {#
+                                    <option value="global-${GlobalProfiles[i].GLOBAL_FORMS_PROFILE_ID}">${GlobalProfiles[i].NAME}</option>
+                                    #}#
+                                    #}#
+                                </select>
+
+                            </div>
+                            
+                        </div>
+                        #} else if(GlobalProfilesWithInstance != null && Object.keys(GlobalProfilesWithInstance).length > 0)
+                        {#
+                        <div>
+                            # var inVariableGroup = false;
+                            for(var key in Object.keys(GlobalProfilesWithInstance))
+                            {
+                            if(GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]].length > 0){
+                            inVariableGroup = false;
+                            for(var j = 0; j < VariableGroups.length; j++){
+                            if(VariableGroups[j].InstanceId == Object.keys(GlobalProfilesWithInstance)[key]){
+                            inVariableGroup = true;
+                            }
+                            }#
+                            #if(!inVariableGroup){#
+                            <div class="label-style padu5">~{SelectProfile}~</div>
+                            <div class="input-style padb10">
+                                <select class="w1-proofing-profile" data-argosy-action="select-proofing-profile" data-instance-id="${Object.keys(GlobalProfilesWithInstance)[key]}"
+                                        data-form-id="${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][0].GLOBAL_FORMS_ID}">
+                                    <option value="global-${Object.keys(GlobalProfilesWithInstance)[key]}-a">-- ~{GlobalProfiles}~ --</option>
+                                    #for (var i = 0; i < GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]].length; i++){#
+                                    <option value="global-${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][i].INSTANCE_ID}-${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][i].GLOBAL_FORMS_PROFILE_ID}">${GlobalProfilesWithInstance[Object.keys(GlobalProfilesWithInstance)[key]][i].NAME}</option>
+                                    #}#
+                                </select>
+                            </div>
+                            #   }
+                            }#
+                            #}#
+                        </div>
+                        #}#
+                        <br style="clear:both" />
+                    </div>
+                    <div class="col_half col_last nobottommargin">
+                        <div class="floatr">
+                            <div>
+                                <div class="padr10 floatr marb10"><a class="btn btn-primary mobile100 btn-buildproof"><i class="fa fa-file-pdf-o"></i><span> ~{BuildProof}~</span></a></div>
+                                #if (DynamicDataSource != null) {#
+                                <div class="padr10 floatr marb10"><a class="btn btn-primary mobile100 btn-dynamic-datasource"><i class="fa fa-mouse-pointer"></i><span> ~{ReEnter}~ ${DynamicDataSource.Name}</span></a></div>
+                                <div class="padr10 floatr marb10"><a class="btn btn-primary mobile100 btn-dynamic-refresh"><i class="fa fa-refresh"></i><span> Refresh ${DynamicDataSource.Name}</span></a></div>
+                                #}#
+                            </div>
+                        </div>
+
+                    </div>
+                    <br style="clear:both" />
+                    #if (VariableGroups != null && VariableGroups.length > 0) {#
+                    <div class="padu10">
+                        #= renderProofingVariableGroupsTemplate(data) #
+                    </div>
+                    #} else {#
+                    #= renderProofingVariablesTemplate(data) #
+                    #}#
+
+                    <div class="col-sm-12">
+                        #if (DesignTemplates != null && DesignTemplates.length > 0) {#
+                        <div class="floatl padu10 padr10"><a href="\\#divDesignTemplates" class="fancybox btn btn-default"><i class="fa fa-image"></i><span> ~{DesignTemplates}~</span></a></div>
+                        #}#
+                        <div class="floatl padu10 hide padr10"><a class="btn btn-default btn-spellcheck"><i class="fa fa-check-square-o"></i><span> ~{SpellCheck}~</span></a></div>
+                        #if (checkVariablesForHidden(data.Variables)) {#
+                        <div class="floatl padu10"><a class="btn btn-default btn-saveprofile"><i class="fa fa-floppy-o"></i><span> ~{SaveProfile}~</span></a></div>
+                        #}#
+                        <div class="floatr padu10 padr10"><a class="btn btn-primary mobile100 btn-buildproof"><i class="fa fa-file-pdf-o"></i><span> ~{BuildProof}~</span></a></div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingDownloadOptionsTemplate">
+    #if (LowResUrl != null) {#
+    <div class="padb10 f12">
+        <a onclick="downloadFile('${LowResUrl}', true, null, ${PartId})"><i class="fa fa-cloud-download"></i> ~{DownloadLowResPDF}~</a>
+    </div>
+    #}#
+    #if (userSettings.ShowHighResProof || ShowHighResProof) {#
+    <div class="padb10 f12">
+        <a onclick="$(document).trigger(argosyEvents.EVENT_GENERATE_HIGH_RES_PROOF)"><i class="fa fa-cloud-download"></i> ~{DownloadHighResPDF}~</a>
+    </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_PersonalizedProofsTemplate">
+    <div class="padb10 f12">
+        <a onclick="$(document).trigger(argosyEvents.SHOW_PERSONALIZED_PROOF_COLLECTION_DETAILS, ${PartId});"><i class="fa fa-binoculars"></i> View Previous Order Details</a>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingPartNavigationTemplate">
+    <div class="img-thumbnail marb10 bkg-gray padl5">
+        <p class="text-center padb10 small_txt"><a><i class="fa fa-chevron-left goto-previous-part"></i>&ensp;</a>~{Part}~ <span>${data.CurrentPartNumber}</span> ~{Of}~ ${data.Parts.length}<a>&emsp;<i class="fa fa-chevron-right goto-next-part"></i></a></p>
+        <h4 class="text-center">#= getPartName(data) #</h4>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingPageNavigationTemplate">
+    <div class="img-thumbnail marb20 padl5">
+        <p class="text-center padb10 small_txt"><a><i class="fa fa-chevron-left"></i>&ensp;</a>~{Page}~ <span data-argosy-view="ProofingNavigationCurrentPage">1</span> ~{Of}~ #=Pages.length#<a>&emsp;<i class="fa fa-chevron-right"></i></a></p>
+        <!--/information-->
+        <div class="mobile-tn">
+            #for(var i = 0; i < Pages.length; i++) {
+            var nextImage = i+1 < Pages.length ? Pages[i+1].ThumbnailUrl : "";
+            var currentImage = i == 0 ? Pages[i].ThumbnailUrl : "/content/images/generic.gif";
+            #
+            <div class="pad5"><img 
+                class="img-responsive marb10 hand bkg-white img-border center-image" 
+                src="${currentImage}" 
+                alt="Page ${(i+1)} of ${Pages.length}" 
+                data-page-number="${(i+1)}" 
+                onload="loadNextImage(this, '${nextImage}', ${(i+2)})"
+                />
+            </div>
+            #}#
+            <br style="clear:both" />
+        </div>
+        <div class="mobile-img">#= renderProofingPreviewTemplate(data) #</div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingPreviewTemplate">
+    <div class="hide">
+        <img class="img-responsive img-border center-image" data-argosy-view="ProofingCurrentPagePreviewImage" alt="" />
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingTemplate">
+    <div class="padl20 padr20" data-argosy-loading="Proofing" data-argosy-loading-message="~{MsgGeneratingProof}~">
+        <div class="customization row" data-argosy-view="ProofingMainWrapperPanel">
+            <h1 class="hidden-xs padb10">#= getPartName(data) #</h1>
+            <div class="col-md-2 text-center" style="padding-left: 0px">
+                #= renderProofingCustomizationOptionsTemplate(data) #
+            </div>
+            <div class="col-md-8 hidden-sm hidden-xs marb20">
+                #= renderProofingPreviewTemplate(data) #
+            </div>
+            <div class="col-md-2 mobileproof">
+                <div class="text-center" data-argosy-view="ProofingRightNavigationPanel"></div>
+            </div>
+        </div>
+    </div>
+    <div class="hide" data-argosy-view="ProofingModalWrapper"></div>
+</script>
+
+<script type="text/x-kendo-tmp" id="_ProofingRightNavigationPanelTemplate">
+    <div data-argosy-view="ProofingNavigationWrapper">
+        #= renderProofingPageNavigationTemplate(data) #
+    </div>
+    #if (data.IsProofGenerated) {#
+    <div class="text-center padb10 hidden-md hidden-lg">
+        <a class="fancybox btn btn-primary w100 btn-bigger" href="\\#divApproveProof">~{ProofContinue}~ <i class="fa fa-chevron-right"></i></a>
+    </div>
+    <div class="text-center padu20 border-top-dashed hidden-md hidden-lg">
+        #= renderProofingDownloadOptionsTemplate(data) #
+    </div>
+    #}#
+</script>
+
+<script type="text/x-kendo-tmp" id="_ProofingContinueAndDownloadOptions">
+    #if (data.IsProofGenerated) {#
+    <div class="text-center padb10 hidden-xs hidden-sm">
+        <a class="fancybox btn btn-primary w100 btn-bigger" href="\\#divApproveProof">~{ProofContinue}~ <i class="fa fa-chevron-right"></i></a>
+    </div>
+    <div class="text-center padu20 border-top-dashed hidden-xs hidden-sm">
+        #= renderProofingDownloadOptionsTemplate(data) #
+    </div>
+    #}#
+    #if (data.PersonalizedProofs.length > 0) {#
+    #= renderPersonalizedProofsTemplate(data) #
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingDownloadOptionsForPreview">
+    #if (data.IsProofGenerated) {#
+    <div class="text-center padu20 border-top-dashed hidden-xs hidden-sm">
+        #= renderProofingDownloadOptionsTemplate(data) #
+    </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingSaveProfileModal">
+    <div id="divSaveProfileModal" class="hide">
+        <h3>~{SaveProfile}~</h3>
+        <p class="padb10">~{EnterNameForProfileSelectExisting}~</p>
+        <div class="form-one clearfix w98">
+
+            <div class="form padu10">
+                <div>
+                    <div class="label-style">
+                        ~{ProfileName}~
+                    </div>
+                    <div class="input-style padb10">
+                        <input type="text" class="k-textbox" id="profileName" name="profileName" />
+                    </div>
+                </div>
+                <div>
+                    <div class="label-style">
+                        ~{SelectProfile}~
+                    </div>
+                    <div class="input-style padb10">
+                        <select id="existingProfileName" name="existingProfileName" data-role="dropdownlist">
+                            <option>-- ~{SelectProfile}~ --</option>
+                            #for (var i = 0; i < Profiles.length; i++) {#
+                            <option value="${Profiles[i].Id}">${Profiles[i].Name}</option>
+                            #}#
+                        </select>
+                    </div>
+                </div>
+                <br style="clear:both" />
+            </div>
+
+        </div>
+        <div class="col-md-6">
+            <div class="floatl padu10">
+                <a class="btn btn-default btn-createProfile"><i class="fa fa-floppy-o"></i> ~{SaveProfile}~</a>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="floatr padu10">
+                <a class="btn btn-default btn-cancelCreateProfile">~{Cancel}~</a>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingDynamicDataSourceVariables">
+</script>
+
+<script type="text/x-kendo-tmp" id="_ProofingDynamicDataSourceForm">
+    <div id="divDynamicDataSourceForm">
+        <h3>${Name}</h3>
+        <p class="padb10">~{EnterInformationToPopulateData}~</p>
+        <div class="form-one">
+            <div class="row">
+                <div class="form padu10">
+                    <div>
+                        #
+                        for (var i = 0; i < Parameters.length; i++) {
+                        var parameter = Parameters[i];
+                        #
+                        #
+                        if (parameter.IsSystem) {
+                        #
+                        <input data-argosy-dynamic="${parameter.Name}" id="dynamic_${parameter.Name}" name="dynamic_${parameter.Name}" type="hidden" data-argosy-identifier="${parameter.IsIdentifier}" data-bind="value: dynamic_${parameter.Name}" />
+                        #
+                        } else {
+                        #
+                        <div class="label-style">
+                            ${parameter.FriendlyName} <b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <input required data-argosy-dynamic="${parameter.Name}" id="dynamic_${parameter.Name}" name="dynamic_${parameter.Name}" type="text" class="k-textbox" data-argosy-identifier="${parameter.IsIdentifier}" data-bind="value: dynamic_${parameter.Name}, events: {change: isDynamicDataSourceReady}" data-value-update="keyup" />
+                        </div>
+                        #
+                        }
+                        #
+                        #
+                        }
+                        #
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <div class="floatr padu10 padr10">
+                <button class="btn btn-default" data-role="button" data-bind="events:{ click: onCancelDynamicDataSource }">~{Skip}~</button>&emsp;
+                <button class="btn btn-primary" data-role="button" data-bind="events:{ click: onContinueDynamicDataSource }, disabled: disableDynamicDataSourceContinue">~{Continue}~</button>
+
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/x-kendo-tmp" id="_ProofingGenerateQRCodeTemplate">
+
+    <div id="divGenerateQrCode" class="hide fancy800">
+        <h3>~{QRCodeGenerator}~</h3>
+        <p class="padb10">~{EnterInformationToPersonalizeQR}~</p>
+        <div class="form-one clearfix">
+            <div class="col_half">
+                <div class="form padu10">
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Type}~<b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <select required data-argosy-qrcode="qr_Type" id="qr_Type" name="qr_Type" data-value-field="name" data-text-field="name" data-bind="source: qrTypes" data-role="dropdownlist"></select>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Color}~
+                            <b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <select required data-argosy-qrcode="qr_Color" id="qr_Color" name="qr_Color" data-value-field="value" data-text-field="name" data-bind="source: qrColors" data-role="dropdownlist"></select>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="label-style">
+                            Background Color
+                            <b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <select required data-argosy-qrcode="qr_Background_Color" id="qr_Background_Color" name="qr_Background_Color" data-value-field="value" data-text-field="name" data-bind="source: qrBackgroundColors" data-role="dropdownlist"></select>
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{FirstName}~
+                            <b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <input required data-argosy-qrcode="qr_FirstName" id="qr_FirstName" name="qr_FirstName" type="text" class="k-textbox" value="${QrCodeDefaults.FirstName}" />
+                        </div>
+                    </div>
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{LastName}~
+                            <b class="co-warning">*</b>
+                        </div>
+                        <div class="input-style padb10">
+                            <input required data-argosy-qrcode="qr_LastName" id="qr_LastName" name="qr_LastName" type="text" class="k-textbox" value="${QrCodeDefaults.LastName}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Phone}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Phone" id="qr_Phone" name="qr_Phone" type="text" class="k-textbox" value="${QrCodeDefaults.Phone}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Email}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Email" id="qr_Email" name="qr_Email" type="text" class="k-textbox" value="${QrCodeDefaults.Email}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Website}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Website" id="qr_Website" name="qr_Website" type="text" class="k-textbox" value="${QrCodeDefaults.Website}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Address}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Address1" id="qr_Address1" name="qr_Address1" type="text" class="k-textbox" value="${QrCodeDefaults.AddressLine1}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{Address2}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Address2" id="qr_Address2" name="qr_Address2" type="text" class="k-textbox" value="${QrCodeDefaults.AddressLine2}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{City}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_City" id="qr_City" name="qr_City" type="text" class="k-textbox" value="${QrCodeDefaults.City}" />
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{State}~
+                        </div>
+                        <div class="input-style padb10">
+                            <select data-argosy-qrcode="qr_State" id="qr_State" name="qr_State" data-value-field="name" data-text-field="name" data-option-label="~{SelectOne}~" data-bind="source: qrStates, events: {dataBound: onDropDownListDataBound}" data-role="dropdownlist" data-value="${QrCodeDefaults.State}"></select>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <div class="label-style">
+                            ~{ZipCode}~
+                        </div>
+                        <div class="input-style padb10">
+                            <input data-argosy-qrcode="qr_Zip" id="qr_Zip" name="qr_Zip" type="text" class="k-textbox" value="${QrCodeDefaults.Zip}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col_half col_last divcenter">
+                <h4>~{QRCodeAppearWhenGenerated}~</h4>
+                <img src="/noimagefound.png?h=300&w=300" class="bkg-gray" alt="QR Code" onload="$.fancybox.update();" />
+                <br style="clear:both;" />
+            </div>
+            <div class="row clearfix">
+                <div class="floatl ">
+                    <div class="padu10 clearfix btn_not_full">
+                        <button class="btn btn-default" data-role="button" data-bind="events:{ click: onCancelQRCode }"><i class="fa fa-times"></i><span class="hidden-xs hidden-sm"> ~{Cancel}~</span></button>
+                        <button class="btn btn-default" data-role="button" data-bind="events:{ click: onRemoveQRCode }" id="qr_code_remove" disabled><i class="fa fa-ban"></i><span class="hidden-xs hidden-sm"> ~{Remove}~</span></button>
+                    </div>
+                </div>
+                <div class="floatr">
+                    <div class="padu10 clearfix btn_not_full">
+                        <button class="btn btn-default" data-role="button" data-bind="events:{ click: onGenerateQRCode }"><i class="fa fa-qrcode"></i><span class="hidden-xs hidden-sm"> ~{GenerateQRCode}~</span></button>
+                        <button class="btn btn-primary" data-role="button" data-bind="events:{ click: onSaveQRCode }" id="qr_code_save" disabled><i class="fa fa-chevron-right"></i><span class="hidden-xs hidden-sm"> ~{InsertQRCode}~</span></button>
+                        <input id="qr_final_url" name="qr_final_url" type="hidden" />
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</script>

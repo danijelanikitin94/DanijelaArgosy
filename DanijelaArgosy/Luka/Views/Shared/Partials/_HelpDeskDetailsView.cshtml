@@ -1,0 +1,187 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@using ServiceStack
+@model Argosy.BusinessLogic.FrontEnd.Managers.HelpDeskManager.HdTicket
+
+<section class="extra">
+    <div class="container">
+        @Html.ValidationSummary(true)
+        <div class="row" id="updateTicket">
+            <div class="col-sm-12">
+                <div class="pull-left">
+                    @Html.HiddenFor(m => m.TicketId)
+                    @Html.HiddenFor(m => m.HdProblemTypeId)
+                    @Html.HiddenFor(m => m.HdEmail)
+                    @Html.HiddenFor(m => m.HdStatusId)
+                    <h1 class="padu10 padb20">~{Ticket}~: <b>@Html.DisplayFor(m => m.TicketId)</b></h1>
+                </div>
+            </div>
+            <div class="col-md-4 floatl" style="padding-left: 0;">
+                <div class="clear padb20">
+                    <h3>~{HelpDeskTicketDetails}~</h3>
+                    <div class="padu5 clearfix">
+                        <div class="label-style">~{Subject}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.Subject)</div>
+                    </div>
+                    <div class="padu5 clearfix">
+                        <div class="label-style">~{Details}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.Details) </div>
+                    </div>
+                    <div class="padu5 clearfix">
+                        <div class="label-style">~{Status}~</div>
+                        <div class="input-style" id="statusDiv">@Html.DisplayFor(m => m.HdStatus)  </div>
+                    </div>
+                    <div class="padu5 clearfix">
+                        <div class="label-style">~{IssueType}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.HdProbelmType)</div>
+                    </div>
+                    <div class="padu5  clearfix">
+                        <div class="label-style">~{Priority}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.HdPriorityDetail)</div>
+                    </div>
+                    <div class="padu5  clearfix">
+                        <div class="label-style">~{SubmittedBy}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.CreatedByUser)</div>
+                    </div>
+                    <div class="padu5 clearfix">
+                        <div class="label-style">~{DateSubmitted}~</div>
+                        <div class="input-style">@Html.DisplayFor(m => m.HdDateCreated)</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-8 floatl borderl">
+                <div class="col-sm-12 maru10">
+                    <input class="w100" type="text" placeholder="~{AddComment}~" id="newComment" />
+                </div>
+                <div class="maru5 floatr">
+                    <a class="btn btn-default defaultButton" id="saveUserCommentBtn" onclick="javascript: saveUserComment();" href="#">~{Send}~ </a>
+                </div><br style="clear:both"><br style="clear:both">
+                <table style="border-style: none;" data-argosy-control="TicketCommentsGridView" data-argosy-view="TicketCommentsGridView" data-argosy-options-ticket-id-grid-view="@Model.TicketId" data-argosy-options-admin="@FrontEndSession.Instance.UserSettings.IsAdmin">
+                    <thead style="border-style: none;">
+                        <tr>
+                            <th>
+                                <h3 class="nopad">~{Comments}~</h3>
+                            </th>
+                        </tr>
+                    </thead>
+                </table>
+                <script id="rowTemplate" type="text/x-kendo-tmpl">
+                    <tr data-uid="#: uid #" style="border-style: none; overflow: hidden; overflow-y: auto;">
+                        <td style="padding-bottom:0; margin:0;">
+                            <span class="floatl f12"> #if (FeCommentedById != null && FeCommentedById != '') {#   #= FeFirstName # #= FeLastName #  #}else{# #= BeFirstName # #= BeLastName #  #}# </span>
+                        </td>
+                    </tr>
+                    <tr class="sender" style="border-style: none;">
+                        <td style="padding:0; margin:0;">
+                            <div>
+                                <p>#: Comment #</p>
+                                <p class="bold f12"> #= kendo.toString(kendo.parseDate(CommentDateCreated, 'yyyy-MM-dd'), 'g') # </p>
+                            </div>
+                        </td>
+                    </tr>
+                </script>
+                <script id="altRowTemplate" type="text/x-kendo-tmpl">
+                    <tr class="k-alt" data-uid="#: uid #" style="border-style: none;">
+                        <td style="padding:0; margin:0;">
+                            <span class="floatr f12">#if (FeCommentedById != null && FeCommentedById != '') {#   #= FeFirstName # #= FeLastName #  #}else{# #= BeFirstName # #= BeLastName #  #}# </span>
+                        </td>
+                    </tr>
+                    <tr class="receiver" style="border-style: none;">
+                        <td style="padding:0; margin:0;">
+                            <div>
+                                <p>#: Comment #</p>
+                                <p class="bold f12"> #= kendo.toString(kendo.parseDate(CommentDateCreated, 'yyyy-MM-dd'), 'g') # </p>
+                            </div>
+                        </td>
+                    </tr>
+                </script>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script type="text/javascript">
+    function closeTicket() {
+        $.ajax({
+            url: '@Url.Action("CloseTicket","HelpDesk",new {area="Admin"})',
+            type: "POST",
+            data:JSON.stringify(@(Html.Raw(Model.ToJson()))),
+            dataType: "json",
+            traditional: true,
+            contentType: "application/json; charset=utf-8",
+            success: function (result) {
+                if (result.IsError === false) {
+                    $("#statusDiv").html('Closed');
+                    var type = "success";
+                    prompt.notify({
+                        question: result.Message,
+                        type: type
+                    });
+                } else {
+                    prompt.clientResponseError(result);
+                }
+                var grid = $("table[data-argosy-view=TicketCommentsGridView]").getKendoGrid();
+                grid.dataSource.read();
+                grid.refresh(true);
+            }
+        });
+    }
+
+    $(function () {
+        $('input').keydown(function (e) {
+            var key = e.charCode ? e.charCode : e.keyCode ? e.keyCode : 0;
+            if (key === 13) {
+                e.preventDefault();
+                $("#saveUserCommentBtn").trigger('click');
+            }
+        });
+        $('#btnComments').fancybox();
+    });
+   
+    function showAddCommentModal() {
+        $.fancybox({
+            href: "#AddComment"
+        });
+    }
+
+    function closeCommentModal() {
+        $.fancybox.close();
+    }
+
+    function saveUserComment() {
+        var comment = $("#newComment").val();
+        if (comment !== '') {
+            var params = { comment: comment, ticketId: $('#TicketId').val() };
+            $.ajax({
+                url: '/Admin/HelpDesk/AddComment',
+                type: "POST",
+                data: JSON.stringify(params),
+                dataType: "json",
+                traditional: true,
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    if (result.ReturnCode === ReturnCode.Success) {
+                        $("#newComment").val("");
+                        prompt.notify({
+                            question: "Your comment was " + (!this.Value ? "" : "not") + " successfully added.",
+                            type: (!this.Value ? "success" : "error")
+                        });
+                        $.fancybox.close();
+                    } else {
+                        prompt.clientResponseError(result);
+                        $.fancybox.close();
+                    }
+                    var grid = $("table[data-argosy-view=TicketCommentsGridView]").getKendoGrid();
+                    grid.dataSource.read();
+                    grid.refresh(true);
+                }
+            });
+        }
+        else {
+            prompt.notify({
+                question: "~{PleaseWriteComment}~",
+                type: "error"
+            });
+        }
+    }
+</script>

@@ -1,0 +1,457 @@
+﻿
+<style>
+
+    hr {
+
+        border-top: 0;
+    }
+
+    @media (max-width: 640px)
+    {
+        .pull-right {
+            float: right !important;
+        }
+    }
+</style>
+<script type="text/x-kendo-template" id="_ShoppingCartViewTemplate">
+    <div class="row" id="_ShopingCartBindSection">
+        <div class="hide-me-on-empty">
+            <div class="floatr padu5 padb5">
+                <a data-bind="click:checkout" class="btn btn-primary hand hidden-xs hidden-sm">~{Checkout}~ <i class="fa fa-chevron-right"></i></a>
+            </div>
+            <div class="floatl text-center maru5 marb5 marr5">
+                <a class="btn btn-link hand" data-bind="click:goShopping"><i class="fa fa-chevron-left"></i> ~{ContinueShopping}~</a>
+            </div>
+            <div class="floatl text-center mar5 hidden-xs">
+                <a data-bind="click:emptyCart" class="btn btn-success hand"><i class="fa fa-times"></i> ~{ClearCart}~</a>
+            </div>
+            <div class="floatl mar5" style="display: none">
+                <a class="btn btn-default hand"><i class="fa fa-shopping-cart"></i> ~{BulkCheckout}~</a>
+            </div>
+            <br style="clear:both" />
+        </div>
+        <div class="col-sm-12 pull-right" id="_cartContainer">
+            <div class="col-md-12 empty-cart-parent hidden">
+                <div class="center">
+                    <div class="f50 grayout topmargin-lg bottommargin-lg">~{CartEmpty}~</div>
+                    <a class="btn btn-primary hand" data-bind="click:goShopping"><i class="fa fa-chevron-left"></i> ~{ContinueShopping}~</a>
+                </div>
+            </div>
+            <div id="_ShoppingCartGrid" class="cartlines" style="overflow-y:hidden;">
+                <table class="cart-table table-responsive w100">
+                    <thead>
+                        <tr class="grid-menu-template">
+                            <td class="cart-img"></td>
+                            <td class="cart-item">~{Item}~</td>
+                            <td class="cart-accounting" data-bind="visible: hasAccountingUnits">~{AccountingUnit}~</td>
+                            <td class="cart-quantity" data-bind="visible: notAllConfiguredParts">~{Qty}~</td>
+                            <td class="cart-delivery" data-bind="visible: someAreEdelivery">~{Delivery}~</td>
+                            #if (userSettings.IsPriceInformationVisible) {#
+                            <td class="cart-subtotal">~{Subtotal}~</td>
+                            #}#
+                        </tr>
+                    </thead>
+                    <tbody class="mar10" data-template="_ShoppingCartRowViewTemplate" data-bind="source: cartLines"></tbody>
+                    <tfoot>
+                        <tr class="hide-me-on-empty vtop">
+                            <td data-bind="visible: hasAccountingUnits"></td>
+                            <td data-bind="visible: notAllConfiguredParts"></td>
+                            <td data-bind="visible: someAreEdelivery"></td>
+
+                            <td data-bind="visible: notAllConfiguredParts"><div style="display:none;"><a class="btn btn-default hidden-sm hidden-xs"><i class="fa fa-shopping-cart"></i> ~{BulkCheckout}~</a></div></td>
+                            <td class="bundles-total-price textr f18">
+                                #if (userSettings.IsPriceInformationVisible) {#
+                                <span data-bind="visible: isMailingList" style="display: none;" class="row upcase">~{Mailing}~</span>
+                                <span data-bind="visible: isThirdPartyList" style="display: none;" class="row upcase">~{ListCost}~</span>
+                                <span data-bind="visible: isDiscount" style="display: none;" class="row upcase">~{Discounts}~</span>
+                                <span class="upcase">~{Subtotal}~</span>
+                                #}#
+                            </td>
+                            #if (userSettings.IsPriceInformationVisible) {#
+                            <td class="total-rpsv bundles-total-price textr f18">
+                                <span data-bind="visible: isMailingList, text:mailingListCostText" class="show-loading row"></span>
+                                <span data-bind="visible: isThirdPartyList, text:thirdPartyListCostText" class="show-loading row"></span>
+                                <span data-bind="visible: isDiscount, text:discountCostText" class="show-loading row text-danger"></span>
+                                <span data-bind="text: subTotal" class="show-loading"></span>
+                            </td>
+                            #}#
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div class="hide-me-on-empty">
+            <div class="floatr padu5 padb5 mobile100">
+
+                <a data-bind="click:checkout" class="btn btn-primary hand">~{Checkout}~ <i class="fa fa-chevron-right"></i></a>
+            </div>
+            <div class="floatl text-center maru5 marb5 marr5 hidden-xs">
+                <a class="btn btn-link hand" data-bind="click:goShopping"><i class="fa fa-chevron-left"></i> ~{ContinueShopping}~</a>
+            </div>
+            <div class="floatl text-center mar5 hidden-xs">
+                <a data-bind="click:emptyCart" class="btn btn-success hand"><i class="fa fa-times"></i> ~{ClearCart}~</a>
+            </div>
+            <div class="floatl mar5 hidden-xs hidden-sm" style="display: none">
+                <a class="btn btn-default hand"><i class="fa fa-shopping-cart"></i> ~{BulkCheckout}~</a>
+            </div>
+            <br style="clear:both" />
+        </div>
+        <div style="display:none;" class="col-sm-12 topmargin-lg" id="_cartCrossSaleBindSection">
+
+            <div class="cart-information marb10">~{RecommendedItems}~</div>
+            <div data-template="_CartCrossSellItemTemplate" data-bind="source:crossSaleItems"></div>
+            <br style="clear:both" />
+
+        </div>
+        <div id="_ModalProductContainer" style="display:none;"></div>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="_partLimitRowTemplate">
+    #if(userSettings.ShowPartLimits && PartLimit!= null){#
+    This product has order limits of ${PartLimit.LimitQuantity} per ${PartLimit.Days} day period. You have ${OrderedPartLimit != null? OrderedPartLimit.LimitQty - OrderedPartLimit.TotalOrdered:PartLimit.LimitQuantity } available to order.
+    #}#
+</script>
+<script id="_alertMessageTemplate" type="text/x-kendo-tmpl">
+    <div class="pad2" style="padding-top: 2px; text-align: center; font-weight: bold">
+        <i class="fa fa-info-circle" aria-hidden="true"></i>
+        #=Message#
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ShoppingCartRowViewTemplate">
+    #if (ParentPartId === 0) {#
+    <tr data-bind="css:{disabled:overPartLimit, cartline-needs-attention:doesLineNeedAttention}" data-cart-status="${CartStatus}">
+        <!--THIS IS THE IMAGE COLUMN-->
+        <td class="td-img-rpsv padr20 borderb-solid">            
+            #if(CustomThumbnail != null && CustomThumbnail.trim().length > 0 && CustomThumbnail.indexOf("blank.png") < 0){#
+            <img class="max100 img-responsive img-border" src="${CustomThumbnail}" alt="">
+            #} else {#
+            <img class="max100 img-responsive img-border" src="${Part.ThumbnailFile}" alt="">
+            #}#
+        </td>
+        <!--THIS IS THE ITEM COLUMN-->
+        <td class="td-item-rpsv borderb-solid">
+            #if(Part.CanCustomize){#
+            <h4 style="display:inline;" class="text-center cart-item-name">#= renderProductNameViewTemplate(Part)#</h4><br class="hidden-lg hidden-md" />&nbsp;
+            #if (CustomizationUrl != null && CustomizationUrl.trim().length > 0) {#
+            <a target="_blank" href="${CustomizationUrl}">
+                <i class="fa fa-pencil" title="Edit"></i>
+            </a>
+            #}#
+            #if (MailingListUrl != null && MailingListUrl.trim().length > 0) {#
+            &emsp;<a target="_blank" href="${MailingListUrl}"><i class="fa fa-file-text-o" title="Edit List"></i></a>
+            #}#
+            #if(CustomThumbnail != null && CustomThumbnail.trim().length > 0 && CustomThumbnail.indexOf("blank.png") < 0){#
+            &ensp;<a target="_blank" href="${CustomThumbnail}"> <i class="fa fa-eye" title="View Proof"></i></a>
+            #}#
+            #} else {#
+            <h4 class="cart-item-name">
+                #if (ShowOverrideMessage) {#
+                <p class="co-warning">${OverrideCartMessage}</p>
+                #} else if ((CartStatus < 90 && CartStatus > 1)) {#
+                <p class="co-warning">${CartStatusMessage}</p>
+                #} else {#
+                #= renderProductNameViewTemplate(Part, DiscountName)#
+                #}#
+            </h4>
+            #}#
+            #if (OrderLineTag != null) {#
+            <em>${OrderLineTag}</em>
+            #}#
+            #if (DiscountName != null && DiscountName.trim().length > 0) {#<p class="text-danger bold"><strong>${DiscountName}</strong></p>#}#
+            #if(ConfiguredParts.length > 0){
+                var basePrice = getBasePrice(Part.BasePrice);
+            #
+                #if(basePrice != null && basePrice.FlatFee != null && basePrice.FlatFee != undefined){#
+                    ${kendo.toString(basePrice.FlatFee, "C")}&nbsp;#if(basePrice.FlatFeeLabel != null){#${basePrice.FlatFeeLabel}#}#
+                #}#
+            #} else {#
+                #if(FlatFee != null){#<p data-bind="visible: isNotConfiguredPart" class="text-danger bold"><strong>${kendo.toString(FlatFee, "C")}&nbsp;#if(FlatFeeLabel != null){#${FlatFeeLabel}#}#</strong></p>#}#
+            #}#
+            <p class="hidden-xs hidden-sm padr5"> #=Part.Description#</p>
+            <div class="pad10 bkg-gray maru5" data-bind="css:{hidden:hiddenIfNoCartAttributes}">
+                <p><b><i class="fa fa-pencil" title="Edit Attributes" data-bind="events: {click: editAttributes}"></i> Options:</b></p>
+                <div data-bind="source:CartAttributes" data-template="_cartAttributesRowTemplate"></div>
+            </div>
+            <div class="pad10 bkg-gray maru5" data-bind="css:{hidden:hiddenIfKitWithoutPersonalizedItems}">
+                <p><b>~{CustomizablePartsKit}~:</b></p>
+                <div data-bind="source:PersonalizedPartsInKit" data-template="_personalizedKitItemsRowTemplate"></div>
+            </div>
+            <div class="pad10 bkg-gray maru5" data-bind="visible: isConfiguredPart">
+                <div data-template="_configuredPartsItemsRowTemplate" data-bind="source: ConfiguredParts" />
+            </div>
+            <div data-bind="css:{hidden:hideInventory}, visible: isNotConfiguredPart" class="globals-qtyavailable padu5">
+                #=renderCartProductQuantityOnAvailableViewTemplate(Part)##=renderProductMaxMinOrderTemplate(Part)#
+                <br style="clear:both" />
+            </div>
+            <div class="padu10 padb10">
+                <a class="co-warning" data-bind="click:deleteLine, visible: isNotConfiguredPart"><i class="fa fa-times-circle"></i> ~{Remove}~</a>
+                <a data-bind="click:saveForLater" class="btn btn-success hand"><i class="fa fa-floppy-o"></i> ~{SaveForLater}~</a>
+            </div>
+        </td>
+        <!--THIS IS THE ACCOUNTING UNIT COLUMN-->
+        <td class="td-qty-rpsv text-center borderb-solid marb10 padr5" data-bind="visible: hasAccountingUnits">
+            <input data-role="dropdownlist"
+                   data-auto-bind="false"
+                   data-cart-id="${CartId}"
+                   data-text-field="Text"
+                   data-value-field="Value"
+                   data-bind="source: accountingUnits,
+                   events:{
+                       dataBound:accountingUnitsDataBound,
+                       change:accountingUnitsChange
+                   }"
+                   style="width: 100%;" />
+        </td>
+        <!--THIS IS THE QUANTITY COLUMN-->
+        <td class="td-qty-rpsv text-center borderb-solid" data-bind="css:{hidden:overPartLimit}, visible: notAllConfiguredParts">
+            #if (!IsEdelivery && data.parent().parent().isNotConfiguredPart(data)) {#
+            #= renderProductQuantityInput(Part, Quantity, IsEdelivery, CartId, "", "updateLine", "priceBreakDataBound", "priceBreakDropdownChange", "Part.Discounts",true, IsMailingList) #
+            #= renderProductOrderInfoTemplate(Part) #
+            #}#
+        </td>
+        <!--THIS IS THE DELIVERY COLUMN HIDE WHEN EMPTY PUTTING WHITE SPACE-->
+        <td class="td-dev-rpsv borderb-solid" data-bind="css:{hidden:overPartLimit}, visible: someAreEdelivery">
+            <div class="f12 padl20 ${(Part.IsEdeliveryAllowed && !IsMailingList) ? '' : 'hidden'}" style="vertical-align:baseline; height:100%;">
+                <p>
+                    <input type="radio" name="${CartId}" id="rdo${CartId}Edelivery" data-bind="events:{change:setEdelivery}" ${IsEdelivery?"checked='true' ":" "}  />
+                    <label class="f14" for="rdo${CartId}Edelivery">~{Electronic}~</label>
+                    <input class="${Part.IsEdeliveryOnly?'hidden':' '}" type="radio" name="${CartId}" id="rdo${CartId}Physical" data-bind="events:{change:removeEdelivery}" ${IsEdelivery?"":"checked='true' "}" />
+                    <label class="f14 ${Part.IsEdeliveryOnly?'hidden':' '}" for="rdo${CartId}Physical">~{Physical}~</label>
+                </p>
+            </div>
+        </td>
+        #if (userSettings.IsPriceInformationVisible) {#
+        
+        <!--THIS IS THE SUBTOTAL COLUMN-->
+        <td class="td-total-rpsv borderb-solid textr padr10">
+            <p class="unit-price" data-cartline-id="${CartId}" data-bind="text:getFormatedUnitPrice, visible: isNotConfiguredPart"></p>
+            <p class="price-cart-rpsv show-loading bold part-price-wrapper-${PartId}" data-bind="text:getFormatedPrice"></p>
+            <p class="price-cart-discount show-loading bold part-discount-wrapper-${PartId} text-danger" data-bind="text:getFormatedDiscount, visible: isDiscounted"></p>
+            #if (data.parent().parent().isNotConfiguredPart(data)) {#
+            #= renderProductDiscountsToolTip(Part) #
+            #}#
+        </td>
+        #}#
+    </tr>
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_personalizedKitItemsRowTemplate">
+    <p class="padu5">
+        #if (CustomizationUrl != null && CustomizationUrl.trim().length > 0) {#
+        <a target="_blank" href="${CustomizationUrl}"><i class="fa fa-pencil" title="Edit Proof"></i></a>&emsp;
+        #}#        
+        #if (MailingListUrl != null && MailingListUrl.trim().length > 0) {#
+        <a target="_blank" href="${MailingListUrl}"><i class="fa fa-file-text-o" title="Edit List"></i></a>&emsp;        
+        #}#
+
+        #if(ThumbnailPath != null && ThumbnailPath.trim().length > 0 && ThumbnailPath.indexOf("blank.png") < 0){#
+        <a target="_blank" href="${ThumbnailPath}"> <i class="fa fa-eye" title="View Proof"></i></a>&emsp;
+        #}#
+        #=PartName#
+    </p>
+</script>
+<script type="text/x-kendo-template" id="_cartAttributesRowTemplate">
+    <div class="row">
+        <p class="pull-left col-md-3 text-right align-top">${Type}:</p>
+        <em class="col-md-7 pull-left align-top">${Name}</em>
+        <span class="pull-right align-top">
+        #if (Value > 0) {#${kendo.toString(Value,"c2")}</span>
+        #}#
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="_configuredPartsItemsRowTemplate">
+    <div class="row padu5">
+        <div class="col-md-8 nopadding">
+            <a class="padu5 co-warning pull-left" data-bind="click: parent().parent().parent().parent().deleteLine"><i class="fa fa-times-circle" title="~{Remove}~"></i> </a>
+            <p class="padu5 padl10 pull-left" data-bind="text: parent().parent().parent().parent().getConfiguredPartName"> </p>            
+            #if (CustomizationUrl != null) {#
+            <a class="padu5 padl10 pull-left" target="_blank" href="${CustomizationUrl}"><i class="fa fa-pencil" title="Edit Proof"></i></a>
+            #}#                 
+            #if (MailingListUrl != null && MailingListUrl.trim().length > 0) {#
+            <a href="${MailingListUrl}" target="_blank"><i class="fa fa-file-text-o" title="Edit List"></i></a>&emsp;
+            #}#
+            #if(CustomThumbnail != null && CustomThumbnail.trim().length > 0 && CustomThumbnail.indexOf("blank.png") < 0){#
+            <a class="padu5 padl10 fancybox" target="_blank" href="${CustomThumbnail}"><i class="fa fa-eye" title="See Digital Proof"></i></a>
+            #}#
+        </div>
+        <div class="col-md-1 nopadding pull-right">
+            <span class="pull-right"
+                  data-value="${Quantity}"
+                  data-part-id="${Part.PartId}"
+                  data-cart-id="${CartId}"
+                  data-role="partpricing"></span>
+        </div>
+        <div class="col-md-2 nopadding pull-right">
+            <span class="pull-right padu5">
+                # if (userSettings.IsPriceInformationVisible) {#
+                    <span class="floatr text-right">
+                        #= renderProductDiscountsToolTip(Part, "", data.parent().parent().parent().parent().getTotalConfiguredParts(data)) #
+                        ${kendo.toString(UnitPrice, "C")}#if(FlatFee != null){#<br />${kendo.toString(FlatFee, "C")}&nbsp;#if(FlatFeeLabel != null){#${FlatFeeLabel}#}}#
+                    </span>
+                #}#
+            </span>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_CartCrossSellItemTemplate">
+    <div class="col-md-5">
+        <div class="product-image-wrapper marb10">
+            <div class="text-center">
+                <div data-bind="click:showProductDetails">
+                    #= renderProductImageViewTemplate(data, 'container-aspect','img-aspect') #
+                </div>
+                <p class="padl5 padr5"><a data-bind="click:showProductDetails">#= renderProductNameViewTemplate(data)#</a></p>
+                <p class="product-price padr10 nowrap">#= renderProductPriceViewTemplate(data) #</p>
+                <p class="product-ship">#= renderProductLeadTimeViewTemplate(data) #</p>
+                #= renderProductCartButtonViewTemplate(data, "showAddToCartModal") #
+            </div>
+        </div>
+    </div>
+</script>
+<script id="_lineResponseRowTemplate" type="text/x-kendo-tmpl">
+    <tr data-uid="${uid}">
+        #if (this.group != null){#
+            #=new Array(this.group().length + 1).join('<td class="k-group-cell"></td>')#
+        #}#
+        <td>
+            <b>#= PartName#</b>
+        </td>
+        <td>
+            #if (CustomError != null) {#
+            <i>#=CustomError#</i>
+            #} else {#
+            <i>#=Error#</i>
+            #}#
+        </td>
+    </tr>
+</script>
+
+
+<div style="display:none" id="cartResponseSection">
+    <div style="display: none" data-id="approvalWorkflowMessages">
+        <div class="row" style="text-align: center">
+            <b>Approval Workflow Triggered:</b><br />
+            Your order will be sent into the approval workflow because:<br />
+            <div class="col-md-12">
+                <div data-id="approvalWorkflowMessagesList"
+                     data-role="listview"
+                     data-template="_alertMessageTemplate"
+                     data-bind="source: approvalWorkflowMessages">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="display: none" data-id="lineErrors">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <hr data-bind="visible: lineErrorsHrVisible" />
+                <button class="btn btn-primary hand center-image"
+                        data-bind="events: { click: clearCartResponse }">
+                    ~{PleaseCorrectItemsBelow}~
+                </button>
+                <br/>
+
+                <div class="alert alert-danger">
+                    <i class="fa fa-exclamation-triangle" style="color: red" aria-hidden="true"></i>
+                    <span style="font-weight: bold; color: red"> Please correct these Item(s) to continue</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div data-role="grid"
+                     data-id="lineErrorsGrid"
+                     data-groupable="false"
+                     data-columns="[
+                                {
+                                    title: '~{Item}~',
+                                    field: 'PartName'
+                                }, {
+                                    title: '~{Message}~',
+                                    field: 'Error',
+                                    aggregates: ['count'],
+                                    groupHeaderTemplate: '#=value#'
+                                                                }
+                            ]"
+                     data-bind="source: lineErrors,
+                        events: {
+                            dataBinding: lineResponsesDataBinding,
+                            dataBound: lineResponsesDataBound,
+                            group: lineResponsesGroup
+                        }"
+                     data-sortable="true"
+                     data-selectable="false"
+                     data-row-template="_lineResponseRowTemplate">
+                  
+                </div>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div style="display: none" data-id="lineMessages">
+        <div class="row">
+            <div class="col-md-12" style="text-align: center">
+                <div data-bind="visible: lineMessagesHrVisible">
+                
+                </div>
+                <div class="alert alert-info">
+                    <i class="fa fa-info-circle" aria-hidden="true"></i>
+                    <span style="font-weight: bold"> Information about your Item(s)</span>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="display: none" data-id="moreInformation">
+            <div class="col-md-12">
+                <div data-role="grid"
+                     data-id="lineMessagesGrid"
+                     data-groupable="false"
+                     data-columns="[
+                                {
+                                    title: '~{Item}~',
+                                    field: 'PartName'
+                                }, {
+                                    title: '~{Message}~',
+                                    field: 'Error',
+                                    aggregates: ['count'],
+                                    groupHeaderTemplate: '#=value#'
+                                }
+                            ]"
+                     data-bind="source: lineMessages,
+                            events: {
+                                dataBinding: lineResponsesDataBinding,
+                                dataBound: lineResponsesDataBound,
+                                group: lineResponsesGroup
+                            }"
+                     data-sortable="true"
+                     data-selectable="false"
+                     data-row-template="_lineResponseRowTemplate">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="padu10" data-bind="visible: alertMessageContinueEnabled">
+        <div class="row">
+            <div class="col-md-6" style="text-align: right; padding-right: 10px">
+                <button class="btn btn-primary hand center-image"
+                        data-bind="events: { click: clearCartResponse }">
+                    ~{Cancel}~
+                </button>
+            </div>
+            <div class="col-md-6" style="text-align: left; padding-left: 10px">
+                <button class="btn btn-primary hand center-image"
+                        data-bind="events: { click: alertMessageContinueToCheckout }">
+                    ~{Checkout}~  <i class="fa fa-chevron-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+<style>
+    .k-grid-content {
+        overflow-y: hidden;
+        overflow-x: hidden;
+    }
+
+</style>

@@ -1,0 +1,5 @@
+added:
+	references
+		System.Web.Http
+		System.Web.Http.WebHost
+	WebApiConfig

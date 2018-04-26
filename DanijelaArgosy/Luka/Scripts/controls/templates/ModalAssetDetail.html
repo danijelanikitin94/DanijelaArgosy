@@ -1,0 +1,171 @@
+<script type="text/x-kendo-tmp" id="_ModalAssetDetail">
+    #
+    var permission = getUserPermission(UserRoleId, Permissions);
+    #
+    <div id="modalAssetDetail" class="fancy800 mobile-center">
+        # if (permission.CanView) {#
+        <div class="col-md-4">
+            <div><img class="img-responsive img-border" title="Enlarge Image" alt="${Name}" src="${PreviewFilePath}" /></div>
+            <p class="padu10"><b>${Extension} (#=formatToMb(OriginalFileSize)#) #=getDpiValue(Dpi)# DPI</b></p>
+            <p>#=formatDecimal(Width)# x #=formatDecimal(Height)# px</p>
+            <p>#=convertToInches(Width, Dpi)# x #=convertToInches(Height, Dpi)# inches</p>
+            <p>Added: #=formatDate(DateUploaded)#</p>
+            <p>Updated: #=formatDate(DateUploaded)#</p>
+        </div>
+        <div class="col-md-8">
+            <div class="row">
+                <h3>Name</h3>
+                <div id="nameViewWrapper">
+                    <div class="col_five_sixth">
+                        ${Name}
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-pencil" title="edit"></i></a>
+                        #}#
+                    </div>
+                </div>
+                <div id="nameViewEditor">
+                    <div class="col_five_sixth">
+                        <input type="text" class="w100" value="${Name}" />
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-save" title="save"></i></a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Description</h3>
+                <div id="descViewWrapper">
+                    <div class="col_five_sixth">
+                        ${Description}
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-pencil" title="edit"></i></a>
+                        #}#
+                    </div>
+                </div>
+                <div id="descViewEditor">
+                    <div class="col_five_sixth">
+                        <textarea rows="5" cols="55">${Description}</textarea>
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-save" title="save"></i></a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Search Tags</h3>
+                <div id="tagsWrapper">
+                    <div class="col_five_sixth">
+                        <input type="text" placeholder="Enter asset tags here..." data-argosy-tags="${TagsJson}" #if (!permission.CanEdit) {#disabled="disabled" #}# />
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-save" title="save"></i></a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display: none">
+                <h3>Inclusion Tags</h3>
+                <div id="inclusionTagsWrapper">
+                    <div class="col_five_sixth">
+                        <input type="text" placeholder="Enter inclusion tags here..." data-argosy-tags="${JSON.stringify((InclusionArray == null ? [] : InclusionArray))}" #if (!permission.CanEdit) {#disabled="disabled" #}# />
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-save" title="save"></i></a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="display: none">
+                <h3>Exclusion Tags</h3>
+                <div id="exlusionTagsWrapper">
+                    <div class="col_five_sixth">
+                        <input type="text" placeholder="Enter exclusion tags here..." data-argosy-tags="${JSON.stringify((ExclusionArray == null ? [] : ExclusionArray))}" #if (!permission.CanEdit) {#disabled="disabled" #}# />
+                    </div>
+                    <div class="col_one_sixth col_last">
+                        #if (permission.CanEdit) {#
+                        <a><i class="fa fa-save" title="save"></i></a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <h3>Permissions</h3>
+                <table class="list table">
+                    <thead>
+                        <tr class="grid-menu-up">
+                            <td style="width: 14%" class="text-left">Role</td>
+                            <td style="width: 14%" class="text-center">View</td>
+                            <td style="width: 14%" class="text-center">Download</td>
+                            <td style="width: 14%" class="text-center">Upload</td>
+                            <td style="width: 14%" class="text-center">Edit</td>
+                            <td style="width: 14%" class="text-center">Delete</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        #if (permission.IsAdmin) {#
+                        # for (var i = 0; i < Permissions.length; i++) {#
+                        # var p = Permissions[i];#
+                        <tr class="text-center #if (p.RoleId == UserRoleId) {#k-state-selected#}#">
+                            <td class="text-left">${p.RoleName}</td>
+                            <td><i class="fa #if (p.CanView) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (p.CanDownload) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (p.CanUpload) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (p.CanEdit) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (p.CanDelete) {#fa-check#}else{#fa-close#}#"></i></td>
+                        </tr>
+                        #}#
+                        #} else {#
+                        <tr class="text-center">
+                            <td class="text-left">${permission.RoleName}</td>
+                            <td><i class="fa #if (permission.CanView) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (permission.CanDownload) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (permission.CanUpload) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (permission.CanEdit) {#fa-check#}else{#fa-close#}#"></i></td>
+                            <td><i class="fa #if (permission.CanDelete) {#fa-check#}else{#fa-close#}#"></i></td>
+                        </tr>
+                        #}#
+                    </tbody>
+                </table>
+            </div>
+            #if (permission.IsAdmin){#
+            <div class="row">
+                <h3>Manage Thumbnail</h3>
+                <div class="col_five_sixth">
+                    <input name="assetThumbnail" id="assetThumbnail" type="file" />
+                </div>
+                <div class="col_one_sixth col_last">
+                    <a><i class="fa fa-save" title="save" onclick="ModalAssetDetail.prototype.SaveAssetThumbnail()"></i></a>
+                </div>
+            </div>
+            #}#
+            <div class="row">
+                <div class="floatr mobile100 maru20">
+                    #if (permission.CanDownload) {#
+                    <a class="btn btn-primary" data-argosy-action="add-asset-to-cart" data-argosy-dataid="${Id}">Add to order <i class="fa fa-chevron-right"></i></a>
+                    #}#
+                </div>
+            </div>
+        </div>
+        # } else {#
+        <div class="col-md-12">
+            <div class="row">
+                <h3 class="text-center"><i class="fa fa-exclamation-circle fa-5x"></i></h3>
+            </div>
+            <div class="row">
+                <h3 class="text-center">You do not have permission to view this asset.</h3>
+            </div>
+        </div>
+        # }#
+    </div>
+
+</script>

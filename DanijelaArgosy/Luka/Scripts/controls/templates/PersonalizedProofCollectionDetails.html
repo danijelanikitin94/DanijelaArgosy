@@ -1,0 +1,80 @@
+﻿<script type="text/x-kendo-tmpl" id="_PersonalizedProofCollectionDetailsModal">
+    <div class="container" id="personalizedProofs">
+        <div class="w100 notopmargin clearfix marb20">
+            <div class="col-sm-12 nobottommargin">
+                <h1 class="floatl">#=PartName#</h1>
+                
+                #if(CustomMsg && CustomMsg !== ''){#  
+                   <div class="clear">
+                    <div class="alert alert-info bold center" role="alert">#=CustomMsg#</div>
+                </div>
+                #}#
+                <div class="k-keyword-search floatr marb5 marr40">
+                    <input type="text" placeholder="~{SearchByProofName}~" data-bind="value: keyword">
+                    <a class="k-button-nbkg k-keyword-search"
+                       data-bind="click: searchPersonalizedProofCollectionDetails">
+                        <i class="fa fa-search"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-sm-12 maru10 clearfix">
+                <button type="button"
+                        class="btn btn-primary floatr marr40"
+                        data-id="selectedButton"
+                        data-bind="click: reorderSelectedPersonalizedProofCollectionItems"
+                        data-role="button">
+                    ~{ReorderSelected}~
+                </button>
+                <div class="floatr marr20 padu5 ">
+                    <input type="checkbox"
+                           id="selectAllItems"
+                           data-bind="click: selectAll"
+                           class="bootstrap-toggle">
+                    <label for="selectAllItems" class="smallest_txt" data-id="selectAllItemsLabel">~{SelectAll}~</label>
+                </div>
+            </div>
+            <div class="col-sm-12">
+                <div id="detailsListView">
+                    <div data-role="listview"
+                         data-id="detailsListView"
+                         data-bind="source: dataSource,
+                                    events: { dataBound: dataBound }"
+                         data-selectable="single"
+                         data-template="_PersonalizedProofCollectionDetails">
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-12 maru10">
+                <button type="button"
+                        class="btn btn-primary floatr marr40"
+                        data-id="selectedButton"
+                        data-bind="click: reorderSelectedPersonalizedProofCollectionItems"
+                        data-role="button">
+                    ~{ReorderSelected}~
+                </button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-kendo-tmpl" id="_PersonalizedProofCollectionDetails">
+
+        <div class="col-sm-3" id="personalizedProofCollectionItems">
+            <div class="img-border text-center">
+                <img class="img-aspect text-center img-responsive" src="${Thumbnail}" alt="test-image" />
+            </div>
+            <div class="col-sm-12 nobottommargin maru5">
+                <div class="padu3" style="height: 36px;">
+                    <input type="checkbox" class="bootstrap-toggle" id="${uid}">
+                    <span class="f18">&nbsp;<b>${ProofName}</b></span>
+                </div>
+                
+            </div>
+            <div class=" nomargin nopad">
+                <p class="smallest_txt">${Lines} #=Lines > 1 ? "~{Orders}~" : "~{Order}~"#</p>
+                <p class="smallest_txt">~{LastOrderOn}~ #=kendo.toString(kendo.parseDate(LastOrderDate), "d")#</p>
+            </div>
+            <br style="clear:both" />
+        </div>
+
+</script>

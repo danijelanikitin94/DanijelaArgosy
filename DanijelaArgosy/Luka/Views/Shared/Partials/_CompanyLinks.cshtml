@@ -1,0 +1,25 @@
+﻿@model List<Argosy.BusinessLogic.FrontEnd.Managers.CompanyLinkManager.CompanyLink>
+<div id="linksContainer" style="display: none;" class="col-sm-2">
+    <div data-argosy-control="MvcCompanyLinks" style="padding-left: 25px">
+        @foreach (var link in Model)
+        {
+            var href = link.OpenInNewWindow
+                ? $"onclick=window.open('{link.NavigationUrl}','_blank','width={link.Width},height={link.Height},location=0,resizable=no,scrollbars=yes,toolbar=no,status=0')"
+                : $"href={link.NavigationUrl}";
+            <div class="padb20">
+                <a @href title="@link.Title">
+                    @{
+                        if (link.ThumbnailFile.Equals("image-not-found.png"))
+                        {
+                            @link.Title
+                        }
+                        else
+                        {
+                            <img class="img-responsive" src="@link.ThumbnailFile" alt="@link.Title" />
+                        }
+                    }
+                </a>
+            </div>
+        }
+    </div>
+</div>

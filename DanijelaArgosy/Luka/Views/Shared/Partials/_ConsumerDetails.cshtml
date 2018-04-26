@@ -1,0 +1,91 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@model Argosy.BusinessLogic.FrontEnd.Managers.ConsumerManager.Consumer
+    @{
+        var consumerName = Model.ConsumerFirstName + " " + Model.ConsumerLastName;
+        var labelText = consumerName;
+        if (consumerName.Trim().IsNullOrEmpty())
+        {
+            labelText = "~{AddNewConsumer}~";
+         }
+    }
+@Html.HiddenFor(m => m.ConsumerId)
+@Html.HiddenFor(m => m.CompanyUserId)
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <div class="col-sm-12 padu10 padb10">
+        <div class="pull-left">
+            <h1>
+                @labelText
+            </h1>
+        </div>
+    </div>
+    <div class="col-sm-7 padu20" id="consumerMainRow">
+        <div id="consumerAlertDiv" class="alert alert-danger hidden"></div>
+        <div class="col-sm-12">
+            <div class="info">
+                <div class="form">
+
+                    <div class="col-sm-6 floatl">
+                        <h3>~{ConsumerDetails}~</h3>
+                        @Html.EditorFor(m => m.ConsumerFirstName, "NewString")
+                        @Html.EditorFor(m => m.ConsumerLastName, "NewString")
+                        @Html.EditorFor(m => m.ConsumerTypeId, "ConsumerType")
+                        @Html.EditorFor(m => m.ConsumerCompanyName, "ConsumerCompany", new {consumerCompanyName=@Model.ConsumerCompanyName })
+                        @Html.EditorFor(m => m.ConsumerEmail, "NewString")
+                        @Html.EditorFor(m => m.ConsumerPhone, "Telephone")
+                    </div>
+                    <div class="col-sm-6 floatr">
+                        <div class="label-style"><h3>&nbsp;</h3></div>
+                        <div class="radioset padu5 input-style padl10 ">
+                            @Html.EditorFor(m => m.IsResidentialAddress)
+                            <!-- TODO: wire up to auto populate billing address -->
+                        </div><br style="clear:both" />
+                        @Html.EditorFor(m => m.ConsumerAddress1, "NewString")
+                        @Html.EditorFor(m => m.ConsumerAddress2, "NewString")
+                        @Html.EditorFor(m => m.ConsumerAddress3, "NewString")
+                        @Html.EditorFor(m => m.ConsumerCity, "NewString")
+                        @Html.EditorFor(m => m.ConsumerStateId, "State")
+                        @Html.EditorFor(m => m.ConsumerZip, "NewString")
+                        @Html.EditorFor(m => m.ConsumerCountry, "Country")
+                    </div>
+                </div><br style="clear: both" />
+            </div>
+            <div class="info padu20" id="commentsContainer">
+                <h3 class="h3-bkg">~{Comments}~</h3>
+                @Html.TextAreaFor(m => m.ConsumerComment, new {placeholder = "Comments", style = "resize: none", row = 3, @class = "k-textbox"})
+            </div>
+        </div>
+
+    </div>
+<script language="javascript">
+    function updatedConsumer(data) {
+        var selectedConsumer = data.Consumer;
+        $(document).trigger(argosyEvents.END_LOADING, { element: $('#wrapcontainer') });
+        var alertDiv = $("#consumerAlertDiv");
+        if (data.IsError === true) {
+            alertDiv.removeClass('hidden').html("<b>" + data.Message + "</b>" + "<div><b>Error code:</b> " + data.ErrorCode + "</div>");
+		} else {
+            $(document).trigger(argosyEvents.SELECTED_CONSUMER, selectedConsumer);
+            $("#SelectedConsumerIdForOrder").val(selectedConsumer.ConsumerId);
+            updateBtns(true);
+            $.fancybox.close();
+            $("#ConsumersFullName").html(selectedConsumer.ConsumerFirstName + " " + selectedConsumer.ConsumerLastName);
+            alertDiv.html('').addClass('hidden');
+            $.fancybox.close();
+           
+        }
+    }
+
+    function updateBtns(userIsSelected) {
+        var clearBtn = "#clearConsumerBtn",
+            searchBtn = "#searchConsumerBtn",
+            addBtn = "#addConsumerBtn";
+        var editingBtns = clearBtn + "," + searchBtn;
+        if (userIsSelected === true) {
+            $(editingBtns).removeClass('hidden');
+            $(addBtn).addClass('hidden');
+        } else {
+            $(editingBtns).addClass('hidden');
+            $(addBtn).removeClass('hidden');
+        }
+    }
+</script>

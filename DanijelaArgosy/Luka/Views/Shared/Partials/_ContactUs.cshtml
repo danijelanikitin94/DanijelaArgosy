@@ -1,0 +1,79 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.Web.FrontEnd.Areas.Store.Models.ContactUsViewModel
+@if (Model != null)
+{
+    <div class="row">
+        <div class="col-md-12">
+            <h1>~{ContactInformation}~</h1>
+        </div>
+    </div>
+        <div class="row">
+            <div class="col-md-5 marr20">
+                @Html.LabelFor(x => x.Address, new { @class = "label-style-mini", @style = "font-weight: bold" })&nbsp;
+            </div>
+            <div class="col-md-5">
+                <div class="nowrap">
+                    @Html.DisplayFor(x => x.Address, new { @class = "input-style" })</div>
+                <div class="nowrap">@Html.DisplayFor(x => x.City, new { @class = "input-style" }),&nbsp;@Html.DisplayFor(x => x.State, new { @class = "input-style" })&nbsp;@Html.DisplayFor(x => x.Zip, new { @class = "input-style" })</div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 marr20">
+                @Html.LabelFor(x => x.Phone, new { @class = "label-style-mini nowrap", @style = "font-weight: bold" })&nbsp;
+            </div>
+            <div class="col-md-5">
+                @{
+                    double phoneResult;
+
+                    if (double.TryParse(Model.Phone, out phoneResult))
+                    {
+                        @($"{phoneResult: (###) ###-####}")
+                    }
+                }
+            </div>
+        </div>
+        <div class="row" id="divFax">
+            <div class="col-md-5 marr20">
+                @Html.LabelFor(x => x.Fax, new { @class = "label-style-mini nowrap", @style = "font-weight: bold" })&nbsp;
+            </div>
+            <div class="col-md-5">
+                @{
+                    double faxResult;
+
+                    if (double.TryParse(Model.Fax, out faxResult))
+                    {
+                        @($"{faxResult: (###) ###-####}")
+                    }
+                }
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 marr20">
+                @Html.LabelFor(x => x.Contact, new { @class = "label-style-mini nowrap", @style = "font-weight: bold" })&nbsp;
+            </div>
+            <div class="col-md-5">
+                @Html.DisplayFor(x => x.Contact, new { @class = "input-style" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-5 marr20">
+                @Html.LabelFor(x => x.GeneralQuestionsEmail, new { @class = "label-style-mini nowrap", @style = "font-weight: bold" }) &nbsp;
+            </div>
+            <div class="col-md-5">
+                @Html.DisplayFor(x => x.GeneralQuestionsEmail, new { @class = "input-style" })
+            </div>
+        </div>
+    <div id="divHelpDesk" class="col-md-12 center padu10">
+        @if (FrontEndSession.Instance.ZendeskUrl.NotNullOrEmpty())
+        {
+            <a class="padr10 small_txt" href="#" onclick="zE.activate();return false;">&nbsp;~{LogHelpDeskTicket}~</a>
+        }
+        else
+        {
+            @Html.ActionLink("~{LogHelpDeskTicket}~", "Index", "HelpDesk", new { area = "Account" }, new { @class = "btn btn-default" })
+        }
+        
+    </div>
+                    }

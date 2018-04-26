@@ -1,0 +1,149 @@
+﻿<style type="text/css">
+    .k-dropzone {
+        background-color: #fafafa;
+        text-align: center;
+        vertical-align: middle;
+        border: 1px solid #f1f1f1;
+        border-radius: 0px;
+    }
+
+    .k-button.k-upload-button {
+        left: 80px;
+    }
+</style>
+<script type="text/javascript">
+</script>
+<script type="text/x-kendo-tmp" id="_ProofingUploadTemplate">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="container">
+                <h1 class="padb10 light topmargin-sm">~{UploadYourArtwork}~ - ${Name}</h1>
+                 #if (Part.PersonalizationComments != null && Part.PersonalizationComments.trim() != "" && Part.PersonalizationComments.trim() != "null") {#
+                <div class="padu10">#= Part.PersonalizationComments#</div>
+                #}#
+                <div class="col-sm-4 noleftmargin noleftpadding">
+                    #if (userSettings.IsAssetUploadRestricted) {#
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <p class="padu10 padb10">~{DragDropToUpload}~</p>
+                            <p>
+                                <span class="f10">
+                                    Supported files: <b>
+                                        #for (var i = 0; i < DisplayExtensions.length; i++) {#
+                                        #if (i < DisplayExtensions.length-1) {#
+                                        *${DisplayExtensions[i]},&nbsp;
+                                        #} else {#
+                                        ${DisplayExtensions[i]}
+                                        #}#
+                                        #}#
+                                    </b>
+                                </span>
+                            </p>
+                        </div>
+                    </div>
+                    #}#
+                    <div class="text-center maru10 marb20  clearfix">
+                        <div data-hidden-field-name="proofingUploadImage"
+                             data-hidden-field-id="proofingUploadImage"
+                             data-role="imageeditor"
+                             data-starting-file=""
+                             data-do-not-convert-spread-sheets="true"
+                             data-fixed-aspect-ratio="false"
+                             data-max-image-size="999999999"
+                             data-resize-preview-image="true"
+                             data-preview-left-class="col-md-6"
+                             data-preview-right-class="col-md-6"
+                             data-show-fancybox-after-edit="false"
+                             data-accepted-extensions='#=JSON.stringify(AllowedExtensions)#'
+                             data-max-pdf-pages="999999999"
+                             #if (CustomizationState !=null && CustomizationState.Upload !=null) {#
+                             data-default-value="${CustomizationState.Upload.FilePath}"
+                             #}#
+                             id="proofingUploadImageControl">
+                        </div>
+                    </div>
+                    #if (userSettings.IsAssetUploadRestricted) {#
+                    <div class="text-center">
+                        <p class="padu5"><b class="co-warning">~{UploadInCMYK}~</b></p>
+                    </div>
+                    #}#
+                    <div class="row">
+                        <div class="col-sm-12 text-center padu20">
+                            #if (!Part.IsUploadRequired) {#
+                            <a onclick="$(document).trigger(argosyEvents.ADD_UPLOAD_TO_CART)" class="btn btn-default mar5">${SkipButton}</a>
+                            #}#
+                            #if (uploadData.CustomizationState != null) {#
+                            <button class="btn btn-primary mar5" onclick="$(document).trigger(argosyEvents.ADD_UPLOAD_TO_CART)">${UpdateButton}</button>
+                            #} else {#
+                            <button class="btn btn-primary mar5" onclick="$(document).trigger(argosyEvents.ADD_UPLOAD_TO_CART)">~{AddToCart}~</button>
+                            #}#
+                        </div>
+                    </div>
+                    <div class="text-center marb20" style="display: none" id="previewPagesDiv">
+                        <a id="previewPagesLink"><i class="fa fa-search" aria-hidden="true"></i> Preview PDF pages</a>
+                    </div>
+                </div>
+                <div class="col-sm-8">
+                    <input type="hidden" id="proofingUploadImage" name="proofingUploadImage" />
+                    #if (userSettings.IsAssetUploadRestricted) {#
+                    <div id="divArtworkReq" class="information">
+                        <h3>~{UploadRequirements}~</h3>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <img alt="" src="/content/images/sample_layout.gif">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="row">
+                                    <strong>DIAGRAM KEY:</strong>
+                                </div>
+                                <div class="row padb10">
+                                    <img alt="" src="/content/images/bleedline.gif">
+                                    Bleed Line<br>
+                                    (1/8 inch outside Trim Line)
+                                </div>
+                                <div class="row padb10">
+                                    <img alt="" src="/content/images/trimline.gif">
+                                    Trim Line<br>
+                                    (Actual Size of Document)
+                                </div>
+                                <div class="row">
+                                    <img alt="" src="/content/images/safeline.gif">
+                                    Text Safe Area<br>
+                                    (1/8 inch inside Trim Line)
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row padb10">
+                            <strong>NOTE:</strong> When uploading layouts, using the full bleed size requirements will
+                            provide the best printing results.
+                        </div>
+                        <div class="row padb10">
+                            <strong>Bleed</strong> is a term that refers to printing that goes beyond the trim line before
+                            cutting. The bleed gives the printer space to move around paper and design inconsistencies.
+                            Bleeds should be 1/8 of an inch outside from where the final trim is to be made.
+                        </div>
+                        <div class="row padb10">
+                            <strong>Trim</strong> refers to the actual finished size of the document. Though trims are
+                            cut to product specifications, there can be small variates with positioning on the
+                            cutter.
+                        </div>
+                        <div class="row padb10">
+                            <strong>Text Safe Area</strong> is the area on the document which is a safe distance from
+                            the trim line. It is important to keep all text inside of this area, so that none
+                            of the text is affected by the trim cut. The Safe Area is 1/8 of an inch inside
+                            from where the final trim is to be made.
+                        </div>
+                    </div>
+                    #}#
+                    <div id="divPreview" >
+                        <center>
+                            <img class="img-responsive border_upload_artwork" />
+                        </center>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

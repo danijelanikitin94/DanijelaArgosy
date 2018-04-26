@@ -1,0 +1,45 @@
+﻿<style>
+   .panel .btn
+   {
+text-align: left;
+
+   }
+
+
+  .btn-danger .badge {
+    color: #000;
+  
+}
+
+   .btn-primary .badge {
+    color: #000;
+  
+}
+
+.btn-danger:active:hover
+ {
+    color: #333;
+    border-color: #ccc;
+    background-color: #ccc;
+}
+</style>
+
+<div id="filtersContainer" class="col-sm-2 hide hidden-xs" data-argosy-control="MvcCompanyFilters">
+</div>
+<script type="text/x-kendo-tmp" id="_CompanyFiltersTemplate">
+    <p class="hidden-xs hidden-sm" style="padding-bottom: 3px;">~{FilterBy}~:</p>
+    #for(i = 0; i < data.length; i++) {
+        var filter = data[i];
+    #
+    <div class="panel panel-default">
+        <div class="panel-heading marb5">
+            <h3 class="panel-title">${filter.Name}</h3>
+        </div>        
+        #for(x = 0; x < filter.Values.length; x++) {#
+        <a class="spbadge btn btn-danger btn-sm btn-block" data-group="${filter.Name}" data-value="${filter.Values[x].key}" >
+            ${filter.Values[x].key}<span class="badge pull-right">${filter.Values[x].doc_count}</span>
+        </a>
+        #}#
+    </div>
+    #}#
+</script>

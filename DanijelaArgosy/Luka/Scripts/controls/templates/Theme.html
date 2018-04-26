@@ -1,0 +1,135 @@
+﻿<script type="text/javascript">
+    function renderThemeGroups(themeGroup, headerNumber) {
+        if (headerNumber == null) {
+            headerNumber = 4;
+        }
+        themeGroup.ChildHeaderNumber = headerNumber + 4;
+        themeGroup.HeaderTag = "h" + headerNumber;
+        return kendo.Template.compile($('#_ThemeGroupTemplate').html())(themeGroup);
+    }
+
+    function getAccordianClass(themeGroup) {
+        return themeGroup.ParentThemeGroup ? "" : "accordion";
+    }
+    function getAccordianDivClass(themeGroup) {
+        return themeGroup.ParentThemeGroup ? "" : "accordionDiv";
+    }
+</script>
+<script type="text/x-kendo-tmpl" id="_ThemeGroupTemplate">
+    <${HeaderTag} class="${getAccordianClass(data)}">${Name}</${HeaderTag}>
+    <div class="${getAccordianDivClass(data)}" data-theme-group="${ThemeGroupId}">
+        #if (ThemeStyles) {
+            for (var j = 0; j < ThemeStyles.length; j++) {
+                var style = ThemeStyles[j];#
+                <div class="padu10 padl20 row">
+                    <div class="col-sm-6 nobottommargin">
+                        ${style.DisplayName}
+                    </div>
+                    <div class="col-sm-6 nobottommargin">
+                        #if (style.Role === "imageeditor") {#
+                            <div class="input-style">
+                                #var backgroundImageUrl = style.Value.replace("url(", "").replace(")", "");#
+                                <div data-style="${style.Name}"
+                                     data-role="${style.Role}"
+                                     data-is-upload="false"
+                                     data-fixed-aspect-ratio="false"
+                                     data-resize-preview-image="true"
+                                     data-preview-left-class="col-md-6"
+                                     data-preview-right-class="col-md-6"
+                                     data-show-fancybox-after-edit="false"
+                                     data-default-value="${backgroundImageUrl}"
+                                     data-theme-style-id="${style.ThemeStyleId}"
+                                     data-selector="${style.Selector}"
+                                     class="submitAction">
+                                </div>
+                            </div>
+                        #} else if (style.Role === "dropdownlist") {#
+                            <select data-style="${style.Name}"
+                                    data-selector="${style.Selector}"
+                                    data-role="${style.Role}"
+                                    data-theme-style-id="${style.ThemeStyleId}">
+                                #for (var k = 0; k < style.ThemeOptions.length; k++) {
+                                    var option = style.ThemeOptions[k];
+                                    if (option.IsSelected) {#
+                                        <option value="${option.ThemeOptionId}" selected="selected">
+                                            ${option.Text}
+                                        </option>
+                                    #} else {#
+                                        <option value="${option.ThemeOptionId}">
+                                            ${option.Text}
+                                        </option>
+                                    #}
+                                }#
+                            </select>
+                        #} else if (style.Role === "colorpicker") {#
+                            <input data-style="${style.Name}"
+                                   data-selector="${style.Selector}"
+                                   data-role="${style.Role}"
+                                   value="${style.Value}"
+                                   data-bind="events: {select: colorPickerSelect}"
+                                   data-buttons="false"
+                                   data-primary-color="${style.IsPrimary ? true : false}"
+                                   data-secondary-color="${style.IsSecondary ? true : false}"
+                                   data-tertiary-color="${style.IsTertiary ? true : false}"
+                                   data-theme-style-id="${style.ThemeStyleId}" />
+                            <span data-primary-color="${style.IsPrimary ? true : false}"
+                                  data-secondary-color="${style.IsSecondary ? true : false}"
+                                  data-tertiary-color="${style.IsTertiary ? true : false}">${style.Value}</span>
+                        #}#
+                    </div>
+                </div>
+            #}
+        }
+        if (ThemeGroups) {
+            for (var l = 0; l < ThemeGroups.length; l++) {
+                var themeGroup = ThemeGroups[l];#
+                #=renderThemeGroups(themeGroup, ChildHeaderNumber)#
+            #}
+        }#
+    </div>
+</script>
+
+<script type="text/x-kendo-tmpl" id="_ThemeTemplate">
+    <div class="col_full nobottommargin">
+        <div class="clearfix">
+            <div class="row">
+                <div class="col-md-12">
+                    <center>
+                        <h3>~{EditTheme}~</h3>
+                    </center>
+                    <div class="col-md-6">
+                        ~{ThemeName}~
+                    </div>
+                    <div class="col-md-6">
+                        <input type="text" class="k-textbox w100" maxlength="15" id="_themeName" name="_themeName" value="${Name}" />
+                    </div>
+                        <div class="col-md-6">
+                            ~{ThemeColors}~
+                        </div>
+                        <div class="col-md-6">
+                            <input class="picker" value="${PrimaryColor}" id="_primaryColor" data-role="colorpicker" data-buttons="false" />
+                            <input class="picker" value="${SecondaryColor}" id="_secondaryColor" data-role="colorpicker" data-buttons="false" />
+                            <input class="picker" value="${TertiaryColor}" id="_tertiaryColor" data-role="colorpicker" data-buttons="false" />
+                        </div>
+                    <div>
+                        <a class="btn btn-default marb10" data-bind="click: previewTheme">~{Preview}~</a>
+                        <a class="btn btn-default marb10" data-bind="click: showExistingThemes">~{BackExistingThemes}~</a>
+                        #if (GroupName !== "Standard Themes") {#
+                        <a class="btn btn-default marb10" data-bind="click: editTheme">~{SaveChanges}~</a>
+                        #}#
+                        <a class="btn btn-default marb10" data-bind="click: createTheme">~{SaveAsNewTheme}~</a>
+                        #if (IsDeletable) {#
+                        <a class="btn btn-default marb10" data-bind="click: deleteTheme">~{DeleteTheme}~</a>
+                        #}#
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="gt-accordion maru10">
+            #for (var i = 0; i < ThemeStructure.ThemeGroups.length; i++) {
+                var themeGroup = ThemeStructure.ThemeGroups[i];#
+                #=renderThemeGroups(themeGroup)#
+            #}#
+        </div>
+    </div>
+</script>

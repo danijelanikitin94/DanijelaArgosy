@@ -1,0 +1,152 @@
+﻿@model Argosy.Web.FrontEnd.Models.LoginViewModel
+
+@using (Ajax.BeginForm("UserRegistration", new { controller = "Users", area = "Admin" }, new AjaxOptions() { AllowCache = false, InsertionMode = InsertionMode.Replace, OnSuccess = "saveUser(data)" }, new { id = "userRegForm" }))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m=>m.OriginalUserId)
+@Html.ValidationSummary()
+    <div class="fancy800 hide-x-overflow" id="newUserDiv">
+        <div class="info clear">
+            <div class="form registerform">
+                <div class="col_half padu40">
+                    @Html.EditorFor(m => m.RegistrationUser.User.Username, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.Email, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.FirstName, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.LastName, "NewString")
+                    @{
+                        if (Model.RegistrationUser.AccessCodeRequired)
+                        {
+                            @Html.EditorFor(m => m.RegistrationUser.User.AccessCode, "Password")
+                        }
+                    }
+                    @if (!Model.NoLoginAfterRegistration)
+                    {
+                        @Html.EditorFor(m => m.RegistrationUser.User.Password, "Password")
+                        @Html.EditorFor(m => m.RegistrationUser.User.ConfirmPassword, "Password")
+                    }
+                    @Html.EditorFor(m => m.RegistrationUser.User.UserGroupId, "UserGroup", new { @Model.RegistrationUser.User.CompanyId, PropertyToUpdate = "RegistrationUser_User_UserGroupId", IsRequried = true })
+                </div>
+                <div class="col_half col_last">
+                    <div class="clearfix">
+                        <div class="floatl">
+                            <h4>
+                                Address Information
+                            </h4>
+                        </div>
+                        <div class="floatl marl15 textl">
+                            <div data-argosy-options-company-id="@Model.RegistrationUser.User.CompanyId" data-argosy-control="CompanyAddressSearch"></div>
+                        </div>
+                        </div>
+                    @Html.EditorFor(m => m.RegistrationUser.User.Address1, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.Address2, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.Address3, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.City, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.StateId, "State", new { BindingGroup = "RegistrationUser_User" })
+                    @Html.EditorFor(m => m.RegistrationUser.User.ZipCode, "NewString")
+                    @Html.EditorFor(m => m.RegistrationUser.User.CountryId, "Country", new { BindingGroup = "RegistrationUser_User" })
+                    @Html.EditorFor(m => m.RegistrationUser.User.PhoneNumber, "Telephone")
+                    @Html.HiddenFor(m => m.RegistrationUser.User.SiteId)
+                    @Html.HiddenFor(m => m.RegistrationUser.User.CompanyId)
+                    @Html.HiddenFor(m => m.RegistrationUser.IsOpenStoreFront)
+                    @Html.HiddenFor(m => m.RegistrationUser.DefaultUserId)
+                    @Html.HiddenFor(m => m.RegistrationUser.SiteContactEmail)
+                    @Html.HiddenFor(m => m.NoLoginAfterRegistration)
+                    @Html.HiddenFor(m => m.Domain)
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="center padu10">
+        <input type="submit" style="z-index: 9999" class="btn btn-primary upcase defaultButton" value="Register" id="registerFormBtn" name="registerFormBtn" />
+    </div>
+    <script>
+        $(function () {
+            $("#registerFormBtn").click(function (e) {
+                e.preventDefault();
+                validateAccessCode();
+            });
+        });
+
+        function validateAccessCode() {
+            var accessCode = $('#@Html.IdFor(m=>m.RegistrationUser.User.AccessCode)').val(),
+                email = $('#@Html.IdFor(m=>m.RegistrationUser.User.Email)').val().toLowerCase(),
+                usergroup = $('#@Html.IdFor(m=>m.RegistrationUser.User.UserGroupId)').val(),
+                companyId = $('#@Html.IdFor(m=>m.RegistrationUser.User.CompanyId)').val(),
+                url = '@Url.Action("CheckOpenStoreFrontAccessCode",new {controller="Users", area="Admin"})',
+                emailDomain = '@Model.Domain',
+                model = {
+                    accessCode: accessCode,
+                    companyId: companyId
+                };
+            emailDomain = emailDomain.split(",");
+            $.ajax({
+                url: url,
+                type: "POST",
+                dataType: "json",
+                data: JSON.stringify(model),
+                contentType: "application/json; charset=utf-8",
+                success: function (result) {
+                    var accessSelector = '[data-valmsg-for="RegistrationUser.User.AccessCode"]',
+                        form = $('#userRegForm'),
+                        msg = 'Access Code is invalid.',
+                        emailSelector = '[data-valmsg-for="RegistrationUser.User.Email"]',
+                        emailMsg = 'Invalid email, only accept ' + emailDomain + ' domain emails',
+                        usergroupSelector = '[data-valmsg-for="RegistrationUser.User.UserGroupId"]',
+                        usergroupMsg = "Please select a usergroup.",
+                        hasUsergroup = usergroup.length > 0,
+                        emailValid = email.indexOf("@@") >= 0;
+
+                    if (emailValid === true) {
+                        $(emailDomain).each(function (index, value) {
+                            emailValid = email.indexOf(value) >= 0;
+                            if (emailValid === true) {
+                                return false;
+                            }
+                        });
+                    }
+                    var validForm = form.valid();
+                    validateElement(accessSelector, result.canAccess, msg);
+                    validateElement(emailSelector, emailValid, emailMsg);
+                    validateElement(usergroupSelector, hasUsergroup, usergroupMsg);
+
+                    if (validForm === true && result.canAccess === true && hasUsergroup === true && emailValid === true) {
+                        $(document).trigger(argosyEvents.REGISTRATION_FIRED);
+                        $('#registerFormBtn').submit();
+                    }
+                }
+            });
+        }
+
+        function validateElement(selector, valid, msg) {
+            var validElement = $(selector);
+            if (valid === true) {
+                validElement.addClass('field-validation-valid').removeClass('field-validation-error').children().remove();
+            } else {
+                if (!validElement.hasClass('field-validation-error')) {
+                    validElement.removeClass('field-validation-valid')
+                        .addClass('field-validation-error')
+                        .append('<span>' + msg + '</span>');
+                }
+            }
+        }
+
+        function saveUser(data) {
+            unblock($('#userRegForm'));
+            $.fancybox.close();
+
+            if (data.registeredUser === false) {
+                var msg = data.message;
+                var type = "warning";
+                prompt.alert({
+                    question: msg,
+                    type: type
+                });
+            } else {
+                $('.k-textbox').val('');
+                $("#_userRegistrationContainer").hide();
+                $("#_userHasRegisteredContainer").removeClass('hidden');
+            }
+
+        }
+    </script>
+                        }

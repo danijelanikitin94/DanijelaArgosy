@@ -1,0 +1,19 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@{
+    ViewBag.Title = "~{MyLists}~";
+
+    ViewBag.Navigation.Add(new NavigationAction()
+    {
+        Name = "~{MyLists}~",
+        InnerClass = "active"
+    });
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div id="mainpanel" class="col-sm-12 bottommargin">
+                <div data-argosy-control="MyListsGridView" data-argosy-view="MyListsGridView"></div>
+            </div>
+        </div>
+    </div>
+</section>

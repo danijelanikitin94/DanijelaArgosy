@@ -1,0 +1,146 @@
+﻿@using Argosy.BusinessLogic.Enums
+@using Argosy.Common.Contracts.Core.Enum
+@using Argosy.BusinessLogic.Extensions
+@using Argosy.Web.FrontEnd.Core.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.Web.FrontEnd.Areas.Store.Models.PlaceOrderViewModel
+<div class="gray-box @(SessionHelpers.AddHiddenClassIf(Model.IsEdeliveryOnly))">
+    <div>
+        <h3 class="padb10">
+            <i class="fa fa-truck fa-flip-horizontal"></i> ~{ShippingOptions}~
+        </h3>
+
+        @if (Model.CompanyCarrierMessage.NotNullOrWhiteSpace())
+        {
+            <div class="alert alert-info bold center" role="alert">@Html.Raw(HttpUtility.UrlDecode(Model.CompanyCarrierMessage))</div>
+        }
+        <div class="padu5">
+            @{
+                @Html.HiddenFor(m=>m.CartShippingWeight)
+                @Html.HiddenFor(m => m.ShippingEstimateIdsString)
+                if (Model?.Carriers != null) {
+                    for (int index = 0; index < Model.Carriers.Count; index++) {
+                        @Html.HiddenFor(m => m.Carriers[index].Id)
+                        @Html.HiddenFor(m => m.Carriers[index].Cost)
+                        if (Model.Carriers[index].Rate != null) {
+                            @Html.HiddenFor(m => m.Carriers[index].Rate.Id)
+                            @Html.HiddenFor(m => m.Carriers[index].Rate.CarrierName)
+                            @Html.HiddenFor(m => m.Carriers[index].Rate.CarrierCode)
+                            @Html.HiddenFor(m => m.Carriers[index].Rate.ClassCode)
+                            @Html.HiddenFor(m => m.Carriers[index].Rate.ServiceCode)
+                        }
+                        @Html.HiddenFor(m => m.Carriers[index].RatesId)
+                        @Html.HiddenFor(m => m.Carriers[index].IsFlateRate)
+                        @Html.HiddenFor(m => m.Carriers[index].Markup)
+                        @Html.HiddenFor(m => m.Carriers[index].PaymentType)
+                        @Html.HiddenFor(m => m.Carriers[index].IsThirdPartyEditable)
+                        @Html.HiddenFor(m => m.Carriers[index].IsOrderRate)
+                        @Html.HiddenFor(m => m.Carriers[index].ShowThirdPartyOption)
+                        @Html.HiddenFor(m => m.Carriers[index].ThirdPartyAccountNumber)
+                        @Html.HiddenFor(m => m.Carriers[index].ThirdPartyRequired)
+                        @Html.HiddenFor(m => m.Carriers[index].Name)
+                        @Html.HiddenFor(m => m.Carriers[index].IsInternational)
+                        @Html.HiddenFor(m => m.Carriers[index].SiteId)
+                        var carrier = Model.Carriers[index];
+                        var selectedCarrier = Model.SelectedCarrierId == carrier.Id;
+                        <div>
+                            <div class="floatl">
+                                <input type="radio"
+                                       data-third-party-account-number="@carrier.ThirdPartyAccountNumber"
+                                       data-third-party-editable="@Model.IsThirdPartyEditable"
+                                       data-cost="@(carrier.Cost)"
+                                       data-fulfillment-cost="@Model.PricingSummary.FulfillmentCost"
+                                       name="carrier"
+                                       data-show-third-party="@carrier.ShowThirdPartyOption.ToString().ToLower()"
+                                       id="carrier_@carrier.Id" @(selectedCarrier ? "checked" : "")
+                                       value="@carrier.Id" rel="checkboxCarrier"/>
+                                <label for="carrier_@carrier.Id">@carrier.Name</label>
+                            </div>
+                            @if (FrontEndSession.Instance.UserSettings.IsPriceInformationVisible)
+                            {
+                                var price = (Model.PricingSummary.FulfillmentCost + carrier.Cost).ToString("C");
+
+                                if (carrier.PaymentType == CarrierPaymentType.Exempt)
+                                {
+                                    if (carrier.ShowThirdPartyOption)
+                                    {
+                                        if (!string.IsNullOrEmpty(Model.ThirdPartyAccountNumber) && selectedCarrier)
+                                        {
+                                            <div class="floatr textr">
+                                                <span>@Model.PricingSummary.FulfillmentCost.ToString("C")</span>&nbsp;<span class="strikethrough">@price</span>
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="floatr textr">@price</div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <div class="floatr textr">
+                                            <span>@Model.PricingSummary.FulfillmentCost.ToString("C")</span>&nbsp;<span class="strikethrough">@price</span>
+                                        </div>
+                                    }
+                                }
+                                else
+                                {
+                                <div class="floatr textr">@price</div>
+                                }
+
+                                } <br style="clear: both">
+                            </div>
+                                    }
+                    @Html.HiddenFor(m => m.SelectedCarrierId)
+                   
+                }
+            }
+        </div>
+        <div>
+            <div id="showThirdPartyOptionDiv" class="padu10 @SessionHelpers.AddHiddenClassIf(!Model.ShowThirdPartyOption)">
+                <div class="form-group">
+                    @Html.LabelFor(m => m.ThirdPartyAccountNumber)
+                    @{
+                        var str = Model.ThirdPartyAccountNumber;
+                        var lastFour = string.Empty;
+                        if (str.NotNullOrEmpty() && str.Length >= 4)
+                        {
+                            lastFour = string.Concat("".PadLeft(8, '*'), str.Substring(str.Length - 4));
+                        }
+                    }
+                    @if (Model.IsThirdPartyEditable)
+                    {
+                        <input type="text" id="thirdPartyEditable"  value="@lastFour" />
+                        if (Model.ThirdPartyRequired)
+                        {
+                            <div>
+                                @Html.ValidationMessageFor(m => m.ThirdPartyAccountNumber)
+                            </div>
+                        }
+                    }
+                    else if (lastFour.NotNullOrEmpty())
+                    {
+                            <div>
+                                @lastFour
+                            </div>
+                    }
+                    <input type="hidden" id="@Html.IdFor(m=>m.ThirdPartyAccountNumber)" name="@Html.IdFor(m=>m.ThirdPartyAccountNumber)" value="@Model.ThirdPartyAccountNumber" />
+                </div>
+            </div>
+            <div class="padu10 @SessionHelpers.AddHiddenClassIf(Model.CartShippingWeight <= 0)">
+                ~{TotalWeight}~: <b>@Model.CartShippingWeight.ToString("N2") ~{Lbs}~</b>
+            </div>
+            <div class="padu10" id="divSignature">
+                @Html.EditorFor(x => x.SignatureIsRequired, "Boolean")
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#thirdPartyEditable")
+            .change(function(e) {
+                $("#@Html.IdFor(m=>m.ThirdPartyAccountNumber)").val($(this).val());
+            });
+    });
+</script>

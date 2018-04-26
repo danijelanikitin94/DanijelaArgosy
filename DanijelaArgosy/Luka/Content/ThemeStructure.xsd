@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="ThemeStructure" nillable="true" type="ThemeStructure" />
+  <xs:complexType name="ThemeStructure">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Group" type="ThemeGroup" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="ThemeGroup">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Style" nillable="true" type="ThemeStyle" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Group" nillable="true" type="ThemeGroup" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" />
+  </xs:complexType>
+  <xs:complexType name="ThemeStyle">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="Option" nillable="true" type="ThemeOption" />
+    </xs:sequence>
+    <xs:attribute name="Name" type="xs:string" />
+    <xs:attribute name="Value" type="xs:string" />
+    <xs:attribute name="Display-Name" type="xs:string" />
+    <xs:attribute name="Selector" type="xs:string" />
+    <xs:attribute name="Role" type="xs:string" />
+    <xs:attribute name="IsPrimaryColor" type="xs:boolean" use="required" />
+    <xs:attribute name="IsSecondaryColor" type="xs:boolean" use="required" />
+    <xs:attribute name="IsTertiaryColor" type="xs:boolean" use="required" />
+  </xs:complexType>
+  <xs:complexType name="ThemeOption">
+    <xs:attribute name="Value" type="xs:string" />
+    <xs:attribute name="Text" type="xs:string" />
+  </xs:complexType>
+</xs:schema>

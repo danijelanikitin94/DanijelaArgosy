@@ -1,0 +1,22 @@
+<script type="text/x-kendo-tmp" id="_AlertNotificationTemplate">
+    <div class="notification">
+        <div class="text-center">
+            <div class="text-center padb10">
+                <div class="circle">
+                    <i class="fa fa-${icon}"></i> <!-- warning -->
+                </div>
+            </div>
+            <h5 class="text-center upcase"><b>${question}</b></h5>
+            <div>${description}</div>
+            <div class="maru20">
+                <a class="btn ${buttonClass} yes"><i class="fa fa-check"></i> ${button}</a>                
+                #if (!buttonMaybeHidden) {#
+                <a class="btn ${buttonMaybeClass} maybe"><i class="fa ${buttonMaybeIcon} "></i>${buttonMaybe}</a>
+                #}#                
+                #if (!buttonNoHidden) {#
+                <a class="btn ${buttonNoClass} no"><i class="fa ${buttonNoIcon}"></i>${buttonNo}</a>
+                #}#
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,88 @@
+﻿<div class="hidden">
+	<div id="_UpdatePricesContainer" style="width:850px;margin:5px;">
+		<div id="_UpdatePricesTemplate"
+			 data-bind="source: priceSource, events:{dataBound: dataBound, edit: edit}"
+			 data-role="grid"
+			 data-editable="inline"
+			 
+			 data-columns='[
+				{
+					field: "",
+					title: "",
+					template: "# if (StandardPriceListId == null) { # <div id=\"divPriceBreaks${Id}\" onclick=\"UpdatePrices.prototype.showPriceBreaks(${Id})\"><a class=\"k-icon k-i-expand\"></a></div> # } #",
+					width: "25px"
+				},
+				{
+					field: "CompanyPriceListName", 
+					title: "Price List"
+				
+				},
+				{
+					field: "DefaultPriceListName",
+					title: "Standard Price List Name"
+				},
+				{
+					field: "IsDefault",
+					title: "Default Price List"				
+				},
+				{
+					field: "CostPerEach",
+					title: "Price Per Each",
+					format: "{0:\\$0.0000}",
+					attributes: {style : "text-align: right;"},
+					headerAttributes: {style : "text-align: right;"},
+					editor: UpdatePrices.prototype.NumericEditor
+				},
+				{command: [{name: "edit", text: "", width:"5px", iconClass: "fa fa-edit", className: "padr10"}], title: "&nbsp;", width: "100px"}
+			 ]'>
+
+		</div>
+	</div>
+</div>
+<style type="text/css">
+	.k-button.k-button-icontext.k-grid-delete{
+		margin-top: 1px;
+		margin-bottom: 0;
+	}
+	.k-numerictextbox .k-input {
+		text-align: left;
+	}
+	.k-grid td{
+		padding-left: 3px;
+		padding-right: 3px;
+		border-top: 1px dashed #ccc;
+		border-bottom: 1px dashed #ccc;
+	}
+	.priceBreakGrid {
+		width:300px;
+		text-align:right;
+	}
+	.k-grid-content{
+		padding-right:1px;
+	}
+	.k-grid tr:hover{
+		background: none;
+	}
+
+	.k-button.k-button-icontext.k-grid-edit, .k-button.k-button-icontext.k-grid-delete {
+		min-width: 0px;
+		width: 5px;
+		background-color: white;
+		color: #f9b041;
+		border: none;
+		font-size:16px;
+	}
+	.k-button.k-button-icontext.k-grid-add{
+		position:absolute;
+		z-index:1;
+		top:13px;
+		left:235px;
+		background-color: #ddd;
+		border:none;
+	}
+	.numericText.textr {
+		-webkit-appearance: none;
+		margin: 0;
+		-moz-appearance: textfield;
+	}
+</style>

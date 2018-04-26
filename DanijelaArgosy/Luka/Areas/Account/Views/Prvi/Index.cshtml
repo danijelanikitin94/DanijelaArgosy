@@ -1,0 +1,66 @@
+﻿@using Argosy.Web.FrontEnd.Models
+
+
+
+@{
+    ViewBag.Title = "Account Menu";
+
+    ViewBag.Navigation.Add(new NavigationAction()
+    {
+        Name = "Account Menu",
+        InnerClass = "active"
+    });
+}
+
+<section class="extra">
+    <div class="container">
+        <h3 class="padu5 padb5">Choose from one of the following Account Features:</h3>
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Edit", "Details", new {area = "Account" })><p class="folder-name"><i class="fa fa-key"></i><br />Account Details</p></a>
+                </div>
+            </div>
+            <div class="col-sm-3">
+
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Index", "Orders", new {area = "Account" })><p class="folder-name"><i class="fa fa-th"></i><br />Order History</p></a>
+
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Index", "OrderApprovals", new {area = "Account" })><p class="folder-name"><i class="fa fa-check-square-o"></i><br />Pending Approvals</p></a>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Index", "DirectMailList", new {area = "Account" })><p class="folder-name"><i class="fa fa-list"></i><br />Lists</p></a>
+                </div>
+
+            </div>
+            <div class="col-sm-3">
+
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Index", "Messages", new {area = "Account" })><p class="folder-name"><i title="Part History" class="fa fa-comments"></i><br />Messages</p></a>
+                </div>
+
+            </div>
+            <div class="col-sm-3 ">
+
+                <div class="menu-box mar10">
+                    <a href=@Url.Action("Index", "HelpDesk", new {area = "Account"})><p class="folder-name"><i class="fa fa-question-circle"></i><br />Help Desk</p></a>
+                </div>
+
+            </div>
+
+
+        </div>
+    </div>
+
+</section>
+

@@ -1,0 +1,119 @@
+﻿<script type="text/javascript">
+    function renderQuantityInputFromOrderLine(orderLine) {
+         return renderProductQuantityInput(orderLine.Part, orderLine.OrderQty, orderLine.IsEdelivery, orderLine.LineId, "orderLineQuantity_", "", "", null, "Discounts" );
+    }
+</script>
+
+<script type="text/x-kendo-tmp" id="_OrderDetailPartGridViewPartNameTemplate">
+    #=PartName# 
+    <br />
+    <em>${PartSku}</em>
+    #if (ProofName != null) {#
+    <br />
+    <em>${ProofName}</em>
+    <br />
+    #}#
+    #if (Attributes != null && Attributes.length > 0) {#
+    <br />
+    <strong>Options: </strong>
+    #for (var i = 0; i < Attributes.length; i++) {#
+    <div class="row">
+        <p class="padl5 pull-left text-right align-top">${Attributes[i].Type}:&nbsp;<em class="align-top">${Attributes[i].Name}</em></p>
+        #if (Attributes[i].Value > 0) {#
+        <span class="pull-right align-top">+${kendo.toString(Attributes[i].Value,"c2")}</span>
+        #}#
+    </div>
+    #}#
+    #}#
+    #if (userSettings.IsMaxOrderQtyVisible) {#
+    #if (MinOrderQty > 0) {#
+    <br />
+    <span class=".text-nowrap">~{MinOrderQuantity}~:</span>
+    <b>${MinOrderQty}</b>#}# #if (MaxOrderQty > 0 && MaxOrderQty < 99999) {#
+    <span class=".text-nowrap">~{MaxOrderQuantity}~:</span>
+    <b>${MaxOrderQty}</b>#}#
+    #}#
+    #if (IsOrderByCPQ) {#
+    <br />
+    <span class=".text-nowrap">~{CPQ}~:</span>
+    <b>${CPQ}</b>
+    #}#
+    #if(AccountingUnit != null && AccountingUnit.length > 0){#
+    <br />
+    ~{AccountingUnit}~: ${AccountingUnit}
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_OrderDetailPartGridViewQuantityTemplate">
+    #if (!isEditable) {#
+		<div class='textr'>${OrderQty}</div>
+		#if (PartPieces > 1 && !IsOrderByCPQ) {#
+			<p class='floatr smallest_txt italic'>packs of ${PartPieces}</p>
+		#}#
+	#} else {#
+		#if (KitId == null && ListFileUrl == null) {# 
+    <div class='textr'>
+                <span class="pull-right"
+                    data-value="${OrderQty}"
+                    data-part-id="${PartId}"
+                    data-cart-id="${LineId}"
+                    data-bucket-id="${BucketId}"  
+                    data-unit-price="${UnitPrice}"
+                    data-bind="events: {change: onQtyChange}"
+                    data-role="partpricing"></span>
+            </div>
+			#if (PartPieces > 1 && !IsOrderByCPQ) {#
+				<p class='floatr smallest_txt italic'>packs of ${PartPieces}</p>
+			#}#
+		#} else {#
+			<div class='textr'>${OrderQty}</div>
+			#if (PartPieces > 1 && !IsOrderByCPQ) {#
+				<p class='floatr smallest_txt italic'>packs of ${PartPieces}</p>
+			#}#
+		#}#
+	#}#
+</script>
+
+<script type="text/x-kendo-template" id="_OrderDetailPartGridViewShippedTemplate">
+    <div class='textr'>#if (IsEdelivery) {# ~{ElectronicallyDelivered}~ #} else {# ${ShippedQty} #}#</div>
+</script>
+<script type="text/x-kendo-template" id="_OrderDetailPartGridViewAvailQtyTemplate">
+    <div class='globals-qtyavailable textr'>${AvailQty}</div>
+</script>
+<script type="text/x-kendo-template" id="_OrderDetailPartGridViewSubtotalTemplate">
+    <div class='grid-price line${LineId} loading'>#:kendo.toString(OrderSubTotal,'c')#</div>
+</script>
+<script type="text/x-kendo-template" id="_OrderDetailPartGridViewFlagsTemplate">    
+    <div class='floatr'>
+        #if(ListFileUrl != null && ListFileUrl != '') { #  
+            <a title='There is a list associated with this order line.'><i class='padl5 fa fa-list'></i></a>
+        # }  # 
+        #if(UserUploadFileUrl != null && UserUploadFileUrl != '') { # 
+            <a target='_blank' href='#= UserUploadFileUrl #'><i class='padl5 fa fa-file-pdf-o co-warning'></i></a> 
+        # }  # 
+        #if(LowResFileUrl != null && LowResFileUrl != '') { # 
+            <a target='_blank' href='#= LowResFileUrl #'><i class='padl5 fa fa-file-pdf-o co-warning'></i></a> 
+        # }  # 
+        #if(ProofInitial != null && ProofInitial != '') { # 
+            <span title='${ProofInitial}'><i class='padl5 fa fa-thumbs-o-up'></i></span> 
+        # }  # 
+        <span title='${PartDescription}'><i class='padl5 fa fa-comment'></i></span> 
+        #if (userSettings.IsInventoryInformationVisible) {
+            if (IsPrintOnDemand) {#
+                <span title='In Stock'><a href=''><i class='padl5 fa fa-flag co-good'></i></a></span>
+            #} else {
+                if (IsPartInStock) {#
+                    <span title='In Stock'><i class='padl5 fa fa-flag co-good'></i></span> 
+                #} else {#
+                    <span title='Out of Stock'><i class='padl5 fa fa-flag co-warning'></i></span> 
+                #}
+            }
+        }#
+		#if(isEditable && (KitId == 0 || KitId == null) && numItems != 1){ #
+			<span title="Cancel Item" class="#if(OrderQty == 0){# hidden #}# toggleRow" action="remove" ><i class="fa fa-times co-warning" aria-hidden="true"></i></span>
+			<span title="Re-add Item" class="#if(OrderQty > 0){# hidden #}# toggleRow" action="add"><i class="fa fa-plus co-good" aria-hidden="true"></i></span>
+		#}#
+    </div> 
+    #if(CustomizationUrl != null && CustomizationUrl != '' && Status.indexOf('Pending') > 0 ){ #
+    <span title=''><a href='${CustomizationUrl}&order=${orderNumber}&personal=${!isAdmin}'><i class='padl5 fa fa-pencil'></i></a></span> 
+    #}#
+</script>

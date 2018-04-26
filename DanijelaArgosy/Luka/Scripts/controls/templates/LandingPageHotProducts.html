@@ -1,0 +1,51 @@
+﻿<script type="text/x-kendo-template" id="_carouselTemplateView">
+    <div class="customNavigation maru5 upcase">
+        <h2 class="title">${title}</h2>
+        <a class="btn prev nopadding" data-control="${type}_carousel">
+            <i class="fa fa-chevron-circle-left f24 padb10 padl10" style="color: \\#ccc"></i>
+        </a>
+        <a class="btn next nopadding" data-control="${type}_carousel">
+            <i class="fa fa-chevron-circle-right f24 padb10 padl10" style="color: \\#ccc"></i>
+        </a>
+    </div>
+    <div id="${type}_carousel" class="owl-carousel owl-theme"></div>
+    <div class="border-top maru20 bottommargin-sm hidden-sm  hidden-xs"></div>
+</script>
+<script type="text/x-kendo-template" id="_carouselSlideTemplateView">
+    <div class="item ${type}_${index} ${active}"></div>
+</script>
+<script type="text/x-kendo-template" id="_masonryTemplateViewWrapper">
+    <div class="masonry-grid js-masonry clearfix">
+        # for (var i = 0; i < data.allParts.length; i++) {
+        var part = data.allParts[i];
+        #
+        <div class="masonry-panel # if (part.IsFeaturedPart) {#grid-item-width2#} else {#grid-item#}#">
+            <div class="product-image-wrapper">
+                <div class="single-item">
+                    <a data-argosy-dataid="${part.PartId}" data-argosy-action="showProductDetails,masonhover" class="container-aspect" data-argosy-target=".single-item">
+                        <div class="text-center">
+                            <div>
+                                <img class="img-responsive img-aspect" title="More Details" alt="Part Image" src="${part.ThumbnailFile}">
+                            </div>
+
+                            <div class="overlaydiv">
+                                <div class="product-overlay2">
+
+                                </div>
+                                <div class="overlay-content">
+                                    <p class="f12">#if (part.PartName != null && part.PartName.trim().length > 0) {##= part.PartName##}else{##= part.Sku##}#</p>
+                                </div>
+                            </div>
+                            # if (part.IsFeaturedPart) { #
+                            <img src="/content/images/feature.png" class="accent" alt="Featured" />
+                            # } if (part.IsKit) { #
+                            <img src="/content/images/kit.png" class="accent" alt="Part Kit" />
+                            # } #
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+        #}#
+    </div>
+</script>

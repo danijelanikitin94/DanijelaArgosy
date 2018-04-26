@@ -1,0 +1,493 @@
+@using Argosy.BusinessLogic.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Managers
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.BusinessLogic.V5.Extensions
+@using Argosy.Common.Contracts.Core.Enum
+@using Argosy.Web.FrontEnd.Models
+@using Argosy.Common.Enums
+@using Argosy.Common.Extensions
+@model Argosy.BusinessLogic.FrontEnd.Managers.OrderManager.Order
+
+@{
+    var isApprovingManager = FrontEndSession.Instance.User.IsApprovingManager(Model.UserId, FrontEndSession.Instance.UserSettings.IsAdmin, Model.OrderId, Model.IsWorkflowOrder);
+}
+<script src="/Scripts/Page/Admin/Orders/Edit.js" type="text/javascript"></script>
+<section class="extra">
+    <div class="container">
+
+        @using (Html.BeginForm("Edit", "Orders", FormMethod.Post, new { area = "admin", role = "form", @class = "update-order" }))
+        {
+            @Html.ValidationSummary(true)
+            <div class="row">
+
+            <div class="col-sm-12 padu10 clear">
+                <!--TItle and CheckBoxes-->
+                <div class="pull-left">
+                    @Html.HiddenFor(m => m.OrderId)
+                    @Html.HiddenFor(m => m.CompanyId)
+                    @Html.HiddenFor(m => m.UserId)
+                    @Html.HiddenFor(m => m.Comments)
+                    @Html.HiddenFor(m => m.OrderNumber)
+                    <h1><b class="nowrap"> @Html.DisplayFor(m => m.OrderNumber) </b></h1>
+                    <h3 class="style1 padu5"> @Html.DisplayFor(m => m.OrderDate) </h3>
+                    @if (Model.IsWorkflowOrder && ApprovalWorkflowManager.HasAdditionalApprovers(Model.OrderId, FrontEndSession.Instance.UserId.GetValueOrDefault())) {
+                        <h4>Additional users are required to approve this order before it will be processed.</h4>
+                    }
+                </div>
+                @if (FrontEndSession.Instance.UserSettings.IsAdmin) {
+                    <div class="pull-right padu5 ">
+                        @if (Model.CanExpediteOrder) {
+                            <div id="chExpedite" class="floatl ">
+                                @Html.EditorFor(m => m.Expedite, "ToggleSwitch")
+                            </div>
+                        }
+                        @if (Model.CanPartialShipOrder) {
+                            <div id="chPartial" class="floatl ">
+                                @Html.EditorFor(m => m.PartialShip, "ToggleSwitch")
+                            </div>
+                        }
+                        @if (Model.CanConsolidateOrder) {
+                            <div id="chConsolidate" class="floatl ">
+                                @Html.EditorFor(m => m.AllowConsolidateOrders, "ToggleSwitch")
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+
+                <div class="col_three_fourth clear">
+                    <!--Order Details-->
+                    <div class="col_half clear">
+                        <div class="borderr">
+                            <div>
+                                <h3>
+                                    ~{OrderDetails}~
+                                    @if (isApprovingManager && Model.CanEditOrder && false)
+                                    {
+                                        <a href="#divOrderDetails" class="fancybox"><i class="fa fa-edit pull-right padr10" title="Edit your order details"></i></a>
+                                    }
+                                </h3>
+                            </div>
+
+                            @if (FrontEndSession.Instance.UserSettings.ShowInvoiceOption)
+                            {
+                                if (!string.IsNullOrWhiteSpace(Model.InvoiceEmail))
+                                {
+                                    <div class="padu5">
+                                        <div class="label-style"><b>Invoice</b></div>
+                                        <div class="input-style">Email - @Html.DisplayFor(m => m.InvoiceEmail)  </div><br style="clear: both">
+                                    </div>
+                                }
+                                else
+                                {
+                                    <div class="padu5">
+                                        <div class="label-style"><b>Invoice</b></div>
+                                        <div class="input-style">By Mail</div><br style="clear: both">
+                                    </div>
+                                }
+                            }
+                            <div class="padu5">
+                                <div class="label-style"><b>~{OrderStatus}~</b></div>
+                                <div class="input-style"> @Html.DisplayFor(m => m.Status)  </div><br style="clear: both">
+                            </div>
+                            @if (Model.OrderApprover.NotNullOrEmpty() && Model.Status.Equals(OrderStatus.ApprovalPending.GetEnumValue(), StringComparison.InvariantCultureIgnoreCase))
+                            {
+                                <div class="padu5">
+                                    <div class="label-style">
+                                        <b>Approver</b>
+                                    </div>
+                                    <div class="input-style"> @Model.OrderApprover </div><br style="clear: both">
+                                </div>
+                            }
+                            <div class="padu5">
+                                <div class="label-style"><b>~{DesiredShipDate}~</b></div>
+                                <div class="input-style"> @Model.DesiredShipDate.ToShortDateString() </div><br style="clear: both">
+                            </div>
+
+                            <div class="padu5">
+                                <div class="label-style"><b>~{CarrierName}~</b></div>
+								<div class="input-style">
+									@if (isApprovingManager && Model.CanEditOrder && !Model.IsCreditCard)
+									{
+										@(Html.Kendo().DropDownList()
+											.Name("carriers")
+											.DataTextField("Name")
+											.DataValueField("Id")
+											.BindTo(Model.Carriers)
+											.HtmlAttributes(new { style = "width: 100%" })
+											.SelectedIndex(Model.Carriers.FindIndex(c => c.Name.Equals(Model.CarrierName)))
+											.Events(e => {
+												e.Change("onChange");
+											})
+										)
+										
+									}
+									else
+									{
+										@Html.DisplayFor(m => m.CarrierName)
+									}
+								</div><br style="clear: both" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col_half col_last padr10">
+                        <div class="borderr">
+                            <div><h3>~{UserDetails}~</h3></div>
+                            <div>
+                                <div class="label-style"><b>~{User}~</b></div>
+                                <div class="input-style">@Html.DisplayFor(m => m.FirstName) @Html.DisplayFor(m => m.LastName)</div><br style="clear: both">
+                            </div>
+                            <div class="padu5">
+                                <div class="label-style"><b>~{UserGroup}~</b></div>
+                                <div class="input-style">@Html.DisplayFor(m => m.UserGroupDesc)</div><br style="clear: both">
+                            </div>
+                            <div class="padu5">
+                                <div class="label-style"><b>~{ResidentialShip}~</b></div>
+                                <div class="input-style">@(Model.IsResidential ? "Yes" : "No")</div><br style="clear: both" />
+                            </div>
+                            <div class="padu5">
+                                <div class="label-style"><b>~{EmailAddress}~</b></div>
+                                <div class="input-style">@Html.DisplayFor(m => m.Email)<br />@Html.DisplayFor(m => m.ShipToEmail)</div><br style="clear: both">
+                            </div>
+                        </div>
+                    </div>
+                    @if (!string.IsNullOrEmpty(Model.PoNumber) || !string.IsNullOrEmpty(Model.OrderTag) ||
+                         !string.IsNullOrEmpty(Model.Comments) || Model.CustomFields.Any() || !string.IsNullOrEmpty(Model.Comments) || Model.OrderFiles.Any())
+                    {
+                        <div class="col-sm-12">
+                            <div data-argosy-control="CollapseBox" data-argosy-options-title="~{AdditionalInformation}~" class="nograybox col-sm-12">
+                                <div>
+                                    <div class="padu5 w100 custom-nogrid clearfix">
+                                        <div data-argosy-control="OrderCustomFieldsGridView" data-argosy-view="OrderCustomFieldsGridView" data-argosy-options-order-id="@Model.OrderId" style="width: 98%"></div>
+                                    </div>
+                                    <div class="clearfix col-sm-6">
+                                        @if (!string.IsNullOrEmpty(Model.PoNumber))
+                                        {
+                                            <div id="divPurchaseOrder" class="padu5 w100 clearfix">
+                                                @Html.LabelFor(m => m.PoNumber, new {@class = "label-style", @style = "font-weight: bold"})
+                                                @Html.DisplayFor(m => m.PoNumber, new {@class = "input-style"})
+                                            </div>
+                                        }
+                                        @if (!string.IsNullOrEmpty(Model.OrderTag))
+                                        {
+                                            <div id="divOrderTag" class="padu5 w100 clearfix">
+                                                @Html.LabelFor(m => m.OrderTag, new {@class = "label-style", @style = "font-weight: bold"})
+                                                @Html.DisplayFor(m => m.OrderTag, new {@class = "input-style"})
+                                            </div>
+                                        }
+                                        @if (Model.CustomFields.Any())
+                                        {
+                                            foreach (var customField in Model.CustomFields)
+                                            {
+                                                <div class="padu5 w100">
+                                                    <span class="label-style" style="font-weight: bold">
+                                                        @customField.ESM_COMPCUSTOM.FIELD
+                                                    </span>
+                                                    <span class="label-style">
+                                                        @customField.VALUE
+                                                    </span>
+                                                </div>
+                                            }
+                                        }
+                                        <div class="padu5 clearfix">
+                                            @Html.LabelFor(m => m.Comments, new { @class = "label-style", @style = "font-weight: bold" })<br />
+                                            @Html.TextArea("orderComments", Model.Comments)
+                                        </div>
+                                    </div>
+                                    @if(Model.OrderFiles.Any())
+                                    {
+                                        <div class="col-sm-6">
+                                            <h4>Additional Files</h4>
+                                            <ul>
+                                                @foreach (var file in Model.OrderFiles)
+                                                {
+                                                    <li><a onclick="downloadFile('/files/cloud@(file.FileName)', true, '', 0)"> @(file.DisplayName)</a></li>
+                                                }
+                                            </ul>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            @if (isApprovingManager && Model.CanEditOrder && false)
+                            {
+                                <div class="col-sm-1">
+                                    <h3><a href="#"><i class="fa fa-edit floatr padu10" title="Edit additional information" onclick=" showdivAddInfoModal(); return false;"></i></a></h3>
+                                </div>
+                            }
+                        </div>
+                    }
+                    <!--Items in this order grid-->
+                    <div class="col-sm-12">
+                        <p class="bold padb10 ">~{OrderItems}~</p>
+                        <p  class="alert alert-danger hide _alertModalMsgs _ProductQuantityModalAlertForMin">~{PartAlertForMin}~</p>
+                        <p  class="alert alert-danger hide _alertModalMsgs _ProductQuantityModalAlertForMax">~{PartAlertForMax}~</p>
+                        <p class="alert alert-danger hide _alertModalMsgs _ProductCPQAlertForMax">~{MsgStopCPQQty}~</p>
+                        <div data-argosy-control="OrderDetailPartGridView" 
+                             data-argosy-view="OrderDetailPartGridView"
+                             data-argosy-options-order-id="@Model.OrderId"
+                             data-argosy-options-user-id="@FrontEndSession.Instance.UserId.GetValueOrDefault(0)"
+                             data-argosy-options-order-number="@Model.OrderNumber" 
+                             data-argosy-options-is-admin="@FrontEndSession.Instance.UserSettings.IsAdmin"
+                             data-argosy-options-is-editable="@(Model.CanEditOrder && !Model.IsCreditCard && (FrontEndSession.Instance.UserSettings.IsAdmin || isApprovingManager))"
+                             data-argosy-options-show-pricing="@FrontEndSession.Instance.UserSettings.IsPriceInformationVisible" 
+                             data-argosy-options-show-inventory="@FrontEndSession.Instance.UserSettings.IsInventoryInformationVisible"></div>
+                    </div>
+                </div>
+
+                <div class="col_one_fourth col_last padb20">
+                    @*Pending Approval Comments and display boxes.*@
+                    @if (Model.ShowApprovalPending && isApprovingManager && FrontEndSession.Instance.UserId.GetValueOrDefault() != Model.UserId)
+                    {
+                        if (Model.ApprovalSummary.NotNullOrEmpty())
+                        {
+                            <div data-argosy-control="CollapseBox" data-argosy-options-title="~{ApprovalBasedOn}~" data-argosy-options-open="true" class="marb10">
+                                <div class="approvals">
+                                    <ul>
+                                        <li>
+                                            @Model.ApprovalSummary
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        }
+                        if (!Model.IsWorkflowOrder || !ApprovalWorkflowManager.IsApproved(FrontEndSession.Instance.UserId.GetValueOrDefault(), Model.OrderId)) {
+                            <div data-argosy-control="CollapseBox" data-argosy-options-title="~{OrderPendingApproval}~" data-argosy-options-open="true">
+                                <div class="clearfix">
+                                    ~{Comments}~
+                                </div>
+                                <div class="padu10">
+                                    <textarea class="w100" id="txtComments" style="resize: none"></textarea>
+                                </div>
+                                @if (!Model.IsWorkflowOrder || ApprovalWorkflowManager.IsApprover(FrontEndSession.Instance.UserId.GetValueOrDefault(), Model.OrderId)) {
+                                <div class="padu10 floatr btnapprove">
+                                    <a class="btn btn-default" onclick="ChangeStatus('@Model.OrderNumber', 'Approve', $('#txtComments').val(), false);return false;"><i class="fa fa-check"></i> ~{Approve}~</a>
+                                    <a class="btn btn-default" onclick="ChangeStatus('@Model.OrderNumber', 'Reject', $('#txtComments').val(), false);return false;"><i class="fa fa-close"></i> ~{Deny}~</a>
+                                </div>
+                                }
+                                @if (FrontEndSession.Instance.IsAdmin && Model.IsWorkflowOrder) {
+                                <div class="padu10 floatr btnapprove">
+                                        <a class="btn btn-default" onclick="ChangeStatus('@Model.OrderNumber', 'Approve', $('#txtComments').val(), true);return false;"><i class="fa fa-check"></i> ~{Approve}~ All</a>
+                                        <a class="btn btn-default" onclick="ChangeStatus('@Model.OrderNumber', 'Reject', $('#txtComments').val(), true);return false;"><i class="fa fa-close"></i> ~{Deny}~ All</a>
+                                </div>
+                                }
+                            </div>
+                        }
+                    }
+                    <!--If order is status denied display who denied it. -->
+                    @if (Model.ShowApprovalSummary)
+                    {
+                        <div data-argosy-control="CollapseBox" data-argosy-options-title="Approval Summary" data-argosy-options-open="false">
+                            <div data-argosy-control="OrderApprovalsGridView" data-argosy-view="OrderApprovalsGridView" data-argosy-options-order-id="@Model.OrderId"></div>
+                           
+                        </div>
+                    }
+                @if (!FrontEndSession.Instance.UserSettings.HideShippingAddress)
+                {
+					<div data-argosy-view="AddressInformationGridView" data-argosy-control="CollapseBox" data-argosy-options-title="~{AddressInformation}~" data-argosy-options-open="true" class="maru10">
+						@if (isApprovingManager && Model.CanEditOrder && !Model.IsCreditCard)
+						{
+							<div class="address-edit" onclick=" showShipAddressModal(); return false;"><a><i class="fa fa-edit" title="Edit your shipping address"></i></a></div>
+						}
+					        @Html.Partial("Partials/_OrderAddress")
+					</div>
+                }
+						@if (@Model.HasShippingInfo)
+						{
+							<div data-argosy-control="OrderShippingInfoGridView" data-argosy-options-order-id="@Model.OrderId" data-argosy-view=OrderShippingInfoGridView></div>
+						}
+						@if (FrontEndSession.Instance.UserSettings.IsPriceInformationVisible)
+						{
+							var title = "~{OrderCharges}~";
+							if (Model.CurrencyCode != null && !Model.CurrencyCode.Equals("usd", StringComparison.InvariantCultureIgnoreCase))
+							{
+								title += " (" + Model.CurrencyCode + ")";
+							}
+                        <!--Order Charges Div-->
+							<div data-argosy-control="CollapseBox" data-argosy-options-title="@title" data-argosy-options-open="true" class="maru10 padb20">
+								<div id="divOrderChrg" class="padu10 padl10">
+									<div class="padb10">
+										<div class="floatl">
+											<b>~{Subtotal}~</b>
+										</div>
+										<div class="floatr textr orderSubTotal loading"> @((Model.OrderSubTotal).ToString("C2")) </div><br style="clear: both" />
+									</div>
+									@if (Model.Discount > 0)
+									{
+										<div class="padb10">
+											<div class="floatl">
+												<b>~{Discount}~</b>
+											</div>
+											<div class="floatr textr padb5 text-danger orderDiscount loading">-@((Model.Discount * -1).ToString("C2")) </div><br style="clear: both" />
+										</div>
+									}
+									@if (Model.MailingCosts > 0)
+									{
+										<div class="padb10">
+											<div class="floatl">
+												<b>~{MailingCost}~</b>
+											</div>
+											<div class="floatr textr orderMailingCosts loading"> @((Model.MailingCosts).ToString("C2")) </div><br style="clear: both" />
+										</div>
+									}
+								    @if (Model.ShippingCosts > 0)
+								    {
+								        <div class="padb10">
+								            <div class="floatl">
+								                <b>~{ShippingHandling}~</b>
+								            </div>
+								            <div class="floatr textr orderShippingCosts loading"> @((Model.ShippingCosts).ToString("C2")) </div><br style="clear: both"/>
+								        </div>
+								    }
+									@if (Model.CoopFundsUsed != 0)
+									{
+										<div class="padb10">
+											<div class="floatl">
+												@Html.LabelFor(m => m.CoopFundsUsed, new { @class = "bold" })
+											</div>
+											<div class="floatr textr padb5 orderCoopFundsUsed loading">-@((Model.CoopFundsUsed).ToString("C2")) </div><br style="clear: both" />
+										</div>
+									}
+									@if (Model.PromoCodeDiscount > 0)
+									{
+										<div class="padb10">
+											<div class="floatl">
+												<b>~{PromoDiscount}~</b>
+											</div>
+											<div class="floatr textr padb5 orderPromoDiscount loading">-@((Model.PromoCodeDiscount).ToString("C2")) </div><br style="clear: both" />
+										</div>
+									}
+								    @if (Model.InvoiceFee > 0)
+								    {
+								        <div class="padb10">
+								            <div class="floatl">
+								                @Html.LabelFor(m => m.InvoiceFee, new { @class = "bold" })
+								            </div>
+								            <div class="floatr textr padb5 invoiceFee loading">@((Model.InvoiceFee).ToString("C2")) </div><br style="clear: both" />
+								        </div>
+								    }
+								    @if (Model.Taxes > 0)
+								    {
+								        <div class="borderb">
+								            <div class="floatl">
+								                <b>~{SalesTax}~</b>
+								            </div>
+								            <div class="floatr textr padb5 orderTaxes loading"> @((Model.Taxes).ToString("C2")) </div><br style="clear: both"/>
+								        </div>
+								    }
+									<div class="bundles-total-price padu10">
+										<div class="floatl">~{Total}~</div>
+										<div class="floatr textr orderTotal loading"> @((Model.OrderTotal).ToString("C2"))</div><br style="clear:both;"/>
+									</div>
+									<div class="padb10">
+										<div class="floatl">
+											<b>Payment Method</b>
+										</div>
+										<div class="floatr textr">
+											@if (Model.IsCreditCard)
+											{
+												@:Credit Card
+											}
+											else if (!string.IsNullOrWhiteSpace(Model.PoNumber))
+											{
+												@:PO - @Model.PoNumber
+											}
+											else
+											{
+												@:Bill Me Later
+											}
+										</div><br style="clear:both;" />
+									</div>
+								</div>
+							</div>
+						}
+					</div>
+
+            </div><!--Row-->
+			
+			if (false)
+			{
+                <!--Add Additonal Information Modal-->
+                <div id="divAddInfo">
+                    <h3>Edit Additional Information</h3>
+                    <div class="form-one">
+                        <div class="form padu10">
+                            <div>
+                                @Html.EditorFor(m => m.Custom01, "NewString")
+                                @Html.EditorFor(m => m.Custom02, "NewString")
+                                @Html.EditorFor(m => m.Custom03, "NewString")
+                                @Html.EditorFor(m => m.Comments, "NewString")
+                                @Html.EditorFor(m => m.OrderTag, "NewString")
+                            </div>
+                        </div>
+                        <br style="clear: both" />
+                    </div>
+                    <div class="floatr padu10">
+                        <a class="btn btn-default" onclick="updateAdditionalInfo(); return false;" ><i class="fa fa-chevron-right"></i> ~{Update}~</a>
+                    </div>
+                </div>
+                <!--Edit Desire ship date modal-->
+                <div id="divOrderDetails">
+                    <h3>~{EditOrderDetails}~</h3>
+                    <div class="form-one">
+                        <div class="form padu10">
+                            <div>
+                                <b>~{DesiredShipDate}~</b>
+                            </div>
+                            <div>
+                                @Html.EditorFor(m => m.DesiredShipDate, "Date")
+                            </div>
+                            <div class="padu10">
+                                <div>
+                                    <div class="input-style">
+                                        <input type="radio" name="carrier" id="myRadio1" checked value="eDelivery" />
+                                        <label for="myRadio1">Best Way -Overnight</label>
+                                    </div>
+                                    <div class="label-style textr">$82.99</div><br style="clear: both">
+                                </div>
+                                <div>
+                                    <div class="input-style">
+                                        <input type="radio" name="carrier" id="myRadio2" value="eDelivery" />
+                                        <label for="myRadio2">Fedex -Ground</label>
+                                    </div>
+                                    <div class="label-style textr">$16.99</div><br style="clear: both">
+                                </div>
+                                <div>
+                                    <div class="input-style">
+                                        <input type="radio" name="carrier" id="myRadio3" value="eDelivery" />
+                                        <label for="myRadio3">Fedex -Ground</label>
+                                    </div>
+                                    <div class="label-style textr">$10.99</div><br style="clear: both">
+                                </div>
+                                <div>
+                                    <div class="input-style">
+                                        <input type="radio" name="carrier" id="myRadio4" value="eDelivery" />
+                                        <label for="myRadio4">Your Truck</label>
+                                    </div>
+                                    <div class="label-style textr">$5.99</div><br style="clear: both">
+                                </div>
+                            </div>
+
+                        </div>
+                        <br style="clear: both" />
+                    </div>
+                    <div class="floatr padu10">
+                        <a class="btn btn-default" onclick="updateOrderDetails();" ><i class="fa fa-chevron-right"></i> ~{Update}~</a>
+                    </div>
+                </div>
+            }
+        }
+
+                <div class="hidden">
+                    @Html.Partial("Partials/_OrderPrintableView")
+                </div>
+    </div> <!--Container-->
+    <script type="text/x-kendo-template" id="template">
+        <div class="approvals">
+            <ul style="display:none;">
+                <li>
+                </li>
+            </ul>
+        </div>
+    </script>
+</section>

@@ -1,0 +1,14 @@
+﻿<div class="trigger">
+    # if (IsBundleKit) { #
+    <a href="\#divGlobalForm" class="fancybox btn btn-primary btn-sm"><i title="Order Bundle" class="fa fa-gift"></i> Order Bundle</a>
+    # } else if (IsKit) { #
+    <a href="/mockups/build-kit.html" class="btn btn-primary btn-sm"><i class="fa fa-archive"></i> Build a Kit</a>
+    # } else if (CanCustomize) { #
+    <a href="/mockups/personalize.html" class="btn btn-primary btn-sm"><i title="Personalize" class="fa fa-pencil"></i> Personalize</a>
+    # } else if (false) { #
+    <!-- what is defines that a part is configurable? -->
+    <a href="\#divPartConfig" class="fancybox btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Add To Cart</a>
+    # } else { #
+    <a href="/mockups/cart.html" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Add To Cart</a>
+    # } #
+</div>

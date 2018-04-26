@@ -1,0 +1,472 @@
+﻿<script type="text/javascript">
+    function renderAssetImageViewTemplate(data, linkCss, imageCss) {
+        if (linkCss == undefined) {
+            linkCss = "";
+        }
+        if (imageCss == undefined) {
+            imageCss = "";
+        }
+        data.linkCss = linkCss;
+        data.imageCss = imageCss;
+        return kendo.Template.compile($('#_AssetImageViewTemplate').html())(data);
+    }
+    function renderAssetNameViewTemplate(data) {
+        return kendo.Template.compile($('#_AssetNameViewTemplate').html())(data);
+    }
+    function renderAssetActionButtonViewTemplate(data) {
+        return kendo.Template.compile($('#_AssetActionButtonsViewTemplate').html())(data);
+    }
+    function renderAssetCartButtonViewTemplate(data) {
+        return kendo.Template.compile($('#_AssetCartButtonsViewTemplate').html())(data);
+    }
+    function renderAssetDescriptionViewTemplate(data) {
+        return kendo.Template.compile($('#_AssetDescriptionViewTemplate').html())(data);
+    }
+
+    function showOrderStep(orderStep, assetId) {
+        if (orderStep == 1) {
+            $(document).trigger(argosyEvents.ADD_ASSET_TO_CART, assetId);
+        } else if (orderStep == 2) {
+            var formatId = $("#DivOrderAsset").find("input[name=formatSelection]:checked").val();
+            $(document).trigger(argosyEvents.ADD_ASSET_TO_CART2, {
+                assetId: assetId,
+                formatId: formatId
+            });
+        }
+    }
+
+    function addToCart(assetId) {
+        $(document).trigger(argosyEvents.ADD_ASSET_TO_CART_FINAL, assetId);
+    }
+
+    function convertToInches(value, dpi) {
+        return formatDecimal(value / dpi, 2);
+    }
+
+    function getDpiValue(dpi) {
+        if (dpi >= 600) {
+            return "Vector";
+        }
+        return formatDecimal(dpi);
+    }
+
+    function formatDecimal(val, decimals) {
+        if (decimals == null) {
+            decimals = 0;
+        }
+        return kendo.toString(val, "n" + decimals);
+    }
+
+    function formatDate(val) {
+        if (val == null) {
+            return "";
+        }
+        return kendo.toString(new Date(val), "g");
+    }
+    function formatToMb(val) {
+        if (val == null) {
+            return "0.000 MB";
+        }
+        val = val / 1024 / 1024;
+        return formatDecimal(val, 3) + " MB";
+    }
+    function getUserPermission(userRoleId, permissions) {
+        var permission = {RoleName: "None", RoleId: 0, IsAdmin: false, CanView: false, CanDownload: false, CanUpload: false, CanEdit: false, CanDelete: false};
+        if (permissions != null && permissions.length > 0) {
+            $(permissions).each(function (i) {
+                if (this.RoleId == userRoleId) {
+                    permission = this;
+                }
+            });
+        }
+        return permission;
+    }
+</script>
+<script type="text/x-kendo-template" id="_AssetGridViewTemplate">
+    <tr class="vtop draggable ${Name =="Deleted Items"?'hidden':''}">
+        <td class="center grid_product wimg">
+            #= renderAssetImageViewTemplate(data, '','') #
+        </td>
+        <td>
+            #if (data.AssetItemType != "Folder") {#
+            <p><a data-argosy-dataid="${Id}" data-argosy-action="showassetdetails">#= renderAssetNameViewTemplate(data)#</a></p>
+            #} else {# 
+            <p><a data-argosy-dataname="${Name}" data-argosy-dataid="${Id}" data-argosy-datauid="${uid}" data-argosy-action="change-folder-view">#= renderAssetNameViewTemplate(data)#</a></p>
+            #}#
+            <p class="product-description padb10">#=renderAssetDescriptionViewTemplate(data)#</p>
+            #if (data.AssetItemType != "Folder") {# <p class="product-price padr10 nowrap">#= renderAssetActionButtonViewTemplate(data) #</p> #}#
+        </td>
+        <td class="hidden-sm hidden-xs">
+            #if (data.AssetItemType != "Folder") {#
+            <div class="nowrap">Width: <b>#=convertToInches(Width, Dpi)# in.</b></div>
+
+            <div class="nowrap">Height: <b>#=convertToInches(Height, Dpi)# in.</b></div>
+
+            <div class="nowrap">DPI: <b>#=getDpiValue(Dpi)#</b></div>
+
+            #}#
+        </td>
+        <td class="textr h100 assetbtn" style="position: relative;">
+            #if (data.AssetItemType != "Folder") {#
+         
+            <div class="nowrap">
+                #= renderAssetCartButtonViewTemplate(data) #
+            </div>
+            #}#
+        </td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_AssetListViewPanelTemplate">
+    <div id="listItem" class="col-md-4 draggable ${Name =="Deleted Items"?'hidden':''}">
+        <div class="product-image-wrapper">
+            <div class="single-item">
+                <div class="productinfo text-center">
+                    <div>
+                        #= renderAssetImageViewTemplate(data, 'container-aspect','img-aspect') #
+                    </div>
+                    <div class="product-bkg">
+                        #if (data.AssetItemType != "Folder") {#
+                        <a data-argosy-dataid="${Id}" data-argosy-action="showAssetDetails"><p class="product-name">#= renderAssetNameViewTemplate(data)#</p></a>
+                        #} else {#
+                        <a data-argosy-dataname="${Name}"
+                           data-argosy-dataid="${Id}"
+                           data-argosy-datadescription="${Description}"
+                           data-argosy-datauid="${uid}"
+                           data-argosy-action="change-folder-view">
+                            <p class="product-name">
+                                #= renderAssetNameViewTemplate(data)#
+                            </p>
+                        </a>
+                        #}#
+                        <div class="clearfix padu10">
+                            #if (data.AssetItemType != "Folder") {#
+                            #= renderAssetCartButtonViewTemplate(data) #
+                            #}#
+                        </div>
+                    </div>
+                    <div class="choose clearfix">
+                        #if (data.AssetItemType != "Folder") {#
+                        #= renderAssetActionButtonViewTemplate(data) #
+                        #}#
+                    </div>
+                    <div class="product-overlay">
+                        <div class="overlay-content">
+                            <p class="product-name">#= Name#</p>
+                            <p>#=renderAssetDescriptionViewTemplate(data)#</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/x-kendo-template" id="_AssetDescriptionViewTemplate">
+    ${Description == null?"":Description}
+</script>
+<script type="text/x-kendo-template" id="_AssetImageViewTemplate">
+    #if (AssetItemType == "Folder") {#
+        <a data-argosy-dataname="${Name}" data-argosy-dataid="${Id}" data-argosy-datauid="${uid}" data-argosy-action="change-folder-view" class="${data.linkCss}">
+        <img class="img-responsive ${data.imageCss}" title="${Name}" alt="Folder" src="#if (ThumbnailPath != '' && ThumbnailPath != null){#${ThumbnailPath}#} else {#/Content/images/folder-icon.png#}#" /></a>
+    #} else {#
+    <a class="${data.linkCss}" data-argosy-datahref="${PreviewFilePath}" data-argosy-action="show-large-image"><img class="img-responsive ${data.imageCss}" title="Enlarge Image" alt="Asset" src="${ThumbnailPath}" /></a>
+    #}#
+
+</script>
+<script type="text/x-kendo-template" id="_AssetNameViewTemplate">
+    #if (Name != null && Name.trim().length > 0) {##= Name##}else{##= CurrentAssetGroup.Text##}#
+</script>
+<script type="text/x-kendo-template" id="_AssetActionButtonsViewTemplate">
+    <div style="display: inline;">
+        <div class="hidden-xs hidden"><a data-argosy-action="addProductHover" class="sm-icon" data-argosy-target=".single-item"><i title="More Details" class="fa fa-info-circle padr3"></i></a></div>
+        <div class="marl5 hidden-xs" style="display: inline;"><a data-argosy-dataid="${Id}" data-argosy-assetname="${Name}" data-argosy-action="showAssetUsageHistory" class="sm-icon"><i title="Part History" class="fa fa-bar-chart-o padr3"></i></a></div>
+        # if (false === true) { #
+        <div class="hidden-xs" style="display: inline;"><a data-argosy-dataid="${Id}" data-argosy-action="deleteAsset" class="sm-icon" data-argosy-target=".single-item"><i title="Delete Asset" class="fa fa-trash-o padr3"></i></a></div>
+        # } else { #
+
+        # } #
+        # if (AssetItemType != "Folder") { #
+        <div class="hidden-xs" style="display: inline;"><a data-argosy-dataid="${Id}" data-argosy-action="shareAsset" class="sm-icon" data-argosy-target=".single-item"><i title="Share" class="fa fa fa-share padr3"></i></a></div>
+        # } else { #
+
+        # } #
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_AssetCartButtonsViewTemplate">
+    #
+    var permission = getUserPermission(UserRoleId, Permissions);
+    #
+    <div class="trigger">
+        #if (permission.CanDownload) {#
+        <a class="btn btn-primary btn-sm" data-argosy-action="add-asset-to-cart" data-argosy-dataid="${Id}">~{AddToOrder}~</a>
+        #}#
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_AssetViewTemplate">
+    <div class="">
+        <h2 class="title" data-argosy-view="MvcAssetViewTitle"></h2>
+        <div data-argosy-view="MvcAssetViewActions" class="padl20">
+            <div class="floatl padr20 padu5">
+                <input data-argosy-action="select-all-assets" type="checkbox" id="mycheckbox" />
+                <label for="mycheckbox">~{SelectAll}~</label>
+            </div>
+            <div class="floatl">
+                <select data-argosy-action="asset-action-change" class="w150">
+                    <option>~{SelectAction}~</option>
+                    <option value="Upload">~{UploadAsset}~</option>
+                    <option value="AddFolder">~{CreateFolder}~</option>
+                    <option value="Delete">~{DeleteSelected}~</option>
+                </select>
+            </div>
+        </div>
+        <div class="floatr toggle-view">
+            <a title="Grid view" class="btn btn-link selected" data-argosy-view="MvcAssetListViewSelector"><i class="fa fa-th"></i></a>
+            <a title="List view" class="btn btn-link" data-argosy-view="MvcAssetGridViewSelector"><i class="fa fa-th-list"></i></a>        </div>
+        <div class="floatr padr20 hidden-sm hidden-xs">
+            <select data-argosy-view="MvcAssetViewFilter" data-role="multiselect" data-auto-close="false" data-tag-mode="single">
+                <option data-argosy-filter="All" selected="selected">~{All}~</option>
+                <option data-argosy-filter="Images">~{Images}~</option>
+                <option data-argosy-filter="Office">~{OfficeFiles}~</option>
+                <option data-argosy-filter="Files">~{Files}~</option>
+                <option data-argosy-filter="Media">~{Media}~</option>
+            </select>
+        </div>
+        <div class="floatr padu5 padr10 hidden-sm hidden-xs" data-argosy-view="MvcAssetViewFilterText"></div>
+        <div class="floatr padr20 hidden-xs">
+            <select data-argosy-view="MvcAssetViewSort">
+                <option data-argosy-sort="AssetAsc" selected="selected">(A-Z)</option>
+                <option data-argosy-sort="AssetDesc">(Z-A)</option>
+                <option data-argosy-sort="CreatedDesc">~{NewestToOldest}~</option>
+                <option data-argosy-sort="CreatedAsc">~{OldestToNewest}~</option>
+            </select>
+        </div>
+        <div class="floatr padu5 padr10" data-argosy-view="MvcAssetViewSortText"></div>
+        <br style="clear: both">
+    </div>
+    <div class="padl10" data-argosy-view="MvcAssetViewDescription"></div>
+    <div data-argosy-view="MvcAssetListView"></div>
+    <div data-argosy-view="MvcAssetGridView"></div>
+    <div data-argosy-view="MvcAssetMasonryView"></div>
+    <div data-argosy-view="MvcAssetViewPager"></div>
+</script>
+<script type="text/x-kendo-tmp" id="_MvcAssetViewAddFolder">
+    <div data-argosy-view="mvcAssetViewAddFolder">
+        <h3>~{AddNewFolderTo}~ ${Name}</h3>
+        <p class="padb10">~{EnterFolderName}~</p>
+        <div class="form-one">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="form padu10 padl20">
+                        <div>
+                            <div class="label-style">
+                                ~{FolderName}~<b class="co-warning">*</b>
+                            </div>
+                            <div class="input-style padb10">
+                                <input required type="text" class="k-textbox" id="folderName" name="folderName" />
+                            </div>
+                        </div>
+                        <div>
+                            <div class="label-style">Folder Image</div>
+                            <div class="input-style padb10">
+                                <input name="folderThumbnail" id="folderThumbnail"
+                                       type="file" accept=".jpg, .jpeg, .png, .eps, .jpg, .tiff, .tif, .gif, .pdf" />
+                            </div>
+                        </div>
+                        <div>
+                            <input checked="checked"  type="checkbox" id="useParentPermission" />
+                            <label for="useParentPermission">~{InheritPermissionsFromFolder}~ ${Name}</label>
+                        </div>
+                        <br style="clear:both" />
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-12">
+            <div class="text-center padu10">
+                <a class="btn btn-default btn-createFolder"><i class="fa fa-floppy-o"></i> ~{CreateFolder}~</a>
+
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_MvcAssetViewCartStep1Template">
+    <div id="DivOrderAsset" class="fancywidth">
+        <div class="col_full">
+            <h3 class="padb10">${Name}</h3>
+            <div class="col_one_third">
+                <div class="mh250">
+                    <img class="img-border img-responsive center-image" title="Enlarge Image" alt="${Name}" src="${PreviewFilePath}" />
+                </div>
+            </div>
+            <div class="col_two_third col_last">
+                <h3>~{AvailableFormats}~</h3>
+                <table class="list table">
+                    <thead>
+                        <tr>
+                            <th>
+
+                            </th>
+                            <th>
+                                ~{FileType}~
+                            </th>
+                            <th class="text-center">
+                               ~{Resolution}~
+                            </th>
+                            <th>
+                                ~{UsageApplications}~
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <input type="radio" name="formatSelection" id="formatSelection" value="0" autocomplete="off" class="bootstrap-toggle" checked="checked" />
+                            </td>
+                            <td>
+                                ${Extension}
+                            </td>
+                            <td class="text-center">
+                                #=getDpiValue(Dpi)#
+                            </td>
+                            <td>
+                                ~{Original}~
+                            </td>
+                        </tr>
+                        #
+                        if (AvailableFormats != null) {
+                        for (var i = 0; i < AvailableFormats.length; i++) {
+                        var format = AvailableFormats[i];
+                        #
+                        <tr>
+                            <td>
+                                <input type="radio" name="formatSelection" id="formatSelection" value="${format.Id}" autocomplete="off" class="bootstrap-toggle" />
+                            </td>
+                            <td>
+                                ${format.Extension}
+                            </td>
+                            <td class="text-center">
+                                #=getDpiValue(format.Dpi)#
+                            </td>
+                            <td nowrap>
+                                ${format.Name}
+                            </td>
+                        </tr>
+                        #
+                        }
+                        }
+                        #
+                    </tbody>
+                </table>
+                <div class="text-center mobile100 maru20">
+                    <a class="btn btn-primary mobile100" onclick="showOrderStep(2, ${Id})">~{Continue}~ <i class="fa fa-chevron-right"></i></a>
+                </div>
+                <div class="topmargin-sm">
+                    <h3>~{CurrentDimensions}~</h3>
+                    <div class="clearfix">
+                        <div class="col_one_third">
+                            <p class="padb5 upcase">~{Inches}~</p>
+                            <table>
+                                <tr>
+                                    <td class="textl"><b>~{Width}~</b></td>
+                                    <td class="padl20 textr">#=convertToInches(Width, Dpi)# in</td>
+                                </tr>
+                                <tr>
+
+                                    <td class="textl"><b>~{Height}~</b></td>
+                                    <td class="padl20 textr">#=convertToInches(Height, Dpi)# in</td>
+                                </tr>
+                                <tr>
+
+                                    <td class="textl"><b>~{DPI}~</b></td>
+                                    <td class="padl20 textr">#=getDpiValue(Dpi)#</td>
+                                </tr>
+
+                            </table>
+
+                        </div>
+                        <div class="col_one_third col_last">
+                            <p class="padb5 upcase">~{Pixels}~</p>
+                            <table>
+                                <tr>
+                                    <td class="textl"><b>~{Width}~</b></td>
+                                    <td class="padl20 textr">#=formatDecimal(Width)# px</td>
+                                </tr>
+                                <tr>
+
+                                    <td class="textl"><b>~{Height}~</b></td>
+                                    <td class="padl20 textr">#=formatDecimal(Height)# px</td>
+                                </tr>
+                                <tr>
+
+                                    <td class="textl"><b>~{DPI}~</b></td>
+                                    <td class="padl20 textr">#=getDpiValue(Dpi)#</td>
+                                </tr>
+
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</script>
+<script type="text/x-kendo-tmp" id="_MvcAssetViewCartStep2Template">
+    <div id="DivOrderDimensions">
+
+        <div class="fancy800">
+            <h3 class="padb10">${Name}</h3>
+            <div class="col_one_fourth mh250">
+                <img class="img-responsive" title="Enlarge Image" alt="${Name}" src="${PreviewFilePath}" />
+            </div>
+            <div class="col_three_fourth col_last">
+                <h3>~{ChooseFileDimensions}~</h3>
+                <div class="padb10">
+                    <p>
+                        <b>${format.Name} - ${format.Dpi} ~{DPI}~</b>
+                    </p>
+                    <p class="padb10">
+                        #=formatDecimal(format.MaxWidth)# x #=formatDecimal(format.MaxHeight)# px (#=convertToInches(format.MaxWidth, format.Dpi)# x #=convertToInches(format.MaxHeight, format.Dpi)# in.)
+                    </p>
+                    <p><i>~{ValuesAutoAdjustedDamMsg}~</i></p>
+                    <input  type="hidden" data-argosy-type="dpi" data-argosy-view="dimensions" value="${format.Dpi}" />
+                    <input  type="hidden" data-argosy-type="format" data-argosy-view="dimensions" value="${format.Id}" />
+                </div>
+                <!--<p class="padb10"><input id="chProportions" type="checkbox" checked="checked" />&nbsp;Constrain Proportions</p>-->
+                <div class="dam-dimensions clearfix">
+                    <div class="nobottommargin clearfix"><div class="small_txt">~{Width}~ (Inches)</div>
+                        <input type="text" style="font-size: 32px" data-argosy-type="width-inches" data-argosy-view="dimensions" value="#=convertToInches(format.MaxWidth, format.Dpi)#" data-max="#=convertToInches(format.MaxWidth, format.Dpi)#" data-min="0" data-role="numerictextbox" data-spinners="false" />
+                        </div>
+                    <div class="nobottommargin"><i class="padu10 prop fa fa-chain"></i></div>
+                    <div class="nobottommargin clearfix">
+                        </div>
+                   
+                    <div class="bottommargin-sm clearfix"><div class="small_txt">~{Height}~ (Inches)</div>
+                        <input type="text" style="font-size: 32px" data-argosy-type="height-inches" data-argosy-view="dimensions" value="#=convertToInches(format.MaxHeight, format.Dpi)#" data-max="#=convertToInches(format.MaxHeight, format.Dpi)#" data-min="0" data-role="numerictextbox" data-spinners="false" />
+                    </div>
+                </div>
+                <div class="dam-dimensions hidden clearfix">
+                    <div class="col_one_fourth  nobottommargin"><b>~{Pixels}~</b></div>
+                    <div class="col_three_fourth col_last nobottommargin  clearfix">
+                        <div class="small_txt">~{Width}~</div>
+                        <input type="text" style="font-size: 32px" data-argosy-type="width-pixels" data-argosy-view="dimensions" value="${format.MaxWidth}" data-max="${format.MaxWidth}" data-min="0" data-role="numerictextbox" data-spinners="false" />
+                    </div>
+                    <div class="col_one_fourth nobottommargin textr"><i class="padu10 prop fa fa-chain"></i></div>
+                    <div class="col_three_fourth col_last topmargin-sm clearfix">
+                        <div class="small_txt">~{Height}~</div>
+                        <input type="text" style="font-size: 32px" data-argosy-type="height-pixels" data-argosy-view="dimensions" value="${format.MaxHeight}" data-max="${format.MaxHeight}" data-min="0" data-role="numerictextbox" data-spinners="false" />
+                    </div>
+                </div>
+                <div class="clearfix">
+                    <div class="btnapprove">
+                        <a class="btn btn-default" onclick="showOrderStep(1, ${Id})"><i class="fa fa-chevron-left"></i> ~{Back}~</a>
+                        <a class="btn btn-default" onclick="addToCart(${Id})">~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+ 
+</script>

@@ -1,0 +1,15 @@
+﻿@using Argosy.Web.FrontEnd.Models
+@{
+    ViewBag.Title = "~{UserGroupsBudget}~";
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{UserGroupsBudget}~", InnerClass = "active" });
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<section class="extra">
+    <div class="container">
+        <div class="row">
+            <div id="mainpanel" class="col-sm-12">
+                <div data-argosy-control="UserBudgetsGridView" data-argosy-view="UserBudgetsGridView"></div>
+            </div>
+        </div>
+    </div>
+</section>

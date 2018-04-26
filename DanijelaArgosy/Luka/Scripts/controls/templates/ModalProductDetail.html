@@ -1,0 +1,337 @@
+
+<script type="text/x-kendo-tmp" id="_ModalProductInventory">
+    <div class="fancywidth">
+        <div class="row">
+            #if (hasImage(data)) {#
+            <div class="floatl padb20 padr20 hidden-xs hidden-sm" style="width: 33%">
+                <div class="view-product">
+                    <a class="fancybox" href="\\#_ModalProductEnlargeImage">
+                        <img class="img-responsive img-border" title="Enlarge Image" alt="${Sku}" src="${ThumbnailFile}?h=500&w=500">
+                        <h3>
+                            <i class="i5 fa la fa-expand"></i>
+                        </h3>
+                    </a>
+                </div>
+                #if (data.PdfFilePath != null) {#
+                <div class="text-center padu10">
+                    <a onclick="downloadFile('${PdfFilePath}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~</a>
+                </div>
+                #} else if (NonImageFilePath) {#
+                <div class="text-center padu10">
+                    <a onclick="downloadFile('${NonImageFilePath}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~</a>
+                </div>
+                #}#
+            </div>
+            #}#
+            <div class="#if (hasImage(data)) {#col-md-8#}else{#col-sm-12#}# padu20">
+                <div>
+                    <h2 class="nopadding notopmargin">
+                        #if (PartName != null && PartName.trim().length > 0) {##= PartName##}else{##= Sku##}#
+                    </h2>
+                    <p class="small_txt padu5 padb10 bold">
+                        #if (PartName != null && PartName.trim().length > 0) {#
+                        ~{SKU}~: #= Sku#
+                        #}else{#
+                        #}#
+                    </p>
+                    <p class="padb10 hidden-xs">
+                        #if (LongDescription != null && LongDescription.length > 0){#
+                        #= LongDescription #
+                        #} else {#
+                        #= Description #
+                        #}#
+                    </p>
+                    <br style="clear:both" />
+                </div>
+                <div class="col_full ${(IsKit || IsConfigurable)? '':'hidden'}">
+                    <div class="row">
+                        <div class="col-xs-6">
+                            <h3 class="${(IsKit)? '':'hidden'} hidden-xs">~{PartsInKit}~:</h3>
+                            <h3 class="${(IsConfigurable)? '':'hidden'} hidden-xs">~{AvailableParts}~:</h3>
+                        </div>
+                        <div class="col-xs-6"><p class="pull-right"><a onclick="$(document).trigger(argosyEvents.SHOW_PART_DETAILS_MODAL, ${PartId})"><b>Back to Part Details</b></a></p></div>
+                    </div>
+                    <div class="row">
+                        <div id="_ModalProductKitView"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ModalProductDetail">
+    <div class="fancywidth">
+        <div class="row">
+            #if(data.AdditionalPartFiles != null && data.AdditionalPartFiles.length > 0){#
+                <div class="floatl padb20 padr20 hidden-xs hidden-sm" style="width: 33%">
+                    <div id="carousel${Sku}" class="carousel slide" data-ride="carousel">
+                        <ol class="carousel-indicators" style="margin-bottom:0px;">
+                            <li data-target='\\#carousel${Sku}' data-slide-to='0' class='active'></li>
+
+                            #for(i = 0; i < data.AdditionalPartFiles.length; i++){#
+                            <li data-target="\\#carousel${Sku}" data-slide-to="#= i+1 #"></li>
+                            #}#
+                        </ol>
+                        <div class="carousel-inner" style="height:300px; width: 100%;" role="listbox">
+                            <div class="item active" style="padding:0">
+                                <div onclick="showImage('${PartId}', '${ LargeThumbnailFile }')" class="view-product">
+                                    <img class="img-responsive img-border" title="Enlarge Image" alt="${Sku}" src="${LargeThumbnailFile}?h=500&w=500">
+                                    <h3>
+                                        <i class="i5 fa la fa-expand"></i>
+                                    </h3>
+                                </div>
+                                <div class="carousel-caption" style="bottom: 0%; padding-bottom:0px; text-shadow:none;">
+                                    #if (data.PdfFilePath != null) {#
+                                    <div id="divDownloadPDF" class="text-center padu10">
+                                        <a onclick="downloadFile('${PdfFilePath}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~</a>
+                                    </div>
+                                    #} else if (NonImageFilePath) {#
+                                    <div id="divDownloadFile" class="text-center padu10">
+                                        <a onclick="downloadFile('${NonImageFilePath}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~</a>
+                                    </div>
+                                    #}#
+                                </div>
+                            </div>
+                            #for(i = 0; i < data.AdditionalPartFiles.length; i++){#
+                            <div class="item" style="padding:0px;">
+                                <div onclick="showImage('${PartId}', '${data.AdditionalPartFiles[i].File.PreviewPath}')" class="view-product">
+                                    <img class="img-responsive img-border" title="Enlarge Image" src="${data.AdditionalPartFiles[i].File.PreviewPath}?h=500&w=500">
+                                    <h3>
+                                        <i class="i5 fa la fa-expand"></i>
+                                    </h3>
+                                </div>
+                                <div class="carousel-caption" style="bottom: 0%; padding-bottom:0px; text-shadow:none;">
+                                    #if (data.AdditionalPartFiles[i].File.FileName.includes(".pdf")) {#
+                                    <div>
+                                        <a onclick="downloadFile('${data.AdditionalPartFiles[i].File.FileName}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~ </a>
+                                    </div>
+                                    #} else if(!data.AdditionalPartFiles[i].File.IsImage) {#
+                                    <div>
+                                        <a onclick="downloadFile('${data.AdditionalPartFiles[i].File.FileName}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~ </a>
+                                    </div>
+                                    #}#
+                                </div>
+                            </div>
+                            #}#
+                            <a class="left carousel-control" style="top: 0%;" href="\\#carousel${Sku}" data-slide="prev">
+                                <span class="glyphicon glyphicon-chevron-left"></span>
+                                <span class="sr-only">Previous</span>
+                            </a>
+                            <a class="right carousel-control" style="top: 0%;" href="\\#carousel${Sku}" data-slide="next">
+                                <span class="glyphicon glyphicon-chevron-right"></span>
+                                <span class="sr-only">Next</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                #} else {#
+                    #if (hasImage(data)) {#
+                    <div class="floatl padb20 padr20 hidden-xs hidden-sm" style="width: 33%">
+                        <div class="view-product">
+                            <a class="fancybox" href="\\#_ModalProductEnlargeImage">
+                                <img class="img-responsive img-border" title="Enlarge Image" alt="${Sku}" src="${LargeThumbnailFile}?h=500&w=500">
+                                <h3>
+                                    <i class="i5 fa la fa-expand"></i>
+                                </h3>
+                            </a>
+                        </div>
+                        #if (data.PdfFilePath != null) {#
+                        <div id="divDownloadPDF" class="text-center padu10">
+                            <a onclick="downloadFile('${PdfFilePath}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~</a>
+                        </div>
+                        #} else if (NonImageFilePath) {#
+                        <div id="divDownloadFile" class="text-center padu10">
+                            <a onclick="downloadFile('${NonImageFilePath}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~</a>
+                        </div>
+                        #}#
+                    </div>
+                    #}#
+                #}#
+
+
+
+                <div class="#if (hasImage(data)) {#col-md-8#}else{#col-sm-12#}#">
+                    <div>
+                        <h2 class="nopadding nomargin">
+                            #if (PartName != null && PartName.trim().length > 0) {##= PartName##}else{##= Sku##}#
+                        </h2>
+                        <p class="small_txt padu5 padb10 bold partdetails-displaysku">#if (PartName != null && PartName.trim().length > 0) {#~{SKU}~: #= Sku##}else{##}#</p>
+                        <p class="big-price nowrap">
+                            #= renderProductPriceViewTemplate(data, null, true) #
+                        </p>
+                        <p class="padb10 hidden-xs">
+                            #if (LongDescription != null && LongDescription.length > 0){#
+                            #= LongDescription #
+                            #} else {#
+                            #= Description #
+                            #}#
+                        </p>
+                        <div class="clear summary-information" data-bind="visible: isShowAddToCart">
+                            <div class="">
+                                #if(!IsConfigurable){#
+                                <div class="padr10 nomargin ">
+                                    # if (IsBundleKit || IsDynamicKit || IsRegularKit || IsBuildAKit || CanCustomize || CanUpload || CanDirectMail || IsConfigurable || IsAttributeConfigured) { #
+
+                                    #} else {#
+                                    <div class="floatl padu5">
+                                        <b>~{Qty}~</b>
+                                    </div>
+                                    <div class="floatl padl10 mobilepadb20">
+                                        #= renderProductQuantityInput(data, data.DefaultQuantity, data.IsEdeliveryOnly, 0, "addToCartQuantity_", "", "priceBreakDataBound", null, "part.Discounts") #
+                                        #= renderProductOrderInfoTemplate(data)#
+                                    </div>
+                                    #if (!data.IsLimitPartOrderQuantity && userSettings.IsMaxOrderQtyVisible && (data.MinOrderQty > 1 || (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999))) {#
+                                    <div class="floatl padl10 padu5 small">
+                                        #if (data.MinOrderQty > 1 && (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999)) {#
+                                        <em>Min: ${kendo.toString(data.MinOrderQty, "n0")}, Max: ${kendo.toString(data.MaxOrderQty, "n0")}</em>
+                                        #} else if (data.MinOrderQty > 1) {#
+                                        <em>Minimum ${kendo.toString(data.MinOrderQty, "n0")}.</em>
+                                        #} else if (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999) {#
+                                        <em>Maximum ${kendo.toString(data.MaxOrderQty, "n0")}.</em>
+                                        #}#
+                                    </div>
+                                    #}#
+                                    #}#
+                                </div>
+                                #}#
+                                # if (!hideCartInputs) {#
+                                <div class="nomargin mobile100" style="float: right">
+                                    #= renderProductCartButtonModalViewTemplate(data) #
+                                </div>
+
+                                #}#
+                            </div>
+                        </div>
+                        <div id="_ProductDetailModalAlert" class="alert alert-danger alert-dismissible hide alert-qty-modal" role="alert">
+                            <p class="hide _alertModalMsgs _ProductQuantityModalAlertForZero">~{PartAlertZeroQty}~</p>
+                            <p class="hide _alertModalMsgs _ProductQuantityModalAlertForMin">~{PartAlertForMin}~</p>
+                            <p class="hide _alertModalMsgs _ProductQuantityModalAlertForMax">~{PartAlertForMax}~</p>
+                            <p class="hide _alertModalMsgs _ProductCPQAlertForMax">~{MsgStopCPQQty}~</p>
+                        </div>
+                        <br style="clear:both" />
+                        ${Comments}<br /><br />
+                    </div>
+                    <div class="clear hidden-xs  ${IsKit? 'hidden':''}">
+                        #var showLeadTime = userSettings.IsEstimateShipDateVisible && !IsExpired && FlagOffered && IsAvailable;
+                        var showPieces = Pieces > 1;
+                        var showCPQ = CPQ > 1;
+                        var showType = Type != null && Type.trim().length > 0;
+                        var showCode = Code != null && Code.trim().length > 0;
+                        var showClientCode = ClientCode != null && ClientCode.trim().length > 0;
+                        var showFormNo = FormNo != null && FormNo.trim().length > 0;
+                        var showPlant = Plant != null && Plant.trim().length > 0;
+                        if (showLeadTime || showPieces || showCPQ || showType || showCode || showClientCode || showFormNo || showPlant) {#
+                        <div class="col_half">
+                            <h4>~{ProductInformation}~</h4>
+                            <div class="padu10 padb20 mobile-half">
+                                #var todayYear = new Date().getFullYear();
+                                var dateRevisedYear = new Date(DateRevised).getFullYear();
+                                var expirationDateYear = new Date(ExpirationDate).getFullYear();
+                                if (dateRevisedYear > (todayYear - 5) && dateRevisedYear < (todayYear + 5)) {#
+                                <div class="col_half nobottommargin partdetails-revisiondate">~{RevisionDate}~</div><div class="col_half nobottommargin col_last partdetails-revisiondate">#=kendo.toString(kendo.parseDate(DateRevised), "d")#</div><br style="clear: both;" />
+                                #}
+                                if (expirationDateYear > (todayYear - 5) && expirationDateYear < (todayYear + 5)) {#
+                                <div class="col_half nobottommargin">~{ExpirationDate}~</div><div class="col_half nobottommargin col_last">#=kendo.toString(kendo.parseDate(ExpirationDate), "d")#</div><br style="clear: both;" />
+                                #}
+                                if (showLeadTime) {#
+                                <div class="col_half nobottommargin">~{LeadTime}~</div><div class="col_half nobottommargin col_last">#= renderProductLeadTimeViewTemplate(data) #</div><br style="clear: both;" />
+                                #}
+                                if (showPieces) {#
+                                <div class="col_half nobottommargin">~{Pieces}~</div><div class="col_half nobottommargin col_last">${Pieces}</div><br style="clear: both;" />
+                                #}
+                                if (showCPQ) {#
+                                <div class="col_half nobottommargin">~{CasePackQty}~</div><div class="col_half nobottommargin col_last">${CPQ}</div><br style="clear: both;" />
+                                #}#
+                            </div>
+                        </div>
+                        <div class="col_half col_last">
+                            <h4>~{AdditionalInformation}~</h4>
+                            <div class="padu10 mobile-half">
+                                #if (showType) {#<span class="partdetails-itemtype"><div class="col_half nobottommargin partdetails-itemtype">~{ItemType}~</div><div class="col_half nobottommargin col_last">#= Type#</div><br style="clear: both;" /></span>#}#
+                                #if (showCode) {#<span class="partdetails-commoditycode"><div class="col_half nobottommargin partdetails-commoditycode">~{CommodityCode}~</div><div class="col_half nobottommargin col_last">#= Code#</div><br style="clear: both;" /></span>#}#
+                                #if (showClientCode) {#<span class="partdetails-clientcode"><div class="col_half nobottommargin  partdetails-clientcode">~{ClientCode}~</div><div class="col_half nobottommargin col_last">#= ClientCode#</div><br style="clear: both;" /></span>#}#
+                                #if (showFormNo) {#<span class="partdetails-form"><div class="col_half nobottommargin partdetails-form">~{Form}~</div><div class="col_half nobottommargin col_last">#= FormNo#</div><br style="clear: both;" /></span>#}#
+                                #if (showPlant) {#<span class="partdetails-plant"><div class="col_half nobottommargin partdetails-plant">~{Plant}~</div><div class="col_half nobottommargin col_last">#= Plant#</div><br style="clear: both;" /></span>#}#
+                                #if (userSettings.ShowAdditionalPartData) {#
+                                <span class="#if(Manufacturer == null || Manufacturer.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{Manufacturer}~</div><div class="col_half nobottommargin col_last">#= Manufacturer#</div><br style="clear: both;" /></span>
+                                <span class="#if(VendorSku == null || VendorSku.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{VendorSku}~</div><div class="col_half nobottommargin col_last">#= VendorSku#</div><br style="clear: both;" /></span>
+                                <span class="#if(Custom01 == null || Custom01.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{PartCustom01}~</div><div class="col_half nobottommargin col_last">#= Custom01#</div><br style="clear: both;" /></span>
+                                <span class="#if(Custom02 == null || Custom02.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{PartCustom02}~</div><div class="col_half nobottommargin col_last">#= Custom02#</div><br style="clear: both;" /></span>
+                                <span class="#if(Custom03 == null || Custom03.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{PartCustom03}~</div><div class="col_half nobottommargin col_last">#= Custom03#</div><br style="clear: both;" /></span>
+                                <span class="#if(Custom04 == null || Custom04.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{PartCustom04}~</div><div class="col_half nobottommargin col_last">#= Custom04#</div><br style="clear: both;" /></span>
+                                <span class="#if(Custom05 == null || Custom05.trim().length == 0){#hide#}#"><div class="col_half nobottommargin">~{PartCustom05}~</div><div class="col_half nobottommargin col_last">#= Custom05#</div><br style="clear: both;" /></span>
+                                #}#
+                            </div>
+                        </div>
+                        #}#
+                        #if (userSettings.IsInventoryInformationVisible) {#
+                        <div class="col_half ">
+                            <h4 class="padu20 ">~{InventoryInformation}~</h4>
+                            <div class="padu10 mobile-half">
+                                <div class="col_half nobottommargin">~{QuantityOnHand}~</div>
+                                <div class="col_half nobottommargin col_last">
+                                    #= renderProductQuantityOnHandTemplate(data, false) #
+                                </div>
+                                <div class="globals-qtyavailable divQtyAvail col_half nobottommargin">~{QuantityAvailable}~</div>
+                                <div class="globals-qtyavailable divQtyAvail col_half nobottommargin col_last">
+                                    #= renderProductQuantityAvailableTemplate(data, false) #
+                                </div>
+                            </div>
+                        </div>
+                        #}#
+                        #if (userSettings.IsPriceInformationVisible && data.Discounts  && data.Discounts.length > 0) {
+                        var showDiscounts = false;
+                        for (var i = 0; i < Discounts.length; i ++) {
+                        if (Discounts[i].Discount < Discounts[i].CostPerEach) {
+                        showDiscounts = true;
+                        }
+                        }
+                        }#
+                        #if (showDiscounts) {#
+                        <div class="col_half col_last">
+                            <h4 class="padu20">~{DiscountInformation}~</h4>
+                            <div class="padu10">
+                                #= renderProductPriceDiscounts(data) #
+                            </div>
+                        </div>
+                        #}#
+                    </div>
+                    <div class="col_full hidden-xs ${(IsKit && !IsBuildAKit)? '':'hidden'}">
+                        <div class="row">
+                            <div class="col-xs-6"><h3 class="pull-left">~{PartsInKit}~: </h3></div>
+                            <div class="col-xs-6"><p class="pull-right"><a data-argosy-dataid="${PartId}" data-argosy-action="showKitInventorymodal"><b>~{SeeInventory}~</b></a></p></div>
+                        </div>
+                        <div class="row">
+                            <div id="_ModalProductKitView"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12" data-bind="visible: showCrossSellItems">
+                    <div class="cart-information marb10">~{RecommendedItems}~</div>
+                    <div data-template="_PartCrossSellItemTemplate" data-bind="source: crossSaleItems"></div>
+                    <br style="clear:both" />
+                </div>
+            </div>
+        </div>
+</script>
+<script type="text/x-kendo-template" id="_PartCrossSellItemTemplate">
+    <div class="col-md-5">
+        <div class="product-image-wrapper marb10">
+            <div class="single-item">
+                <div class="productinfo text-center">
+                    <div data-bind="click:showProductDetails">
+                        #= renderProductImageViewTemplate(data, 'container-aspect','img-aspect') #
+                    </div>
+                    <div class="product-bkg">
+                        <p class="product-name padl5 padr5 f10"><a data-bind="click:showProductDetails">#= renderProductNameViewTemplate(data)#</a></p>
+                        <p class="product-price f10">#= renderProductPriceViewTemplate(data) #</p>
+                        <p class="product-ship">#= renderProductLeadTimeViewTemplate(data) #</p>
+                        <div class="clearfix" style="min-height: 41px;">#= renderProductCartButtonViewTemplate(data, "showAddToCartModal") #</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,219 @@
+﻿<script type="text/javascript">
+    function getVariableTemplate(data) {
+        data.Type = data.Type.toLowerCase();
+        var controlType = data.Type;
+        var templateName = null;
+        switch (controlType) {
+            case "currency":
+                templateName = "_StatementBuilderPieceCurrency";
+                break;
+            case "current":
+                templateName = "_StatementBuilderPieceCurrent";
+                break;
+            case "date":
+                templateName = "_StatementBuilderPieceDate";
+                break;
+            case "ddl":
+                templateName = "_StatementBuilderPieceDropDown";
+                break;
+            case "number":
+                templateName = "_StatementBuilderPieceNumber";
+                break;
+            case "percentage":
+                templateName = "_StatementBuilderPiecePercentage";
+                break;
+            case "static":
+                templateName = "_StatementBuilderPieceStatic";
+                break;
+            case "text":
+                templateName = "_StatementBuilderPieceText";
+                break;
+            case "time":
+                templateName = "_StatementBuilderPieceTime";
+                break;
+        }
+        return templateName;
+    }
+    function getVariableClass(data) {
+        data.Type = data.Type.toLowerCase();
+        var controlType = data.Type;
+        var cssClass = null;
+        switch (controlType) {
+            case "currency":
+            case "number":
+            case "percentage":
+                cssClass = "";
+                break;
+            case "current":
+            case "date":
+            case "ddl":
+            case "text":
+            case "time":
+            case "static":
+                cssClass = "pull-left";
+                break;
+        }
+        return cssClass;
+    }
+
+    function getVariableStatementLine(statement, index) {
+        if (statement.Pieces.length == 0) {
+            return "";
+        }
+        var content = '<div class="panel panel-border">';
+        content += '<div class="panel-body" data-statement-id="' + statement.Id + '">';
+        /*content += '<h4>' + statement.Name + '</h4>';*/
+        content += "<button class='btn btn-default pull-right marb10' data-bind='events: {click: onSelectStatment}' >Use</button>";
+        for (var i = 0; i < statement.Pieces.length; i++) {
+            content += getVariableStatementLinePiece(statement.Pieces[i], i, index);
+        }
+        content += '<div class="col-md-12 text-danger hide"></div>';
+        return content + '</div></div>';
+    }
+
+    function getVariableStatementLinePiece(piece, index, parentIndex) {
+        return '<div class="' + getVariableClass(piece) + '" data-template="' + getVariableTemplate(piece) + '" data-bind="source: group.Statements[' + parentIndex + '].Pieces[' + index + ']"></div>';
+    }
+
+    function getInputRequiredTemplate(data, extra) {
+        data.extra = extra;
+        return kendo.Template.compile($("#_StatementBuilderPieceRequiredTemplate").html())(data);
+    }
+</script>
+<style>
+    .statementBuilder .k-dropdown-wrap {
+        padding-right: 25px;
+    }
+
+    .panel-body {
+        background: #fafafa;
+        border: 1px rgba(146, 142, 146, 0.50) solid;
+        padding: 10px;      
+   
+    }
+
+    .panel {
+        margin-bottom: 5px;
+    }
+</style>
+<script type="text/x-kendo-tmp" id="_StatementBuilderWrapper">
+    <div class="row fancy1200 statementBuilder">
+
+        <h3 data-bind="text: group.Name"></h3>
+        <p>Create your statement by selecting options below.</p>
+        <div class="row padu10">
+            #for(var i = 0; i < data.Statements.length; i++) {#
+            #=getVariableStatementLine(data.Statements[i], i)#
+            #}#
+        </div>
+    </div>
+
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceRequiredTemplate">
+    <span class="input-group-addon">
+        #if (IsRequired) {#
+        <span class="glyphicon glyphicon-remove"></span>
+        <span class="glyphicon glyphicon-ok hide"></span>
+        #} else {#
+        <span class="glyphicon glyphicon-ok"></span>
+        #}#
+    </span>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceStatic">
+    <div class="pull-left padu5">
+        <p>${Value}</p>
+        <input type="hidden" value="${Value}" data-statement-input="true" />
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceCurrency">
+    <div class="col-md-3">
+        <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+            <span class="input-group-addon">$</span>
+            <input data-role="numerictextbox"
+                   data-required="${IsRequired.toString().toLowerCase()}"
+                   data-format="c"
+                   data-decimals="2"
+                   data-spinners="false"
+                   value="${Value}"
+                   data-bind="events: {change: onInputChange}"
+                   data-statement-input="true" />
+            #=getInputRequiredTemplate(data)#
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceDropDown">
+    <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}# padl10 padr10">
+        <select data-role="dropdownlist"
+                data-required="${IsRequired.toString().toLowerCase()}"
+                data-bind="source: DataSource, events: {dataBound: onSelectDataBound}"
+                #if (!IsRequired) {#data-option-label="~{SelectOne}~" #}#
+                data-statement-input="true"></select>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceNumber">
+    <div class="col-md-3">
+        <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+            <span class="input-group-addon">&num;</span>
+            <input data-role="numerictextbox"
+                   data-required="${IsRequired.toString().toLowerCase()}"
+                   data-bind="events: {change: onInputChange}"
+                   data-format="n0"
+                   data-decimals="0"
+                   value="${Value}"
+                   data-spinners="false"
+                   data-statement-input="true" />
+            #=getInputRequiredTemplate(data)#
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPiecePercentage">
+    <div class="col-md-3">
+        <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+            <span class="input-group-addon">%</span>
+            <input data-role="numerictextbox"
+                   data-bind="events: {change: onInputChange}"
+                   data-required="${IsRequired.toString().toLowerCase()}"
+                   data-format="\\#\\%"
+                   value="${Value}"
+                   data-spinners="false"
+                   data-statement-input="true" />
+            #=getInputRequiredTemplate(data)#
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceText">
+
+    <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+        <input data-role="textbox"
+               value="${Value}"
+               data-required="${IsRequired.toString().toLowerCase()}"
+               data-bind="events: {change: onInputChange}"
+               data-statement-input="true" />
+        #=getInputRequiredTemplate(data)#
+    </div>
+
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceTime">
+    <div class="col-md-3">
+        <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+            <input data-role="timepicker"
+                   value="${Value}"
+                   data-required="${IsRequired.toString().toLowerCase()}"
+                   data-bind="events: {change: onInputChange}"
+                   data-statement-input="true" />
+            #=getInputRequiredTemplate(data)#
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_StatementBuilderPieceDate">
+    <div class="col-md-3">
+        <div class="input-group #if (IsRequired) {#has-error#} else {#has-success#}#">
+            <input data-role="datepicker"
+                   value="${Value}"
+                   data-required="${IsRequired.toString().toLowerCase()}"
+                   data-bind="events: {change: onInputChange}"
+                   data-statement-input="true" />
+            #=getInputRequiredTemplate(data)#
+        </div>
+    </div>
+</script>

@@ -1,0 +1,21 @@
+﻿<div id="filtersContainer" class="row" data-argosy-control="MvcCompanyFiltersHorizontal">
+
+</div>
+<script type="text/x-kendo-tmp" id="_CompanyFiltersTemplate">
+    #for(i = 0; i < data.length; i++) {
+        var filter = data[i];
+    #
+    <div class="col-sm-12">
+        <div class="col-sm-1">
+            <strong>${filter.Name}</strong>
+        </div>
+        <div class="col-sm-11">
+            #for(x = 0; x < filter.Values.length; x++) {#
+            <a class="btn btn-danger btn-sm" data-group="${filter.Name}" data-value="${filter.Values[x].key}">
+                ${filter.Values[x].key}&nbsp;&nbsp;<span class="badge">${filter.Values[x].doc_count}</span>
+            </a>
+            #}#
+        </div>
+    </div>
+    #}#
+</script>

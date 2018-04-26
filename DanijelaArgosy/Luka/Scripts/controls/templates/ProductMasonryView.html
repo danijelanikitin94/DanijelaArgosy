@@ -1,0 +1,28 @@
+﻿<div>
+    <div id="masonryItem">
+        <div class="col-md-4">
+            <div class="product-image-wrapper">
+                <div class="single-item">
+                    <div class="productinfo text-center">
+                        <div>
+                            <a class="fancybox" href="${ThumbnailFile}"><img class="img-responsive" title="Enlarge Image" alt="Part SKU" src="${ThumbnailFile}" /></a>
+                        </div>
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <p class="product-name">#=PartName#</p>
+                                <p>#=Description#</p>
+                                <p class=" w100 text-center"><a data-argosy-action="addProductHover" class="co-white" data-argosy-target=".single-item"><i title="Close box" class="fa fa-close co-white"></i> CLOSE</a></p>
+                            </div>
+                        </div>
+                        # if (false) { #
+                        <!-- where does the sale data come from? -->
+                        <img src="/content/images/sale.png" class="accent" alt="On Sale" />
+                        # } else if (IsKit) { #
+                        <img src="/content/images/kit.png" class="accent" alt="Part Kit" />
+                        # } #
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

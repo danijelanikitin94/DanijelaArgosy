@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ThemeStructure>
+  <Group Name="Main Menu Bar">
+    <Style Display-Name="Background Color" Value="#00ADEF" Name="background-color" Selector=".header-bottom, .mobiletitle, .mobile-nav ul" Role="colorpicker" IsPrimaryColor="true" />
+    <Style Display-Name="Font Color" Value="#FFFFFF" Name="color" Selector="#menu .k-link:link, #menu .k-link:visited, #menu .k-nav-current.k-state-hover .k-link, #menu a, #menu a:visited, .k-menu .k-icon:before, .k-grid-header th > .k-link:hover span.k-i-arrow-s, .k-grid-header th > .k-link:hover span.k-i-arrow-n, .mobile-menu a, .mobile-menu a:visited, .mobile-menu a.k-link, .mobile-menu a.k-link:visited" Role="colorpicker" />
+    <Style Display-Name="Background Hover Color" Value="#8CC63E" Name="background-color" Selector="#menu a:hover, #menu a.active, #menu a.active:hover, .k-menu .k-state-default:hover, .k-menu .k-state-active, .k-menu.k-state-active:hover, .mobile-menu a:hover, .mobile-menu a:focus, .mobile-menu a:active" Role="colorpicker" IsSecondaryColor="true" />
+    <Style Display-Name="Hover Color" Value="#FFFFFF" Name="color" Selector="#menu a:hover, #menu a.active, #menu a.active:hover, .k-menu .k-state-default:hover, .k-menu .k-state-active, .k-menu.k-state-active:hover, .k-menu .k-icon:hover:before, .mobile-menu a:hover, .mobile-menu a:focus, .mobile-menu a:active" Role="colorpicker" />
+    <Style Display-Name="Search Icon Background Color" Value="rgba(0,0,0,0.35)" Name="background" Selector=".search-icon-btn" Role="colorpicker" />
+    <Style Display-Name="Search Icon Color" Value="#FFFFFF" Name="color" Selector=".search-icon-btn" Role="colorpicker" />
+    <Style Display-Name="Search Icon Background Hover" Value="none" Name="background" Selector=" .search-icon-btn:hover" Role="colorpicker" />
+    <Style Display-Name="Search Icon Color Hover" Value="rgba(0,0,0,0.65)" Name="color" Selector=".search-icon-btn:hover" Role="colorpicker" />
+    <Style Display-Name="Search Input Border" Value="none" Name="border-color" Selector=" #menu .top-search.active .input-wrap input" Role="colorpicker" />
+  </Group>
+  <Group Name="Background, Text and Icons">
+    <Style Display-Name="Body Background Image" Value="" Name="background-image" Selector="#wrapcontainer" Role="imageeditor" />
+    <Style Display-Name="Body Text Color" Value="#666666" Name="color" Selector="body" Role="colorpicker" />
+    <Style Display-Name="Body Text Font" Value="inherit" Name="font-family" Selector="body" Role="dropdownlist">
+      <Option Value="inherit" Text="System Default" />
+      <Option Value="'Roboto', sans-serif" Text="Roboto" />
+      <Option Value="Arial, sans-serif" Text="Arial" />
+      <Option Value="'Times New Roman', serif" Text="Times New Roman" />
+      <Option Value="Verdana, sans-serif" Text="Verdana" />
+      <Option Value="Georgia, serif" Text="Georgia" />
+      <Option Value="Tahoma, sans-serif" Text="Tahoma" />
+    </Style>
+    <Style Display-Name="Main Headers" Value="#00adef" Name="color" Selector="h1, h2" Role="colorpicker"  />
+    <Style Display-Name="Subheaders" Value="#00adef" Name="color" Selector="h3" Role="colorpicker" />
+    <Style Display-Name="Links" Value="#00adef" Name="color" Selector="a, a:visited" Role="colorpicker" IsTertiaryColor="true" />
+     <Style Display-Name="Links Hover" Value="#00adef" Name="color" Selector="a:hover, a:active, a:focus" Role="colorpicker" />
+  </Group>
+  <Group Name="Buttons">
+    <Group class="maru40" Name="Call-to-Action Buttons">
+      <Style Display-Name="Background" Value="#8CC63E" Name="background-color" Selector=".btn-primary, a.btn-primary" Role="colorpicker" />
+      <Style Display-Name="Background Hover" Value="#69a11d" Name="background-color" Selector=".btn-primary:hover,  a.btn-primary:hover, .btn-primary:active,  a.btn-primary:active, .btn-primary:focus,  a.btn-primary:focus, .btn-primary:active:focus, .btn-primary:active:hover" Role="colorpicker" />
+      <Style Display-Name="Text Color" Value="#FFFFFF" Name="color" Selector=".btn-primary, a.btn-primary" Role="colorpicker" />
+      <Style Display-Name="Text Hover Color" Value="#FFFFFF" Name="color" Selector=".btn-primary:hover,  a.btn-primary:hover, .btn-primary:active,  a.btn-primary:active, .btn-primary:focus,  a.btn-primary:focus, .btn-primary:active:focus, .btn-primary:active:hover" Role="colorpicker" />
+      <Style Display-Name="Border" Value="transparent" Name="border-color" Selector=".btn-primary, a.btn-primary" Role="colorpicker" />
+      <Style Display-Name="Hover Border" Value="transparent" Name="border-color" Selector=".btn-primary:hover,  a.btn-primary:hover, .btn-primary:active,  a.btn-primary:active, .btn-primary:focus,  a.btn-primary:focus, .btn-primary:active:focus, .btn-primary:active:hover" Role="colorpicker" />
+    </Group>
+    <Group Name="Navigation Bar Buttons">
+      <Style Display-Name="Background" Value="transparent" Name="background-color" Selector=".btn-success, a.btn-success" Role="colorpicker" />
+      <Style Display-Name="Background Hover" Value="transparent" Name="background-color" Selector=".btn-success:hover, .btn-success:active, a.btn-success:hover, a.btn-success:active, .btn-success:focus, a.btn-success:focus, .btn-success:active:focus, .btn-success:active:hover" Role="colorpicker" />
+      <Style Display-Name="Text Color" Value="#8CC63E" Name="color" Selector=".btn-success, a.btn-success" Role="colorpicker" />
+      <Style Display-Name="Text Hover Color" Value="#69a11d" Name="color" Selector=".btn-success:hover, .btn-success:active, a.btn-success:hover, a.btn-success:active, .btn-success:focus, a.btn-success:focus, .btn-success:active:focus, .btn-success:active:hover" Role="colorpicker" />
+      <Style Display-Name="Border" Value="transparent" Name="border-color" Selector=".btn-success, a.btn-success" Role="colorpicker" />
+      <Style Display-Name="Hover Border" Value="transparent" Name="border-color" Selector=".btn-success:hover, .btn-success:active, a.btn-success:hover, a.btn-success:active, .btn-success:focus, a.btn-success:focus, .btn-success:active:focus, .btn-success:active:hover" Role="colorpicker" />
+    </Group>
+    <Group Name="Link Buttons">
+      <Style Display-Name="Background" Value="transparent" Name="background-color" Selector=".btn-link, a.btn-link" Role="colorpicker" />
+      <Style Display-Name="Background Hover" Value="transparent" Name="background-color" Selector=".btn-link:hover, .btn-link:active, a.btn-link:hover, a.btn-link:active, .btn-link:focus, a.btn-link:focus" Role="colorpicker" />
+      <Style Display-Name="Text Color" Value="#00adef" Name="color" Selector=".btn-link, a.btn-link, .k-grid .k-button-nbkg" Role="colorpicker" />
+      <Style Display-Name="Text Hover Color" Value="#00adef" Name="color" Selector=".btn-link:hover, .btn-link:active, a.btn-link:hover, a.btn-link:active, .btn-link:focus, a.btn-link:focus, .k-grid .k-button-nbkg:hover" Role="colorpicker" />
+      <Style Display-Name="Border" Value="transparent" Name="border-color" Selector=".btn-link, a.btn-link" Role="colorpicker" />
+      <Style Display-Name="Hover Border" Value="transparent" Name="border-color" Selector=".btn-link:hover, .btn-link:active, a.btn-link:hover, a.btn-link:active, .btn-link:focus, a.btn-link:focus" Role="colorpicker" />
+    </Group>
+    <Group Name="Modal Buttons">
+      <Style Display-Name="Background" Value="#d7d7d7" Name="background-color" Selector=".btn-default, a.btn-default" Role="colorpicker"  />
+      <Style Display-Name="Background Hover" Value="#aaa9a9" Name="background-color" Selector=".btn-default:hover, .btn-default:active, a.btn-default:hover, a.btn-default:active, .btn-default:focus, a.btn-default:focus, .btn-default:active:focus, .btn-default:active:hover" Role="colorpicker" />
+      <Style Display-Name="Text Color" Value="#333333" Name="color" Selector=".btn-default, a.btn-default" Role="colorpicker" />
+      <Style Display-Name="Text Hover Color" Value="#333333" Name="color" Selector=".btn-default:hover, .btn-default:active, a.btn-default:hover, a.btn-default:active, .btn-default:focus, a.btn-default:focus, .btn-default:active:focus, .btn-default:active:hover" Role="colorpicker" />
+      <Style Display-Name="Border" Value="transparent" Name="border-color" Selector=".btn-default, a.btn-default" Role="colorpicker" />
+      <Style Display-Name="Hover Border" Value="transparent" Name="border-color" Selector=".btn-default:hover, .btn-default:active, a.btn-default:hover, a.btn-default:active, .btn-default:focus, a.btn-default:focus, .btn-default:active:focus, .btn-default:active:hover" Role="colorpicker" />
+    </Group>
+  </Group>
+  <Group Name="Labels and Input Boxes">
+    <Style Display-Name="Hover and Focus Input Box Background" Value="#FFFFFF" Name="background-color" Selector="input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover, input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus, input.k-textbox:hover, textarea.k-textbox:hover, input.k-textbox:focus, textarea.k-textbox:focus" Role="colorpicker" />
+    <Style Display-Name="Hover and Focus Input Box Focus Border" Value="#333333" Name="border-color" Selector="input[type=text]:hover, input[type=password]:hover, textarea:hover, select:hover, input[type=text]:focus, input[type=password]:focus, textarea:focus, select:focus, input.k-textbox:hover, textarea.k-textbox:hover, input.k-textbox:focus, textarea.k-textbox:focus, .select-color:hover, .select-color:selected" Role="colorpicker" />
+    <Style Display-Name="Radio Buttons and Checkboxes" Value="#333333" Name="color" Selector="input[type=radio]:not(.bootstrap-toggle):checked + label:before, input[type=checkbox]:not(.bootstrap-toggle):checked + label:before" Role="colorpicker" />
+  </Group>
+  <Group Name="Grids">
+    <Style Display-Name="Header Background " Value="#DDDDDD" Name="background-color" Selector=".k-grid-header th.k-header" Role="colorpicker" />
+    <Style Display-Name="Header Text Color" Value="#333333" Name="color" Selector=".k-header, .k-grid-header .k-header > .k-link, .k-grid .k-icon:before" Role="colorpicker" />
+    <Style Display-Name="Row Text Color" Value="#333333" Name="color" Selector=".k-grid table tbody tr" Role="colorpicker" />
+    <Style Display-Name="Hover Row Background" Value="#8CC63E" Name="background" Selector=".k-treeview .k-item span.k-in:hover, .k-grid.k-state-hover, .k-state-selected, .k-state-selected:link, .k-state-selected:visited, .k-list > .k-state-selected, .k-list > .k-state-highlight, .k-panel > .k-state-selected, .k-ghost-splitbar-vertical, .k-ghost-splitbar-horizontal, .k-draghandle.k-state-selected:hover, .k-scheduler .k-scheduler-toolbar .k-state-selected, .k-scheduler .k-today.k-state-selected, .k-marquee-color" Role="colorpicker" />
+    <Style Display-Name="Hover Row Text Color" Value="#FFFFFF" Name="color" Selector=".k-grid .k-state-selected, .k-grid .k-state-hover, .k-grid .k-state-selected a, .k-grid .k-state-hover a, .k-grid .k-state-selected .grid-price, .k-grid.k-state-hover .grid-price" Role="colorpicker" />
+    <Style Display-Name="Hover Row Border Color" Value="#FFFFFF" Name="border-color" Selector=".k-grid table tbody tr.k-state-selected, .grid_info table tbody tr:hover, .grid_info table tbody tr:focus, .k-grid .k-state-selected, .k-grid .k-state-hover, .k-state-focused.k-state-selected, .k-state-selected" Role="colorpicker" />
+    <Style Display-Name="Grid Button Background" Value="#d7d7d7" Name="background-color" Selector=".k-grid .k-button" Role="colorpicker" />
+    <Style Display-Name="Grid Button Border" Value="#d7d7d7" Name="border-color" Selector=".k-grid .k-button" Role="colorpicker" />
+    <Style Display-Name="Grid Button Text Color" Value="#333333" Name="color" Selector=".k-grid .k-button" Role="colorpicker" />
+    <Style Display-Name="Grid Button Hover Background" Value="#666666" Name="background-color" Selector=".k-grid .k-button:hover" Role="colorpicker" />
+    <Style Display-Name="Grid Button Hover Border" Value="#666666" Name="border-color" Selector=".k-grid .k-button:hover" Role="colorpicker" />
+    <Style Display-Name="Grid Button Hover Text Color" Value="#FFFFFF" Name="color" Selector=".k-grid .k-button:hover" Role="colorpicker" />
+  </Group>
+  <Group Name="Storefront Specifics">
+    <Style Display-Name="Product Info Background" Value="#FFFFFF" Name="background-color" Selector=".product-bkg, .category-bkg, .choose" Role="colorpicker" />
+    <Style Display-Name="Product Text Color" Value="#666666" Name="color" Selector="p.product-name" Role="colorpicker" />
+    <Style Display-Name="Product Hover Text Color" Value="#00adef" Name="color" Selector="p.product-name:hover" Role="colorpicker" />
+    <Style Display-Name="Price Text Color" Value="#8CC63E" Name="color" Selector="p.product-price, .product-price, .grid-price, .big-price" Role="colorpicker" />
+    <Style Display-Name="Browse Icon Color" Value="#999999" Name="color" Selector="a.sm-icon" Role="colorpicker" />
+    <Style Display-Name="Browse Hover Icon Color" Value="#333333" Name="color" Selector="a.sm-icon:hover" Role="colorpicker" />
+    <Style Display-Name="Favorite Icon Selected" Value="#8CC63E" Name="color" Selector="a.sm-icon.selected" Role="colorpicker" />
+    <Style Display-Name="Config Border Selected" Value="#c1f609" Name="border-color" Selector=".select-color.selected, .part-config-btn.selected" Role="colorpicker" />
+    <Style Display-Name="Config Button Selected" Value="#c1f609" Name="background-color" Selector=".part-config-btn.selected" Role="colorpicker" />
+    <Style Display-Name="Checkout Flow Text" Value="#333333" Name="color" Selector="ol.progtrckr li.progtrckr-done " Role="colorpicker" />
+    <Style Display-Name="Checkout Flow Border" Value="#333333" Name="border-color" Selector="ol.progtrckr li.progtrckr-done " Role="colorpicker" />
+    <Style Display-Name="Checkout Flow Icon" Value="#333333" Name="background-color" Selector="ol.progtrckr li.progtrckr-done:before" Role="colorpicker" />
+  </Group>
+  <Group Name="Special Styles">
+    <Style Display-Name="Accordion Background" Value="#00adef" Name="background-color" Selector=".gt-accordion > h4.accordion, .group-heading, .cart-information" Role="colorpicker" />
+    <Style Display-Name="Accordion Text" Value="#FFFFFF" Name="color" Selector=".gt-accordion > h4.accordion, .group-heading, .cart-information" Role="colorpicker" />
+    <Style Display-Name="Accordion Hover Background" Value="#00adef" Name="background-color" Selector=".gt-accordion > h4.accordion:hover" Role="colorpicker" />
+    <Style Display-Name="Accordion Hover Text" Value="#FFFFFF" Name="color" Selector=".gt-accordion > h4.accordion:hover" Role="colorpicker" />
+    <Style Display-Name="Accordion Focus Background" Value="#8CC63E" Name="background-color" Selector=".gt-accordion > h4.accordion.active, .panel-default > .panel-heading" Role="colorpicker" />
+    <Style Display-Name="Accordion Focus Text" Value="#FFFFFF" Name="color" Selector=".gt-accordion > h4.accordion.active, .panel-default > .panel-heading, .panel-default > .panel-heading a:after, .panel-default > .panel-heading h4" Role="colorpicker" />
+  </Group>
+  <Group Name="Login Page">
+    <Style Display-Name="Page Background" Value="#f1f1f1" Name="background-color" Selector=".login_bkg" Role="colorpicker" />
+    <Style Display-Name="Login Box Background" Value="#fff" Name="background-color" Selector="#loginTarget>.white-box" Role="colorpicker" />
+  </Group>
+</ThemeStructure>

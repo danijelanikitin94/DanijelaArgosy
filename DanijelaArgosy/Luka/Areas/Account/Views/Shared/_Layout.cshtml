@@ -1,0 +1,284 @@
+﻿@using System.Web.Optimization
+@using Argosy.BusinessLogic.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Web.FrontEnd.Models
+@using Argosy.BusinessLogic.FrontEnd.Managers
+@using Argosy.Web.FrontEnd.Core.Extensions
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex">
+    <title>@ViewBag.Title</title>
+    <meta name="viewport" content="width=device-width" />
+
+    @if (IsSectionDefined("FavoriteIcon"))
+    {
+        @RenderSection("FavoriteIcon", required: false)
+    }
+    else
+    {
+        <link href="~/favicon.ico?v=@FrontEndSession.Instance.SessionToken" rel="shortcut icon" type="image/x-icon" />
+    }
+
+    @Html.Partial("Partials/Bundles/_Main")
+
+    @if (IsSectionDefined("ThemeSection"))
+    {
+        @RenderSection("ThemeSection", required: false)
+    }
+    else
+    {
+        <link href="/Style?id=@FrontEndSession.Instance.ThemeId&~v=@FrontEndSession.Instance.SessionToken" rel="stylesheet" id="theme-stylesheet">
+    }
+    @RenderSection("ScriptsHead", required: false)
+
+    <script>
+        function footerPadding() {
+            var footerHeight = $("#footer").height();
+            $("#wrapcontainer").css("paddingBottom", footerHeight + "px");
+        }
+
+        $(function (e) {
+            footerPadding();
+        });
+    </script>
+
+</head>
+<body class="@ViewBag.BackgroundClass">
+    <div id="wrapcontainer">
+
+        @if (FrontEndSession.IsUseable)
+        {
+            <header class="resp-header navbar navbar-static-top">
+                <div class="container">
+                    <div class="logo pull-left padu5 padb5">
+                        <a id="logo_header" href="@FrontEndSession.Instance.LandingPageUrl"><img id="imgCompanyLogo" src="@FrontEndSession.Instance.UserSettings.CompanyLogo" class="company-logo" alt="" /></a>
+                    </div>
+                    <div class="pull-right padu10 ">
+                        @{
+                            var dynamics = DynamicGroupManager.GetDynamicGroups(FrontEndSession.Instance.CompanyId.GetValueOrDefault(0));
+                        }
+                        @if (dynamics != null && dynamics.Count > 1 && dynamics.Any(a => a.Id == FrontEndSession.Instance.User.COMP_USERGROUP_ID))
+                        {
+                            <label class="small_txt marr5">@("~{DynamicUserGroupSelectText}~")</label>
+                            <select id="dynamicGroupOptions" class="small_txt" onchange="updateUserGroup(this);" style="margin-right: 10px; border-color: #ccc; color: #808080">
+                                @foreach (var group in dynamics)
+                                {
+                                    <option class="small_txt" value="@group.Id" @(group.Id == FrontEndSession.Instance.User.COMP_USERGROUP_ID ? "selected='selected'" : "")>@(string.IsNullOrWhiteSpace(group.DisplayName) ? group.GroupName : group.DisplayName) </option>
+                                }
+                            </select>
+                        }
+                        @{
+                            if (FrontEndSession.Instance.ContactUsUrl.NotNullOrEmpty())
+                            {
+                                <a class="padr10 small_txt" target="_blank" href="@FrontEndSession.Instance.ContactUsUrl"><i class="fa fa-phone"></i>&nbsp;~{ContactUs}~</a>
+                            }
+                            else
+                            {
+                                <a class="padr10 fancybox-ajax small_txt" href="/Store/ContactUs/ContactUsPartial"><i class="fa fa-phone"></i>&nbsp;~{ContactUs}~</a>
+                            }
+                        }
+
+                        @*If modifying the user credential section below, update in two places or figure out a way to standardize both.*@
+                        <a class="small_txt nohand"><i class="fa fa-user nohand"></i>&nbsp; @FrontEndSession.Instance.GetUsersFullName()</a>
+                        @{
+                            if (FrontEndSession.Instance.IsGuest)
+                            {
+                                var landingUrl = FrontEndSession.Instance.UserSettings.LandingPageUrl.Replace(@" ", @"%20");
+                                if (FrontEndSession.Instance.CustomRegistrationUrl.IsNullOrEmpty())
+                                {
+                                    <a href="@Url.Action("Register", "Checkout", new {area = "Store", id = FrontEndSession.Instance.UserSettings.CustomUrlPath, redirectUrl = landingUrl})" class="small_txt"> ~{LoginHere}~</a>
+                                }
+                                else
+                                {
+                                    <a href="@FrontEndSession.Instance.CustomRegistrationUrl?redirectUrl=@landingUrl" class="small_txt"> ~{LoginHere}~</a>
+                                }
+                            }
+                            else
+                            {
+                                <a href="@Url.Action("LogOut", "Users", new {area = ""})" class="small_txt">~{NotYouLogOut}~</a>
+                            }
+                        }
+                        <br />
+                        @if (FrontEndSession.Instance.UserSettings.AllowSystemDollar)
+                        {
+                            <a href="@Url.Action("CoopDollars", "Details", new {area = "Account"})" class="small_txt pull-right @SessionHelpers.AddHiddenClassIf(FrontEndSession.Instance.IsGuest)">~{AvailCoOpDollars}~ = <b>@FrontEndSession.Instance.User.GetCoopDollars().ToString("C")</b></a>
+                        }
+                    </div>
+                </div>
+                <div class="header-bottom">
+                    <div class="container">
+                        @Html.Partial("Partials/_CatMenu")
+                    </div>
+                </div>
+                <div id="divUserLogin" style="display: none; min-width: 200px; overflow: hidden; text-align: center">
+                    <h3 class="text-center co-neutral">~{CurrentlyLoggedIn}~:</h3>
+                    <h1>@FrontEndSession.Instance.GetUsersFullName()</h1>
+                    @{
+                        if (FrontEndSession.Instance.IsGuest)
+                        {
+                            var landingUrl = FrontEndSession.Instance.UserSettings.LandingPageUrl.Replace(@" ", @"%20");
+                            if (FrontEndSession.Instance.CustomRegistrationUrl.IsNullOrEmpty())
+                            {
+                                <a href="@Url.Action("Register", "Checkout", new {area = "Store", id = FrontEndSession.Instance.UserSettings.CustomUrlPath, redirectUrl = landingUrl})" class="small_txt"> ~{LoginHere}~</a>
+                            }
+                            else
+                            {
+                                <a href="@FrontEndSession.Instance.CustomRegistrationUrl?redirectUrl=@landingUrl" class="small_txt"> ~{LoginHere}~</a>
+                            }
+                        }
+                        else
+                        {
+
+                            <a href="@Url.Action("LogOut", "Users", new {area = ""})" class="">~{NotYouLogOut}~</a>
+                        }
+                    }
+                    <br />
+                    @if (FrontEndSession.Instance.UserSettings.AllowSystemDollar)
+                    {
+                        <div class="padu20">
+                            ~{AvailCoOpDollars}~ = <a href="@Url.Action("CoopDollars", "Details", new {area = "Account"})" class="@SessionHelpers.AddHiddenClassIf(FrontEndSession.Instance.IsGuest) f16"><b class="f16">@FrontEndSession.Instance.User.GetCoopDollars().ToString("C")</b></a>
+                        </div>
+                    }
+                </div>
+            </header>
+
+            <div class="mobiletitle">@ViewBag.Title</div>
+            if (ViewBag.Navigation != null && ViewBag.ActionLinks != null)
+            {
+                <nav>
+                    <div class="container container-mobile clear">
+                        @if (ViewBag.Navigation != null)
+                        {
+                            <div class="pull-left breadcrumb-mobile">
+                                <div class="breadcrumbs">
+                                    <ol class="breadcrumb">
+                                        @foreach (NavigationAction action in ViewBag.Navigation)
+                                        {
+                                            if (action.Controller == null)
+                                            {
+                                                <li class="@action.OuterClass" onclick="@action.JavaScript"><i class="@action.InnerClass"></i>@action.Name</li>
+                                            }
+                                            else
+                                            {
+                                                <li><a href="@(Url.Action(action.Action, action.Controller) + (!string.IsNullOrWhiteSpace(action.Parameter) ? "/" + action.Parameter : "") + (action.Hash.NotNullOrWhiteSpace() ? action.Hash : "")  )" class="@action.OuterClass"><i class="@action.InnerClass"></i>@action.Name</a></li>
+                                            }
+                                        }
+                                    </ol>
+                                </div>
+                            </div>
+                        }
+                        @if (ViewBag.ActionLinks != null)
+                        {
+                            <div class="pull-right mobilebar">
+                                @foreach (NavigationAction action in ViewBag.ActionLinks)
+                                {
+                                    if (action.Controller == null)
+                                    {
+                                        <a class="@action.OuterClass" onclick="@action.JavaScript"><i class="@action.InnerClass"></i><span class="resp-hidden">@action.Name</span></a>
+                                    }
+                                    else
+                                    {
+                                        <a href="@Url.Action(action.Action, action.Controller)" class="@action.OuterClass" onclick="@action.JavaScript"><i class="@action.InnerClass"></i><span class="resp-hidden">@action.Name</span></a>
+                                    }
+                                }
+                            </div>
+                        }
+
+                    </div>
+                </nav>
+            }
+        }
+
+        <div class="mobilebody">
+            @RenderBody()
+        </div>
+        <footer id="footer" class="lightfooter @ViewBag.FooterClass">
+            <div class="footer-bottom">
+                <div class="container">
+                    @if (!string.IsNullOrWhiteSpace(FrontEndSession.Instance.UserSettings?.FooterHtml))
+                    {
+                        @Html.Raw(Server.HtmlDecode(FrontEndSession.Instance.UserSettings?.FooterHtml))
+                    }
+                    else
+                    {
+                        <div class="col_half padu10">
+                            @if (!FrontEndSession.Instance.IsWhiteLabel)
+                            {
+                                <p class="pull-left">Copyright © @DateTime.Now.Year Propago. All rights reserved.</p>
+                            }
+                        </div>
+                        <div class="col_half col_last floatr padu10 ">
+
+                            @if (FrontEndSession.Instance.IsWhiteLabel)
+                            {
+                                <p class="pull-right">~{PoweredBy}~ <span>@FrontEndSession.Instance.SiteWhiteLabel</span></p>
+                            }
+                            else
+                            {
+                                <p class="pull-right">~{PoweredBy}~ <span><a target="_blank" href="//www.propago.com">PROPAGO</a></span></p>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    @{
+        if (FrontEndSession.IsUseable && FrontEndSession.Instance.PersistentMessageAvailable && FrontEndSession.Instance.PersistentMessageId != null)
+        {
+            var persistentMessageId = (int)FrontEndSession.Instance.PersistentMessageId;
+            var persistentMessage = new { Subject = "Naslov", Description = "Opis" };
+            <div data-argosy-control="ModalPersistentMessageDetail"
+                 data-argosy-view="ModalPersistentMessageDetail"
+                 data-argosy-options-message-subject="@persistentMessage.Subject"
+                 data-argosy-options-message-description="@persistentMessage.Description">
+            </div>
+        }
+    }
+
+    @if (!string.IsNullOrWhiteSpace(FrontEndSession.Instance.GoogleAnalyticsCode))
+    {
+        <!-- GOOGLE ANALYTICS BLOCK -->
+        <script type="text/javascript">
+            setTimeout(function() {
+                    (function(i, s, o, g, r, a, m) {
+                        i['GoogleAnalyticsObject'] = r;
+                        i[r] = i[r] ||
+                            function() {
+                                (i[r].q = i[r].q || []).push(arguments)
+                            }, i[r].l = 1 * new Date();
+                        a = s.createElement(o),
+                            m = s.getElementsByTagName(o)[0];
+                        a.async = 1;
+                        a.src = g;
+                        m.parentNode.insertBefore(a, m)
+                    })(window, document, 'script', 'https://www.google-analytics.com/analytics.js', 'ga');
+
+                    ga('create', '@FrontEndSession.Instance.GoogleAnalyticsCode', 'auto');
+                    ga('send', 'pageview');
+                },
+                5000);
+        </script>
+    }
+    @if (!string.IsNullOrWhiteSpace(FrontEndSession.Instance.ZendeskUrl))
+    {
+        <script type="text/javascript">
+            setTimeout(function()
+            {
+                /*<![CDATA[*/window.zEmbed || function (e, t) { var n, o, d, i, s, a = [], r = document.createElement("iframe"); window.zEmbed = function () { a.push(arguments) }, window.zE = window.zE || window.zEmbed, r.src = "javascript:false", r.title = "", r.role = "presentation", (r.frameElement || r).style.cssText = "display: none", d = document.getElementsByTagName("script"), d = d[d.length - 1], d.parentNode.insertBefore(r, d), i = r.contentWindow, s = i.document; try { o = s } catch (e) { n = document.domain, r.src = 'javascript:var d=document.open();d.domain="' + n + '";void(0);', o = s } o.open()._l = function () { var o = this.createElement("script"); n && (this.domain = n), o.id = "js-iframe-async", o.src = e, this.t = +new Date, this.zendeskHost = t, this.zEQueue = a, this.body.appendChild(o) }, o.write('<body onload="document._l();">'), o.close() }("https://assets.zendesk.com/embeddable_framework/main.js", "@FrontEndSession.Instance.ZendeskUrl");
+                /*]]>*/
+            },1500)
+        </script>
+    }
+    @if (FrontEndSession.IsUseable)
+    {
+        @Html.Partial("Partials/_GlobalTemplates")
+        @Html.Partial("Partials/_DisplayOptionStyles")
+    }
+    <iframe class="hide" id="file-download"></iframe>
+    <!-- @Server.MachineName -->
+</body>
+</html>

@@ -1,0 +1,247 @@
+﻿@using System.Web.Optimization
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Common;
+
+@{
+    var kendoVersionNumber = "2017.2.504";
+    var appVersion = "";//AssemblyHelper.GetVersion();
+    var routeVals = RouteTable.Routes.GetRouteData(new HttpContextWrapper(HttpContext.Current));
+    var routeArea = routeVals.DataTokens["area"];
+    var routeController = routeVals.Values["controller"];
+    var routeAction = routeVals.Values["action"];
+   
+
+    <link href="https://kendo.cdn.telerik.com/@kendoVersionNumber/styles/kendo.common.min.css" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/@kendoVersionNumber/styles/kendo.default.min.css" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/@kendoVersionNumber/styles/kendo.dataviz.min.css" rel="stylesheet">
+    <link href="https://kendo.cdn.telerik.com/@kendoVersionNumber/styles/kendo.dataviz.default.min.css" rel="stylesheet">
+
+    if (!Request.IsLocal)
+    {
+        <link href="/Content/styles.min.css" rel="stylesheet">
+        <script src="/Scripts/jQueryLibs.min.js?v=@FrontEndSession.Instance.SessionToken"></script>
+        <script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/kendo.all.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/kendo.aspnetmvc.min.js"></script>
+        <script src="/Scripts/controls.min.js?v=@FrontEndSession.Instance.SessionToken"></script>
+        <script src="/Scripts/uIControls.min.js?v=@FrontEndSession.Instance.SessionToken"></script>
+    }
+    else
+    {
+        @Styles.Render("~/Content/maincss")
+        @Scripts.Render("~/bundles/jQueryLib")
+        <script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/kendo.all.min.js"></script>
+        <script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/kendo.aspnetmvc.min.js"></script>
+        @Scripts.Render("~/bundles/argosyLib")
+        @Scripts.Render("~/bundles/controls")
+        @Scripts.Render("~/bundles/uILib")
+    }
+
+}
+
+<script src="/Scripts/jquery.signalR-2.2.1.min.js"></script>
+<script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/cultures/kendo.culture.en-US.min.js"></script>
+
+@if (FrontEndSession.Instance.Culture.ToLower() != "en-us")
+{
+    <script src="https://kendo.cdn.telerik.com/@kendoVersionNumber/js/cultures/kendo.culture.@(FrontEndSession.Instance.Culture).min.js"></script>
+    <script src="/Scripts/kendo/@kendoVersionNumber/messages/kendo.messages.@(FrontEndSession.Instance.Culture).min.js"></script>
+}
+
+<script type="text/javascript">
+    if (HTMLSelectElement.prototype.hasOwnProperty("selectedOptions") === false) {
+        Object.defineProperty(HTMLSelectElement.prototype, "selectedOptions",
+            {
+                get: (function() {
+                    try {
+                        document.querySelector(":checked");
+                        return function() {
+                            return this.querySelectorAll(":checked");
+                        };
+                    } catch (e) {
+                        return function() {
+                            if (!this.multiple) {
+                                return this.selectedIndex >= 0
+                                    ? [this.options[this.selectedIndex]]
+                                    : [];
+                            }
+                            for (var i = 0, a = []; i < this.options.length; i++)
+                                if (this.options[i].selected) a.push(this.options[i]);
+                            return a;
+                        };
+                    }
+                })()
+            });
+    }
+    var pageCacheBuster = Math.random();
+    var app_Version_Num = '@appVersion';
+    var sessionToken = '@FrontEndSession.Instance.SessionToken';
+    var validationKey = '@Server.UrlEncode(FrontEndSession.Instance.ValidationKey)';
+    var userSettings = null//Html.Raw(SerializerFactory.GetSerializer(SerializationType.JSON).Serialize(FrontEndSession.Instance.UserSettings));
+    var showDebugInfo = ""; //((AppSetting.IsDevelopment || AppSetting.IsTest).ToString().ToLower());
+    var isInternetExplorer = false; //(BrowserUtility.IsInternetExplorer(Request.Browser).ToString().ToLower());
+    var userId = @FrontEndSession.Instance.HashedUserId;
+    var companyId = '@FrontEndSession.Instance.HashedCompanyId';
+    var siteId = '@FrontEndSession.Instance.HashedSiteId';
+    var companyUserGroupId = '@FrontEndSession.Instance.HashedCompanyUserGroupId';
+
+    if (typeof kendo == "undefined") {
+        // checking for loaded CSS files is cumbersome,
+        // that's why we assume that if the scripts have failed, so have the stylesheets
+
+        // fallback to local Kendo UI stylesheets
+        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/Content/kendo/@kendoVersionNumber/kendo.common.min.css" %3C/%3E'));
+        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/Content/kendo/@kendoVersionNumber/kendo.default.min.css" %3C/%3E'));
+        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/Content/kendo/@kendoVersionNumber/kendo.dataviz.min.css" %3C/%3E'));
+        document.write(decodeURIComponent('%3Clink rel="stylesheet" href="/Content/kendo/@kendoVersionNumber/kendo.dataviz.default.min.css" %3C/%3E'));
+
+        // fallback to local Kendo UI scripts
+        document.write(decodeURIComponent('%3Cscript src="/Scripts/kendo/@kendoVersionNumber/kendo.all.min.js" %3E%3C/script%3E'));
+        document.write(decodeURIComponent('%3Cscript src="/Scripts/kendo/@kendoVersionNumber/kendo.aspnetmvc.min.js" %3E%3C/script%3E'));
+        document.write(decodeURIComponent('%3Cscript src="/Scripts/kendo/@kendoVersionNumber/cultures/kendo.culture.fr-CA.min.js" %3E%3C/script%3E'));
+        document.write(decodeURIComponent('%3Cscript src="/Scripts/kendo/@kendoVersionNumber/messages/kendo.messages.fr-CA.min.js" %3E%3C/script%3E'));
+
+    }
+    (function(window) {
+        if (isInternetExplorer) {
+            var location = window.location,
+                oldUrl = location.href,
+                oldHash = location.hash;
+
+            // check the location hash on a 100ms interval
+            setInterval(function() {
+                var newUrl = location.href,
+                    newHash = location.hash;
+                // if the hash has changed and a handler has been bound...
+                if (newHash != oldHash) {
+                    processHashChange(oldHash, newHash);
+                    oldUrl = newUrl;
+                    oldHash = newHash;
+                }
+            },100);
+        }
+    })(window);
+    
+    $(document).ready(function(e) {
+        
+        $("#menu").kendoMenu({
+            popupCollision: "fit flip"
+        });
+
+        if (!isInternetExplorer) {
+            $(window).on('hashchange', function(e) {
+                if (e.originalEvent.oldURL != null && e.originalEvent.newURL != null) {
+                    processHashChange(e.originalEvent.oldURL, e.originalEvent.newURL);
+                }
+            });
+        }
+        $(document).bind(argosyEvents.MVC_VIEW_PRODUCTS_CONTROL_LOADED, function(e) {
+            var initialHash = getCategoryHash(window.location.hash);
+            var path = window.location.pathname.toLowerCase();
+            if (initialHash.value != "") {
+                triggerChangeEvent(window.location.hash);
+            } else if (path === "/store" || path === "/store/browse" || path === "/store/browse/index"){
+                $.ajax({
+                    url: "/Store/Browse/GetDefaultHash",
+                    method: "GET",
+                    success: function (result) {
+                        window.location.hash = result;
+                    }
+                });
+            }
+        });
+        $(document).bind(argosyEvents.RESET_ACTIVE_MENU_ITEM, function(e) {
+            setActiveMenuItem();
+        });
+    });
+
+    function processHashChange(oldUrl, newUrl) {
+        var oldHash = oldUrl.replace(window.location.origin + window.location.pathname, "");
+        var newHash = newUrl.replace(window.location.origin + window.location.pathname, "");
+        if (hasHashChanged(oldHash, newHash)) {
+            triggerChangeEvent(newHash);
+        }
+    }
+
+    function updateUserGroup(element) {
+        element = $(element);
+        if ($.isNumeric(element.val())) {
+            window.location = '@Url.Action("SelectGroup", "Security", new { area = ""})?usergroupId=' + element.val() + "&savePermanently=false";
+        }
+    }
+
+    function triggerChangeEvent(hashString) {
+        var that = this,
+            partCat = {};
+        var hash = that.getCategoryHash(hashString);
+        var item = $("a[data-argosy-categoryid='" + hash.id + "']");
+        if(item.length > 0) {
+            var categoryId = parseInt(item.data("argosyCategoryid"));
+            var categoryName = item.attr("data-argosy-categoryName");
+            var categoryDesc = item.data("argosyCategorydesc");
+            var categoryComments = item.data("argosyCategorycomments");
+            var showGridView = item.data('argosyCategoryshowgridview');
+            partCat.id = categoryId;
+            partCat.name = categoryName;
+            partCat.desc = categoryDesc;
+            partCat.comments = categoryComments;
+            partCat.showGridView = showGridView;
+            $(document).trigger(argosyEvents.PART_CATEGORY_CHANGE, partCat);
+        } else {
+            $.ajax({
+                url: "/Store/Browse/GetPartCategory?id=" + hash.id,
+                method: "GET",
+                success: function (result) {
+                    if (result.GroupId > 0) {
+                        partCat.id = result.GroupId;
+                        partCat.name = result.GroupName.trim();
+                        partCat.desc = result.GroupDescrip;
+                        partCat.comments = result.CategoryComments;
+                        partCat.showGridView = result.ShowGridView;
+                        $(document).trigger(argosyEvents.PART_CATEGORY_CHANGE, partCat);
+                    } else {
+                        window.location = "@FrontEndSession.Instance.LandingPageUrl";
+                    }
+
+                }
+            });
+
+        }
+    }
+
+    function hasHashChanged(oldHash, newHash) {
+        var oldCategory = getCategoryHash(oldHash);
+        var newCategory = getCategoryHash(newHash);
+        return oldCategory.id != newCategory.id;
+    }
+
+    function getCategoryHash(hash) {
+        var categoryHash = {
+            type: "Category",
+            value: "",
+            id: 0
+        };
+        var piece = hash;
+        if (piece.indexOf("Category") > -1 || piece.indexOf("category") > -1) {
+            var pieces = piece.split(":");
+            categoryHash.value = pieces[2];
+            categoryHash.id = pieces[1];
+        }
+        return categoryHash;
+    }
+
+    function gotoHomeUrl() {
+        @if (FrontEndSession.Instance.UserSettings != null)
+        {
+            @:window.location = '@FrontEndSession.Instance.UserSettings.LandingPageUrl';
+                }
+    }
+</script>
+@if (routeArea != null)
+{
+    <script src="@string.Format("/Scripts/Page/{0}/{1}/{2}.js?~v=" + FrontEndSession.Instance.SessionToken, routeArea, routeController, routeAction)"></script>
+}
+else
+{
+    <script src="@string.Format("/Scripts/Page/{0}/{1}.js?~v=" + FrontEndSession.Instance.SessionToken, routeController, routeAction)"></script>
+}
+

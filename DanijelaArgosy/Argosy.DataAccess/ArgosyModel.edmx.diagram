@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="79c52180fa4741eebd9edae55c83d3a5" Name="Diagram1">
+        <EntityTypeShape EntityType="ArgosyModel.AspNetUserPassword" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.AspNetUser" Width="1.5" PointX="0.75" PointY="5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_COMP_USERGROUP" Width="1.5" PointX="8.25" PointY="56.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_COMP_USERS" Width="1.5" PointX="3" PointY="43.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_COMPANY" Width="1.5" PointX="6" PointY="35.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_COUNTRIES" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_GATEWAY_TYPE" Width="1.5" PointX="6.75" PointY="32.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_GROUPS" Width="1.5" PointX="6" PointY="18" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_HIERARCHY" Width="1.5" PointX="5.25" PointY="71.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_LOGIN_AUDIT" Width="1.5" PointX="5.25" PointY="80.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_LOGIN_TOKEN" Width="1.5" PointX="8.25" PointY="82.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_ORDERS" Width="1.5" PointX="11.25" PointY="45.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_PART" Width="1.5" PointX="14.25" PointY="41" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_PARTGROUP" Width="1.5" PointX="16.5" PointY="51.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_PAYMENT_AUTH" Width="1.5" PointX="3" PointY="66.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_SITE" Width="1.5" PointX="0.75" PointY="47.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_SITE_GATEWAY" Width="1.5" PointX="9" PointY="51" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_SITE_GATEWAY_OPTION" Width="1.5" PointX="6.75" PointY="26" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_STATES" Width="1.5" PointX="3" PointY="1.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_TYPEAHEAD" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_UI_CUSTOM_TEXT" Width="1.5" PointX="19.5" PointY="51.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_USERGROUP" Width="1.5" PointX="8.25" PointY="46.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ESM_USERS" Width="1.5" PointX="3" PointY="113.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArgosyModel.ViewCompanyUserHierarchy" Width="1.5" PointX="5.75" PointY="3.75" IsExpanded="true" />
+        <AssociationConnector Association="ArgosyModel.FK_AspNetUserPasswords_AspNetUsers" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_COMP_USERGROUP_ESM_COMPANY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_COMP_USERS_ESM_COMPANY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_COMP_USERS_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_HIERARCHY_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_ORDERS_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_USERGROUP_ESM_COMP_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_RefESM_COMP_USERS29" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_COMPANY_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_COMPANY_ESM_SITE_GATEWAY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_ORDERS_ESM_COMPANY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_PART_ESM_COMPANY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_PROVINCES_ESM_COUNTRIES" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_RefESM_GROUPS30" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_RefESM_GROUPS31" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_LOGIN_AUDIT_ESM_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_LOGIN_TOKEN_ESM_USERS" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_ORDERS_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_PART_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_PARTGROUP_ESM_PART" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_UI_CUSTOM_TEXT_ESM_PART" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_PAYMENT_AUTH_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_SITE_GATEWAY_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_USERS_ESM_SITE" ManuallyRouted="false" />
+        <AssociationConnector Association="ArgosyModel.FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

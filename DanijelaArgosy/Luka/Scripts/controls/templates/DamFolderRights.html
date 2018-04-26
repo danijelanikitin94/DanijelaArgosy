@@ -1,0 +1,14 @@
+﻿<script type="text/x-kendo-tmp" id="assetPermissionsTemplate">
+    <tr class="text-center">
+        <td><h3 class="text-left">${RoleName}</h3></td>
+        #if (IsAdmin) {#
+        <td colspan="5"><h3 class="co-good text-center">System Admin</h3></td>
+        #} else {#
+        <td><i class="fa #if (CanView) {#fa-check co-good#}else{#fa-close co-warning#}# fa-3x" data-bind="click: click" data-property="CanView"></i></td>
+        <td><i class="fa #if (CanDownload) {#fa-check co-good#}else{#fa-close co-warning#}# fa-3x" data-bind="click: click" data-property="CanDownload"></i></td>
+        <td><i class="fa #if (CanUpload) {#fa-check co-good#}else{#fa-close co-warning#}# fa-3x" data-bind="click: click" data-property="CanUpload"></i></td>
+        <td><i class="fa #if (CanEdit) {#fa-check co-good#}else{#fa-close co-warning#}# fa-3x" data-bind="click: click" data-property="CanEdit"></i></td>
+        <td><i class="fa #if (CanDelete) {#fa-check co-good#}else{#fa-close co-warning#}# fa-3x" data-bind="click: click" data-property="CanDelete"></i></td>
+        #}#
+    </tr>
+</script>

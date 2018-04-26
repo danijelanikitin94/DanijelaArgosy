@@ -1,0 +1,45 @@
+﻿#menu, #menu ul,  #menu>li, .mobile-nav, .header-bottom, #menu span.icon-magnifier a:hover {
+    background-color: #00ADEF;  
+}
+
+#menu a, #menu .mini-cart{
+    color: #FFF;
+}
+
+#menu a:hover {
+    background-color: #8CC63E;
+    color: #FFF;
+}
+
+.k-menu .k-state-active, .k-menu.k-state-active:hover {
+    background: #00ADEF;
+}
+
+body, p {
+    color: #666;
+}
+
+h1 {
+    color: #666;
+}
+
+h2, h3, h4, p.product-name, .info h3, h3.boxtitle {
+    color: #00ADEF;
+}
+
+.border-container {
+    border-color: #00ADEF;
+}
+
+.bot {
+    border-bottom: 1px solid #00ADEF;
+}
+
+
+a, h5:hover, a:hover, a:focus, .choose ul li a:hover, .choose2 ul li i:hover, .choose ul li a.selected, .choose2 ul li a.selected, .btn-execute:hover {
+    color: #00ADEF;
+}
+
+.highlight {
+    background-color: #ddd;
+}

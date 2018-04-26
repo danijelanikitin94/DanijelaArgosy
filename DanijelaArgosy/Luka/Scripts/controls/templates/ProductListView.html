@@ -1,0 +1,65 @@
+﻿<div>
+    <div id="listItem">
+        <div class="col-md-4">
+            <div class="product-image-wrapper">
+                <div class="single-item">
+                    <div class="productinfo text-center">
+                        <div>
+                            <a class="fancybox container-aspect" href="${ThumbnailFile}"><img class="img-responsive img-aspect" title="Enlarge Image" alt="Part SKU" src="${ThumbnailFile}" /></a>
+                        </div>
+                        <div class="product-bkg">
+
+                            <a class="fancybox" href="\#divPartDetails"><p class="product-name">#=PartName#</p></a>
+                            <p class="product-price">${kendo.toString(0,"C")}</p>
+                            <p class="product-ship">Ships in 5 days</p>
+                        </div>
+                        <div class="choose">
+                            # if (true) { # 
+                            <!-- what part colum should trigger this? -->
+                            <div><a data-argosy-action="addProductHover" class="sm-icon" data-argosy-target=".single-item"><i title="More Details" class="fa fa-info-circle"></i></a></div>
+                            # } else { #
+
+                            # } #
+                            <div><a href="\#divPartHistory" class="sm-icon fancybox"><i title="Part History" class="fa fa-bar-chart-o"></i></a></div>
+                            # if (false) { #
+                            <!-- Going to require a rapid order part list cache for this and show/hide based on that after initial render -->
+                            <div><a data-argosy-action="addRapidOrder" data-argosy-dataid="${id}" class="sm-icon selected"><i title="Favorite" class="fa fa-star"></i></a></div>
+                            # } else { #
+                            <div><a data-argosy-action="addRapidOrder" class="sm-icon" data-argosy-dataid=" ${PartId}"><i title="Favorite" class="fa fa-star"></i></a></div>
+                            # } #
+                            <div class="trigger">
+                                # if (IsBundleKit) { #
+                                <a href="\#divGlobalForm" class="fancybox btn btn-primary btn-sm"><i title="Order Bundle" class="fa fa-gift"></i> Order Bundle</a>
+                                # } else if (IsKit) { #
+                                <a href="/mockups/build-kit.html" class="btn btn-primary btn-sm"><i class="fa fa-archive"></i> Build a Kit</a>
+                                # } else if (CanCustomize) { #
+                                <a href="/mockups/personalize.html" class="btn btn-primary btn-sm"><i title="Personalize" class="fa fa-pencil"></i> Personalize</a>
+                                # } else if (false) { #
+                                <!-- what is defines that a part is configurable? -->
+                                <a href="\#divPartConfig" class="fancybox btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Add To Cart</a>
+                                # } else { #
+                                <a href="" class="btn btn-primary btn-sm"><i class="fa fa-shopping-cart"></i> Add To Cart</a>
+                                # } #
+                            </div>
+                            
+                        </div>
+                        <div class="product-overlay">
+                            <div class="overlay-content">
+                                <p class="product-name">#=PartName#</p>
+                                <p>#=Description#</p>
+                                <p class=" w100 text-center"><a data-argosy-action="addProductHover" class="co-white" data-argosy-target=".single-item"><i title="Close box" class="fa fa-close co-white"></i> CLOSE</a></p>
+
+                            </div>
+                        </div>
+                        # if (false) { #
+                        <!-- where does the sale data come from? -->
+                        <img src="/content/images/sale.png" class="accent" alt="On Sale" />
+                        # } else if (IsKit) { #
+                        <img src="/content/images/kit.png" class="accent" alt="Part Kit" />
+                        # }#
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

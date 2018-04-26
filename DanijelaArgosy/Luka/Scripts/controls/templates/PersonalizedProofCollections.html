@@ -1,0 +1,42 @@
+﻿<script type="text/x-kendo-tmpl" id="_PersonalizedProofCollectionsTemplate">
+    <div class="col-md-12 nopadding">
+        <h1 class="floatl">~{MyLibrary}~</h1>
+        <div class="k-keyword-search floatr">
+            <input type="text" placeholder="~{SearchByProductName}~" data-bind="value: keyword">
+            <a class="k-button-nbkg" data-bind="click: searchPersonalizedProofCollections">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+    </div>
+    <div class="col-md-12 nopadding nobottommargin">
+        <div id="listView">
+            <div data-role="listview"
+                 data-template="_PersonalizedProofCollections"
+                 data-bind="source: dataSource"></div>
+        </div>
+    </div>
+</script>
+
+<script type="text/x-kendo-tmpl" id="_PersonalizedProofCollections">        
+            <div class="col-sm-3 maru20">
+                <div class="img-border text-center maru10">
+                    <img class="img-aspect text-center" src="${Thumbnail}" alt="test-image" />
+                </div>
+                <div class="col-md-12 nopadding nobottommargin maru10" >
+                    <p class="marb10 clearfix choose" >
+                        <b>#=PartDisplayName#</b>
+                    </p>
+                    <div class="col-md-6  nopadding nobottommargin maru5">
+                        <p class="smallest_txt">${Lines} #=Lines > 1 ? "~{Orders}~" : "~{Order}~"#</p>
+                        <p class="smallest_txt">~{LastOrderOn}~ #=kendo.toString(kendo.parseDate(LastOrderDate), "d")#</p>
+                    </div>
+                    <div class="col-md-6 nopadding nobottommargin maru5">
+                        <a class="btn btn-primary text-center upcase"
+                           data-argosy-dataid="${PartNumber}"
+                           data-argosy-action="showPersonalizedProofCollectionDetails" data-argosy-msg="${CustomMsg}">~{ViewDetails}~</a>
+                    </div>
+                </div>
+            </div>
+
+  
+</script>

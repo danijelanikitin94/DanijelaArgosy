@@ -1,0 +1,109 @@
+﻿<style>
+    body {overflow-x: auto !important;}
+    #footer {display:none !important;}
+</style>
+<script type="text/x-kendo-template" id="_ListMapperTemplate">
+    <h3>~{TriedMappingMailingList}~</h3>
+    <p class="padu10">~{MakeSureToMapLabelsCorrectly}~</p>
+    <div class="sortable-section clearfix">
+        <div class="col_two_third">
+            <div class="col_half nobottommargin">
+                <h4 class="">~{SystemColumns}~</h4>
+            </div>
+            <div class="col_half col_last nobottommargin">
+                <h4 class="center">~{Mapped}~</h4>
+            </div>
+            #for (var i = 0; i < destinationColumns.length; i++) {
+                var col = destinationColumns[i];
+            #
+            <div class="col_half text-center sys_label">
+                ${col.Name} #if (col.Required != null && col.Required) {#<span class="text-danger">*</span><br />#}#
+                #if (col.Description != null && col.Description != "") {#${col.Description}#}#
+            </div>
+            <div class="col_half col_last">
+                <div class="list-wrapper">
+                    <ul id="sortable-list_${col.Id}" class="sortable-list-container mapped" data-value="${col.Name}">
+                        #if (col.SourceColumns != null && col.SourceColumns.length > 0) {#
+                            #for (var x = 0; x < col.SourceColumns.length; x++) {#
+                            <li class="list-item">${col.SourceColumns[x]}</li>
+                            #}#
+                        #}#
+                    </ul>
+
+                </div>
+            </div>
+            #}#
+        </div>
+        <div class="col_one_third col_last">
+            <h4 class="center">~{Unmapped}~</h4>
+            <div class="list-wrapper">
+                <ul id="sortable-list_Unmapped" class="sortable-list-container-unmap unmapped">
+                    #if (unmappedColumns != null && unmappedColumns.length > 0) {#
+                    #for (var x = 0; x < unmappedColumns.length; x++) {#
+                    <li class="list-item">${unmappedColumns[x]}</li>
+                    #}#
+                    #}#
+                </ul>
+            </div>
+           
+        </div>
+    </div>
+
+    <div class="col-sm-12">
+        <div class="padu10">~{RemainingUnmappedLabelsRemainInList}~</div>
+    </div>
+
+
+
+</script>
+<style type="text/css">
+    .sortable-section {
+        padding: 10px 0 0;
+    }
+
+
+    .list-wrapper {
+        overflow: hidden;
+    }
+
+    .sys_label {
+        padding-top: 5px;
+        font-size: 14px;
+    }
+
+    .sortable-list-container {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #999;
+        border-radius: 4px;
+        min-height: 40px;
+    }
+
+
+    .sortable-list-container-unmap {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        border: 1px solid #999;
+        border-radius: 4px;
+        min-height: 40px;
+    }
+
+    .sortable-section .col_half {
+        margin-bottom: 5px;
+    }
+
+    .list-item {
+        list-style-type: none;
+        width: 95%;
+        max-width: 300px;
+        margin: 5px;
+        line-height: 30px;
+        text-align: center;
+        background-color: #222222;
+        color: #ffffff;
+        border-radius: 3px;
+        cursor: move;
+    }
+</style>

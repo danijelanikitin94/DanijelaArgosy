@@ -1,0 +1,64 @@
+﻿@model Argosy.Web.FrontEnd.Models.ConsumerCompanyModel
+<div>
+    <h3>Add Company</h3>
+    <div id="_ConsumerAddCompanyAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <div id="_alertConsumerMessage"> <strong>Company name already exists.</strong>&nbsp;Please add a different name to continue.</div>
+    </div>
+</div>
+<div class="form-group">
+    @Html.EditorFor(m => m.CompanyName, "NewString")
+</div>
+<div class="padu5">
+    <div class="text-center">
+        <button id="_addConsumerCompanyButton" class="btn btn-primary">Add</button>
+    </div>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $("#_addConsumerCompanyButton").on("click", function () {
+            var companyNameInput = $("#@Html.IdFor(m => m.CompanyName)"),
+                companyName = $.trim(companyNameInput.val()),
+                params = { CompanyName: companyName },
+                alertDiv = $("#_ConsumerAddCompanyAlert");
+            alertDiv.addClass("hidden");
+
+            if (companyName !== '') {
+                $.ajax({
+                    url: '@Url.Action("AddCompany", "Consumers", new {area="Tools"})',
+                    type: "POST",
+                    data: JSON.stringify(params),
+                    dataType: "json",
+                    traditional: true,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (result) {
+                       if (result.IsError === false) {
+                           
+                                prompt.notify({
+                                    question: result.Data.CompanyName + " was successfully added.",
+                                    type: "success"
+                                });
+                           
+                                $(document).trigger(argosyEvents.EVENT_CONSUMER_COMPANY_ADDED, { consumerCompanyId: result.Data.ConsumerCompanyId });
+                                companyNameInput.val('');
+                                var createButton = $("#_createConsumerUser");
+                                if (createButton && createButton.length > 0) {
+                                    $("#_createConsumerUser").trigger('click');
+
+                                } else {
+                                    $.fancybox.close();
+                                }
+                        } else {
+                            $("#_alertConsumerMessage").html(result.Message);
+                            alertDiv.removeClass("hidden");
+                        }
+                    }
+                });
+            } else {
+                $("#_alertConsumerMessage").html("Company name is required.");
+                alertDiv.removeClass("hidden");
+            }
+
+        });
+    });
+</script>

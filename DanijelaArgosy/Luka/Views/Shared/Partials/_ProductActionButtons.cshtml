@@ -1,0 +1,13 @@
+﻿# if (true) { #
+<!-- what part colum should trigger this? -->
+<div><a data-argosy-action="addProductHover" class="sm-icon" data-argosy-target=".single-item"><i title="More Details" class="fa fa-info-circle"></i></a></div>
+# } else { #
+
+# } #
+<div><a data-argosy-dataid="${PartId}" data-argosy-action="showProductUsageHistory" class="sm-icon"><i title="Part History" class="fa fa-bar-chart-o"></i></a></div>
+# if (false) { #
+<!-- Going to require a rapid order part list cache for this and show/hide based on that after initial render -->
+<div><a data-argosy-action="addRapidOrder" data-argosy-dataid="${id}" class="sm-icon selected"><i title="Favorite" class="fa fa-star"></i></a></div>
+# } else { #
+<div><a data-argosy-action="addRapidOrder" class="sm-icon" data-argosy-dataid=" ${PartId}"><i title="Favorite" class="fa fa-star"></i></a></div>
+# } #

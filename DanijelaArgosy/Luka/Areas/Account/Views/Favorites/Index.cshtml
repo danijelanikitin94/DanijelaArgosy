@@ -1,0 +1,33 @@
+﻿@using Argosy.BusinessLogic.CompanyUser
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Web.FrontEnd.Models
+@using Newtonsoft.Json
+@*@model Argosy.BusinessLogic.FrontEnd.Managers.FavoritesManager.Favorite*@
+@{
+    ViewBag.Title = "~{Favorites}~";
+    ViewBag.Navigation.Add(new NavigationAction() { Name = "~{Favorites}~", OuterClass = "Active" });
+}
+<section class="extra">
+    <div class="container maru10">
+        <div class="row">
+            @*@if (FrontEndSession.Instance.FavoritePartIds.Count > 0)
+            {*@
+                @Html.Partial("Partials/_CompanyFiltersHorizontal")
+                <div id="divFavoriteProducts" class="col-sm-12 nohover" data-argosy-control="MvcProductView" data-argosy-options-show-title="false" data-argosy-options-show-company-links="false" data-argosy-options-allowed-part-ids="@(JsonConvert.SerializeObject(FrontEndSession.Instance.FavoritePartIds))" data-argosy-loading="MvcProductView" data-argosy-loading-message="Loading your products...">
+                    <div class="floatl">
+                        <h2 class="title hidden-xs hidden-sm">~{FavoriteProducts}~</h2>
+                    </div>
+                </div>
+            @*}
+            else
+            {*@
+                @*<div class="center">
+                    <div class="f50 grayout topmargin-lg bottommargin-lg">~{NoAddedProductsAsFavorites}~</div>
+                    <a class="btn btn-primary hand" href="@FrontEndSession.Instance.LandingPageUrl"><i class="fa fa-chevron-left"></i> ~{ContinueShopping}~</a>
+                </div>
+
+            }*@
+        </div>
+    </div>
+</section>
+

@@ -1,0 +1,557 @@
+﻿<div id="_manageCoopDollarsMainTemplate" style="display: none">
+    <div id="_manageCoopDollarsContainer">
+        <div class="alert alert-warning" id="_coopAlert" role="alert" style="display:none;"></div>
+        <div class="col-sm-6 " id="divUsersBalance" style="padding-right: 10px">
+            <h3>Users</h3>
+            <div data-role="grid"
+                 data-id="usersBalanceGrid"
+                 data-toolbar='[{ template: kendo.template($("#_usersBalanceToolbar").html()) }]'
+                 data-columns="[
+                                {
+                                    headerTemplate: kendo.template(jQuery('#checkBoxTemplateSelectAllUsers').html()),
+                                    template: kendo.template(jQuery('#checkBoxTemplate').html()),
+                                    width: 30
+                                }, {
+                                    field: 'UserName',
+                                    title: 'Username',
+                                    aggregates: ['count'],
+                                    groupHeaderTemplate: '#=value#',
+                                    hidden: 'true'
+                                },
+                                {
+                                    field: 'UserFullName',
+                                    title: 'User'
+                                }, {
+                                    field: 'BucketName',
+                                    title: 'Bucket Name'
+                                },
+                                {
+                                    field: 'Balance',
+                                    format: '{0:c}'
+                                }
+                            ]"
+                 data-bind="source: usersLedger,
+                            events:
+                                {
+                                    change: change,
+                                    dataBound: usersBalanceDataBound
+                                }"
+                 data-auto-bind="true"
+                 data-pageable="true"
+                 data-scrollable="false"
+                 data-sortable="true"
+                 data-selectable="multiple, row">
+            </div>
+        </div>
+        <div class="col-sm-6 " id="divUserGroupsBalance" style="padding-left: 10px">
+            <h3>User Groups</h3>
+            <div data-role="grid"
+                 data-id="userGroupsBalanceGrid"
+                 data-toolbar='[{ template: kendo.template($("#_userGroupsBalanceToolbar").html()) }]'
+                 data-columns="[
+                                {
+                                    headerTemplate: kendo.template(jQuery('#checkBoxTemplateSelectAllUserGroups').html()),
+                                    template: kendo.template(jQuery('#checkBoxTemplate').html()),
+                                    width: 30
+                                }, {
+                                    field: 'UserGroupName',
+                                    title: '~{UserGroup}~',
+                                    aggregates: ['count'],
+                                    groupHeaderTemplate: '#=value#',
+                                    hidden: 'true'
+                                }, {
+                                    field: 'BucketName',
+                                    title: 'Bucket Name'
+                                }, {
+                                    field: 'Balance',
+                                    format: '{0:c}'
+                                }
+                            ]"
+                 data-bind="source: userGroupsLedger,
+                            events:
+                                {
+                                    change: change,
+                                    dataBound: usersBalanceDataBound
+                                }"
+                 data-auto-bind="true"
+                 data-pageable="true"
+                 data-scrollable="false"
+                 data-sortable="true"
+                 data-selectable="multiple, row">
+            </div>
+        </div>
+        <div class="col-sm-12 " id="divCoopAdjustment" style="display:none;">
+            <div class="col-md-12 nopadding nomargin">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <h1 class="floatl">Coop Adjustments</h1>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="pull-right nomargin">
+                            <span id="addUsersMessage" class="padr10"><i>Add User(s) or User Group(s) to continue</i></span>
+                            <button class="btn btn-primary" data-bind="click:saveAdjustment">
+                                <i class="fa fa-save"></i>&nbsp;&nbsp;Save Adjustment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="row maru20">
+                            <div class="col-sm-4">Apply to bucket</div>
+                            <div class="col-sm-6 ">
+                                <select class="w100" id="ddlBucket"
+                                        data-id="ddlBucket"
+                                        data-role="dropdownlist"
+                                        data-bind="source: buckets, value: currentBucket"
+                                        data-auto-bind="false"
+                                        data-option-label="Select a Bucket"
+                                        data-text-field="Name"
+                                        data-value-field="Id"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">Amount</div>
+                        <div class="col-sm-6">
+                            <input class="w100" id="adjustmentAmount" data-role="numerictextbox"
+                                   data-format="c"
+                                   data-decimals="2"
+                                   data-spinners="false"
+                                   data-bind="value: adjustmentAmount"
+                                   value="0" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4"></div>
+                        <div class="col-sm-6">
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="radioAdjustmentPurpose"
+                                       checked id="radioAdjustmentAdd"
+                                       value="add"
+                                       class="bootstrap-toggle"
+                                       data-bind="checked: adjustmentPurpose">Add
+                            </label>
+                            <label class="radio-inline">
+                                <input type="radio"
+                                       name="radioAdjustmentPurpose"
+                                       id="radioAdjustmentRemove"
+                                       value="remove"
+                                       class="bootstrap-toggle"
+                                       data-bind="checked: adjustmentPurpose">Remove
+                            </label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">Adjustment Reason <span class="co-warning bold"> *</span></div>
+                        <div class="col-sm-6 ">
+                            <select class="w100" id="ddlAdjustmentReason"
+                                    data-id="ddlAdjustmentReason"
+                                    data-role="dropdownlist"
+                                    data-bind="source: reasons, value: currentReason"
+                                    data-text-field="Reason"
+                                    data-option-label="Select a Reason"
+                                    data-auto-bind="false"
+                                    data-value-field="Id"></select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-4">Comments</div>
+                        <div class="col-sm-6 ">
+                            <textarea class="w100"
+                                      id="adjustmentComments"
+                                      rows="2"
+                                      cols="50"
+                                      placeholder="Comments for adjustment"
+                                      data-bind="value: adjustmentComments"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6" style="padding-left: 25px">
+                    <h3 class="">Users</h3>
+
+                    <div class="row maru20">
+                        <div data-role="grid"
+                             data-id="selectedUsersGrid"
+                             data-columns="[{
+                                            template: kendo.template($('#_deleteUserTemplate').html()),
+                                            width: '10%'
+                                        }, {
+                                            title: '~{UserName}~',
+                                            field: 'Username',
+                                            width: '45%'
+                                        }, {
+                                            title: '~{FullName}~',
+                                            template: '${FirstName} ${LastName}',
+                                            width: '45%'
+                                        }]"
+                             data-bind="source: selectedUsersDataSource,
+                                    events: {
+                                        dataBound: selectedUsersDataBound
+                                    }"
+                             data-auto-bind="true"
+                             data-pageable="{
+                                            refresh: false,
+                                            pageSizes: false,
+                                            buttonCount: 1
+                                        }"
+                             data-scrollable="false"
+                             data-sortable="true"
+                             data-selectable="multiple, row">
+                        </div>
+                    </div>
+                    <div class="row maru20">
+                        <button class="btn btn-primary pull-right nomargin" data-bind="click: addUsers"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add Users</button>
+                    </div>
+                    <br />
+                    <br />
+                    <h3 class="">User Groups</h3>
+
+                    <div class="row maru20">
+                        <div data-role="grid"
+                             data-id="selectedUserGroupsGrid"
+                             data-columns="[{
+                                            template: kendo.template($('#_deleteUserGroupTemplate').html()),
+                                            width: '10%'
+                                        }, {
+                                            title: '~{UserGroup}~',
+                                            field: 'GroupName',
+                                            width: '90%'
+                                        }]"
+                             data-bind="source: selectedUserGroupsDataSource,
+                                    events: {
+                                        dataBound: selectedUserGroupsDataBound
+                                    }"
+                             data-auto-bind="true"
+                             data-pageable="{
+                                            refresh: false,
+                                            pageSizes: false,
+                                            buttonCount: 1
+                                        }"
+                             data-scrollable="false"
+                             data-sortable="true"
+                             data-selectable="multiple, row">
+                        </div>
+                    </div>
+                    <div class="row maru20">
+                        <button class="btn btn-primary pull-right nomargin" data-bind="click: addUserGroups"><i class="fa fa-plus"></i>&nbsp;&nbsp;Add User Groups</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-12 " id="divAddBuckets" style="display:none;">
+            <h1 class="marb20"> Coop Buckets</h1>
+            <div class="row">
+                <div class="col-sm-6 padr10">
+                    <div data-role="grid"
+                         data-id="addBucketsGrid"
+                         data-columns="[{
+                                            'field': 'Name',
+                                            'title': 'Bucket Name'
+                                        }, {
+                                            'title':'',
+                                            template: kendo.template($('#_bucketsDetail').html())
+                                        }, {
+                                            command: 'edit'
+                                        }]"
+                         data-bind="source: assignedBuckets,
+                                    events: {
+                                        change: showBucketFromRow
+                                    }"
+                         data-toolbar='[{
+                                        template: kendo.template($("#_bucketsToolbar").html())
+                                    }]'
+                         data-auto-bind="true"
+                         data-pageable="true"
+                         data-editable="inline"
+                         data-scrollable="false"
+                         data-sortable="true"
+                         data-selectable="true">
+                    </div>
+                </div>
+                <div class="col-sm-6 padl10 pull-right" id="divBucketDetails" style="display:none;">
+                    <div data-role="grid"
+                         data-columns="[{'title':'Sku','field':'Sku'},{'field':'PartName','title':'Part Name'},{'field':'ItemTypes','title':'Item Type'},{template: kendo.template($('#_deleteDetailTemplate').html())}]"
+                         data-bind="source: bucketDetail"
+                         data-toolbar='[{ template: kendo.template($("#_bucketsDetailsToolbar").html()) }]'
+                         data-auto-bind="true"
+                         data-pageable="true"
+                         data-scrollable="false"
+                         data-sortable="true"
+                         data-selectable="true">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="divAddNewBucket" class="fancy600" style="display:none;">
+            <div class="alert alert-warning" id="_bucketAlert" role="alert" style="display:none;"></div>
+            <div class="row">
+                <div class="col-sm-12 maru20">
+                    <h3>Create a new Bucket</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label class="">Name</label>
+                    <b class="co-warning">*</b>
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" id="bucketName" style="width: 90%" data-bind="value: newBucketName" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12 text-center">
+                    <button class="btn btn-default  text-center maru20" data-role="button"
+                            data-bind="events: { click: saveBucket }">
+                        ~{Add}~
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="divAddItemTypesToBucket" class="fancy600" style="display:none;">
+            <div class="alert alert-warning" id="_addItemTypesAlert" role="alert" style="display:none;"></div>
+            <div class="row">
+                <div class="col-sm-12 maru20">
+                    <h3>Add Item Type</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Item Type</label>
+                    <b class="co-warning">*</b>
+
+                </div>
+                <div class="col-sm-10">
+                    <input type="text" id="ItemTypeToAdd" style="width: 90%" data-bind="value: itemTypes" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12  text-center">
+                    <button class="btn btn-default text-center maru20" data-role="button"
+                            data-bind="events: { click: saveItemTypesToDetail }">
+                        ~{Add}~
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div id="divAddParts" class="fancy800" style="display:none;">
+            <div class="col-sm-6">
+                <h3>Add Part(s) to Detail</h3>
+                <p style="font-size: small; text-align: left">(Hold CTRL to select multiple parts)</p>
+            </div>
+            <div class="col-sm-6 floatr">
+                <a class="btn btn-default pull-right marr20" data-bind="click:savePartToDetail"> ~{Add}~</a>
+            </div>
+            <div class="col-md-12 maru20 nopadding">
+                <div class="w100">
+                    <div data-argosy-control="CompanyPartsGridView" data-argosy-options-active="Y" data-argosy-view="CompanyPartsGridView"></div>
+                </div>
+            </div>
+            <div class="padu5 col-md-12 text-center">
+                <div class="text-center maru20">
+                    <a class="btn btn-default" data-bind="click:savePartToDetail"> ~{Add}~</a>
+                </div>
+            </div>
+        </div>
+        <div id="AddUserToAdjustment" style="display:none;">
+            <div>
+                <h3>Add Users to Adjustment</h3>
+            </div>
+            <div class="padu10">
+                <div>
+                    <div data-role="grid"
+                         data-id="addUsersGrid"
+                         data-columns="[{
+                                        title: 'Username',
+                                        field: 'Username',
+                                        width: '300px'
+                                    }, {
+                                        title: 'Name',
+                                        field: 'LastName',
+                                        template: '${FirstName} ${LastName}',
+                                        width: '500px'
+                                    }]"
+                         data-bind="source: addUsersDataSource"
+                         data-toolbar='[{
+                                        template: kendo.template($("#_addUsersToolbar").html())
+                                    }]'
+                         data-pageable="true"
+                         data-scrollable="false"
+                         data-sortable="true"
+                         data-selectable="multiple, row">
+                    </div>
+                </div>
+            </div><br style="clear:both" />
+            <div class="padu20">
+                <div class="text-center">
+                    <a class="btn btn-default" data-bind="events: { click: addSelectedUsers }"><i class="fa fa-save"></i> ~{Add}~</a>
+                </div>
+            </div>
+        </div>
+        <div id="AddUserGroupToAdjustment" style="display:none;">
+            <h3>Add User Groups to Adjustment</h3>
+            <div class="padu10">
+                <div>
+                    <div data-role="grid"
+                         data-id="addUserGroupsGrid"
+                         data-columns="[{
+                                        title: '~{UserGroup}~',
+                                        field: 'GroupName',
+                                        width: '500px'
+                                    }]"
+                         data-bind="source: addUserGroupsDataSource"
+                         data-toolbar='[{
+                                        template: kendo.template($("#_addUserGroupsToolbar").html())
+                                    }]'
+                         data-pageable="true"
+                         data-scrollable="false"
+                         data-sortable="true"
+                         data-selectable="multiple, row">
+                    </div>
+                </div>
+            </div><br style="clear:both" />
+            <div class="padu20">
+                <div class="text-center">
+                    <a class="btn btn-default" data-bind="events: { click: addSelectedUserGroups }"><i class="fa fa-save"></i> ~{Add}~</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/x-kendo-template" id="checkBoxTemplateSelectAllUsers">
+    <input type='checkbox' class='bootstrap-toggle' data-bind="click:checkboxSelectAllUsers" />
+</script>
+<script type="text/x-kendo-template" id="checkBoxTemplateSelectAllUserGroups">
+    <input type='checkbox' class='bootstrap-toggle' data-bind="click:checkboxSelectAllUserGroups" />
+</script>
+<script type="text/x-kendo-template" id="checkBoxTemplate">
+    <input type='checkbox' class='checkbox bootstrap-toggle' data-bind="click:checkboxClick" />
+</script>
+<script id="_deleteBucketTemplate" type="text/x-kendo-template">
+    <input type="button" data-bind="click:removePart" value="Delete" />
+</script>
+<script id="_deleteUserTemplate" type="text/x-kendo-template">
+    <a data-bind="click: removeSelectedUser"><i class='fa la fa-times'></i></a>
+</script>
+<script id="_deleteUserGroupTemplate" type="text/x-kendo-template">
+    <a data-bind="click: removeSelectedUserGroup"><i class='fa la fa-times'></i></a>
+</script>
+<script id="_deleteDetailTemplate" type="text/x-kendo-template">
+    <input type="button" class="btn btn-default pull-right" data-bind="click:removeDetail" value="Delete" />
+</script>
+<script id="_bucketsToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <div class="k-keyword-search">
+            <input type="text" placeholder="Search by Bucket Name" class="k-textbox"
+                   data-bind="value: bucketsKeyword, events: { change: searchBuckets }">
+            <a class="k-button-nbkg k-keyword-search-button" data-bind="events: { click: searchBuckets }">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+        <div class='btnspacing chkbuffer pull-right'>
+            <input type="button" class="pull-left"
+                   data-role="button"
+                   data-auto-bind="false"
+                   value="Add Bucket"
+                   data-bind="events: { click: addBucket }" />
+        </div>
+    </div>
+</script>
+<script id="_addUsersToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <div class="k-keyword-search">
+            <input type="text" placeholder="Search by First/Last Name or Username" class="k-textbox"
+                   data-bind="value: addUsersKeyword, events: { change: searchAddUsers }">
+            <a class="k-button-nbkg k-keyword-search-button" data-bind="events: { click: searchAddUsers }">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+        <div class='btnspacing chkbuffer pull-right'>
+            <input type="button" class="pull-left"
+                   data-role="button"
+                   data-auto-bind="false"
+                   value="Add User(s)"
+                   data-bind="events: { click: addSelectedUsers }" />
+        </div>
+    </div>
+</script>
+<script id="_addUserGroupsToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <div class="k-keyword-search">
+            <input type="text" placeholder="Search by User Group Name or Description" class="k-textbox"
+                   data-bind="value: addUserGroupsKeyword, events: { change: searchAddUserGroups }">
+            <a class="k-button-nbkg k-keyword-search-button" data-bind="events: { click: searchAddUserGroups }">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+        <div class='btnspacing chkbuffer pull-right'>
+            <input type="button" class="pull-left"
+                   data-role="button"
+                   data-auto-bind="false"
+                   value="Add User Group(s)"
+                   data-bind="events: { click: addSelectedUserGroups }" />
+        </div>
+    </div>
+</script>
+<script id="_bucketsDetail" type="text/x-kendo-template">
+    <button class="btn btn-default pull-right" data-bind="click:showBucketFromDetails">Details</button>
+</script>
+<script id="_usersBalanceToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <div class="k-keyword-search">
+            <input type="text" placeholder="Search by Username or Name" class="k-textbox"
+                   data-bind="value: userKeyword, events: { change: searchUserBalance }">
+            <select id="ddlBucketFilter"
+                    data-role="dropdownlist"
+                    data-bind="source: buckets, events:{change:searchUserBalance}, value: currentBucket"
+                    data-auto-bind="false"
+                    data-option-label="Select a Bucket"
+                    data-text-field="Name"
+                    data-value-field="Id"></select>
+            <a class="k-button-nbkg k-keyword-search-button" data-bind="events: { click: searchUserBalance }">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+    </div>
+</script>
+<script id="_userGroupsBalanceToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <div class="k-keyword-search">
+            <input type="text" placeholder="Search by User Group Name" class="k-textbox"
+                   data-bind="value: userGroupKeyword, events: { change: searchUserGroupBalance }">
+            <select id="ddlBucketFilter"
+                    data-role="dropdownlist"
+                    data-bind="source: buckets, events:{change:searchUserGroupBalance}, value: currentBucket"
+                    data-auto-bind="false"
+                    data-option-label="Select a Bucket"
+                    data-text-field="Name"
+                    data-value-field="Id"></select>
+            <a class="k-button-nbkg k-keyword-search-button" data-bind="events: { click: searchUserGroupBalance }">
+                <i class="fa fa-search"></i>
+            </a>
+        </div>
+    </div>
+</script>
+<script id="_bucketsDetailsToolbar" type="text/x-kendo-template">
+    <div class="k-header k-grid-toolbar _toolbar" style="margin-bottom:5px">
+        <h3 id="detailHeaderLabel" class="pull-left">Details For:</h3>
+        <div class='btnspacing chkbuffer pull-right'>
+            <input type="button" class="pull-left"
+                   data-role="button"
+                   data-auto-bind="false"
+                   value="Add Part"
+                   data-bind="events: { click: addPartToDetail }" />
+        </div>
+        <div class='btnspacing chkbuffer pull-right'>
+            <input type="button" class="pull-left"
+                   data-role="button"
+                   data-auto-bind="false"
+                   value="Add Item Type"
+                   data-bind="events: { click: addItemTypesToDetail }" />
+        </div>
+    </div>
+</script>

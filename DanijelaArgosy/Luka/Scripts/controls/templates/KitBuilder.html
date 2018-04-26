@@ -1,0 +1,196 @@
+﻿<script type="text/x-kendo-template" id="_KitBuilderTemplate">
+    <div class="container" id="_kitContainer">
+        <div class="row padu10">
+            <div class="col-sm-8 padu10">
+                <div class="hidden-lg hidden-md">
+                    <h3>#= renderProductNameViewTemplate(Kit)#</h3>
+                </div>
+                <h2 class="maru20 nowrap hidden-xs hidden-sm">~{ChooseYourProducts}~</h2>
+                #if(Kit.IsBuildAKit && Kit.Options.ComponentMinCount != undefined && Kit.Options.ComponentMinCount > 0 && Kit.Options.ComponentMaxCount != undefined && Kit.Options.ComponentMaxCount > 0){#
+                    <div class="padb10">
+                        <h3>Select between ${Kit.Options.ComponentMinCount} and ${Kit.Options.ComponentMaxCount} products to build your kit.</h3>
+                    </div>
+                #}#
+                #if(Kit.IsDynamicKit && Kit.Options.ComponentItemType != undefined && Kit.Options.ComponentItemType != ""){#
+                <div class="padb20">
+                    <a class="btn btn-primary" data-bind="click:showKitItemTypeComponents">~{AddKitItemTypeComponents}~</a>
+                </div>
+                #}#
+                <div data-bind="source:groupData" data-template="_kitBuilderGroupContainerTemplate">
+                </div>
+                <div class="hidden-lg hidden-md">
+                    #if (KitState != null && KitState.length > 0) {#
+                    <a class="btn btn-primary" data-bind="click:editVariables, enabled:kitData.isProofingComplete"><i class="fa fa-pencil"></i> ~{EditProofs}~</a>
+                    #}#
+                </div>
+                </div>
+            <div class="col-sm-4 padu20">
+                <div class="hidden-sm hidden-xs padu20">
+                    <h3 class="style1 topmar">#= renderProductNameViewTemplate(Kit)#</h3>
+                </div>
+                <div class="padb20 hidden-sm hidden-xs">
+                    <p>#= Kit.Description#</p>
+                </div>
+                <div class="clear summary-information hidden-sm hidden-xs">
+                    <div class="floatl padu5">
+                        #if (userSettings.IsPriceInformationVisible) {#
+                        <p class="product-price">~{PricePer}~ <span data-bind="text: kitTerm"></span>: <span class="kit-price-wrapper-${Kit.PartId}">#= renderProductPriceViewTemplate(Kit) #</span></p>
+                        #}#
+                    </div>
+                    <div class="floatr text-right">
+                        #if (KitState != null && KitState.length > 0) {#
+                        <a class="btn btn-primary" data-bind="click:editVariables, enabled:kitData.isProofingComplete"><i class="fa fa-pencil"></i> ~{EditProofs}~</a>
+                        #} else {#
+                        <a class="btn btn-primary btn-addtocart" #if(!Kit.IsBuildAKit){# data-bind="click:addToCart, enabled:kitData.isProofingComplete"#}#>~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+                        #}#
+                        #if(Kit.IsBuildAKit){#
+                            <br />
+                            <span style="display:none;" class="buildValidationMin field-validation-error"></span>
+                            <span style="display:none;" class="buildValidationMax field-validation-error"></span>
+                        #}#
+                    </div>
+                </div>
+                <br style="clear:both" />
+
+                <div class="padb20">
+                    <h3 class="h3-bkg">~{CurrentlyInThe}~ <span data-bind="text: kitTerm"></span>:</h3>
+                    <div class="padu5 row" data-argosy-view="KitBuilderPartsList" data-role="list" data-bind="source: allParts, events: {dataBound: partListDataBound}" data-template="_KitBuilderPartListTemplate" data-selectable="true">
+                    </div>
+                </div>
+                <div class="clear summary-information">
+                    <div class="floatl padu5">
+                        #if (userSettings.IsPriceInformationVisible) {#
+                        <p class="product-price">~{PricePer}~ <span data-bind="text: kitTerm"></span>: <span class="kit-price-wrapper-${Kit.PartId}">${kendo.toString(Kit.Price,"C")}</span></p>
+                        #}#
+                    </div>
+                    <div class="floatr text-right">
+                        #if (KitState != null && KitState.length > 0) {#
+                        <a class="btn btn-primary btn-addtocart" data-bind="click:approveProofs, enabled:kitData.isProofingComplete">~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+                        #} else {#
+                        <a class="btn btn-primary btn-addtocart" #if(!Kit.IsBuildAKit){# data-bind="click:addToCart, enabled:kitData.isProofingComplete"#}#>~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+                        #}#
+                        #if(Kit.IsBuildAKit){#
+                            <br />
+                            <span style="display:none;" class="buildValidationMin field-validation-error"></span>
+                            <span style="display:none;" class="buildValidationMax field-validation-error"></span>
+                        #}#
+                    </div>
+                </div>
+                <br style="clear:both" />
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_kitBuilderGroupContainerTemplate">
+    #if(!IsBuildAKit){#
+        <div data-argosy-view="KitBuilder${id}">
+            <h3 class="style1 padu20" data-argosy-view="KitBuilder${id}Title">${name}</h3>
+            <div class="row" data-argosy-view="KitBuilderCustomizedList" data-role="list" data-bind="source: items" data-template="_KitBuilderItemTemplate" data-selectable="true">
+            </div>
+        </div>
+    #} else {#
+        <div class="marr20" data-argosy-view="KitBuilder${id}">
+            <h3 onclick="showKitBuilderContainer('KitBuilder${id}Container');" class="padu20 grid-information finger" data-argosy-view="KitBuilder${id}Title"><i id="KitBuilder${id}ContainerExpander" class="fa fa-plus-circle pad5"></i>&nbsp;${name}</h3>
+            <div id="KitBuilder${id}Container" #if("KitBuilder" + id + "Container" != KitBuilder.prototype.ActiveTab){#style="display:none;"#}# class="k-grid kit-container">
+                <table data-argosy-view="KitBuilderCustomizedList" data-role="list" data-bind="source: items" data-template="_KitBuilderListTemplate" data-selectable="true"></table>
+            </div>
+        </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_KitBuilderListTemplate">
+    <tr class="vertical-middle browse-grid">
+        <td>
+            <div style="opacity: 1;">
+                #if (!IsRequired) {#
+                #if (Disabled) {#
+                <i class="fa fa-plus green" data-bind="click:enablePart"></i>
+                #} else {#
+                <i class="fa fa-times" data-bind="click:disablePart"></i>
+                #}#
+                #} else {#
+                <i class="fa fa-lock"></i>
+                #}#
+            </div>
+        </td>
+        <td class="center wimg #if (Disabled){#grayout#}#" style="padding: 0 2px !important;">
+            #= renderProductImageViewTemplate(ChildPart, 'container-aspect','img-aspect', 'show-large-image-single')#
+        </td>
+        <td #if (Disabled){#class="grayout"#}#>
+            <p class="padu5 bold" data-argosy-dataid="${ChildPart.PartId}" data-argosy-action="showProductDetails" data-argosy-show-add-to-cart="false">#= renderProductNameViewTemplate(ChildPart)#</p>
+            <p class="product-ship">#= renderProductPiecesViewTemplate(ChildPart) #</p>
+            <p class="product-ship">#= renderProductMinOrderViewTemplate(ChildPart) #</p>
+            <p class="product-ship">#= renderProductLeadTimeViewTemplate(ChildPart) #</p>
+        </td>
+        <td  #if (Disabled){#class="grayout"#}#>
+            #if (userSettings.IsPriceInformationVisible) {#
+                <p style="min-height:35px" class="product-price padu10 part-price-wrapper-${ChildPart.PartId}">${kendo.toString(ChildPart.Price,"C")}</p>
+            #}#
+        </td>
+        <td #if (Disabled){#class="grayout" #}#>
+            #= renderProductQuantityInput(ChildPart, Quantity, ChildPart.IsEdeliveryOnly || !IsEditable, 0, "", null, "priceBreakDataBound", null, "ChildPart.Discounts", null, false, Disabled) #
+        </td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_KitBuilderItemTemplate">
+    <div class="col-md-4 marb10">
+        <div class="accent2">
+            #if (!IsRequired) {#
+            #if (Disabled) {#
+            <i class="fa fa-plus" data-bind="click:enablePart"></i>
+            #} else {#
+            <i class="fa fa-times" data-bind="click:disablePart"></i>
+            #}#
+            #} else {#
+            <i class="fa fa-lock"></i>
+            #}#
+        </div>
+
+        <div class="kit-image-wrapper  #if (Disabled){#grayout#}#">
+            <div class="single-item">
+                <div class="productinfo text-center">
+                    <div class="w150 h150 CenterDiv">
+                        #= renderProductImageViewTemplate(ChildPart, 'container-aspect','img-aspect', 'show-large-image-single')#
+                    </div>
+                    <div class="product-bkg">
+                        <p class="product-name" data-argosy-dataid="${ChildPart.PartId}" data-argosy-action="showProductDetails" data-argosy-show-add-to-cart="false">#= renderProductNameViewTemplate(ChildPart)#</p>
+                        #if (userSettings.IsPriceInformationVisible) {#
+                        <p style="min-height:35px" class="product-price padu10 part-price-wrapper-${ChildPart.PartId}">${kendo.toString(StartingPrice,"C")}</p>
+                        #}#
+                        <p class="product-ship">#= renderProductPiecesViewTemplate(ChildPart) #</p>
+                        <p class="product-ship">#= renderProductMinOrderViewTemplate(ChildPart) #</p>
+                        <p class="product-ship">#= renderProductLeadTimeViewTemplate(ChildPart) #</p>
+                        <div class="padu5 choose-kit">
+                            Qty #= renderProductQuantityInput(ChildPart, Quantity, ChildPart.IsEdeliveryOnly || !IsEditable, 0, "", null, "priceBreakDataBound", null, "ChildPart.Discounts") #
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_KitBuilderPartListTemplate">
+    <div class="bkg-gray maru5 marb5 #if(Disabled){#hidden#}#">
+        <div class="floatl nobottommargin">
+            <div class="padl10 padu10 marb10">
+                #if (!IsRequired) {#
+                #if (Disabled) {#
+                <i class="fa fa-plus" data-bind="click:enablePart"></i>
+                #} else {#
+                <i class="fa fa-times" data-bind="click:disablePart"></i>
+                #}#
+                #} else {#
+                <i class="fa fa-lock"></i>
+                #}#
+            </div>
+        </div>
+        <div class="col_three_fifth nobottommargin">
+            <div class="padu10 padl10 #if (Disabled) {#grayout#}#">#= renderProductNameViewTemplate(ChildPart, null)#</div>
+        </div>
+        <div class="floatr col_last nobottommargin">
+            <div class="floatr padr10 padu5 #if (Disabled) {#grayout#}#">
+                <div class="floatr">#= renderProductQuantityInput(ChildPart, Quantity, ChildPart.IsEdeliveryOnly || !IsEditable, 0, "", null, "priceBreakDataBound", null, "ChildPart.Discounts", null, null, !IsEditable) #</div>
+            </div>
+        </div>
+        <br style="clear:both">
+    </div>
+</script>

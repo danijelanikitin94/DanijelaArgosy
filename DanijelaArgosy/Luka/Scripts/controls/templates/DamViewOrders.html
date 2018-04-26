@@ -1,0 +1,41 @@
+﻿<script id="_DamViewOrderDetailsModal" type="text/x-kendo-tmpl">
+    <div class='col-md-12'>
+        <h2>${OrderNumber} - #= kendo.toString(kendo.parseDate(OrderDate, 'yyyy-MM-dd'), 'MM/dd/yyyy') #</h2>
+    </div>
+    <div class="col-md-12">
+        #for (var i = 0; i < OrderLines.length; i++) {#
+        <div class="row dashed-line padu10 padb10">
+            <div class="col-md-1">
+                <img class="img-responsive" style="max-height: 100px;" alt="Asset" src="${OrderLines[i].Thumbnail}">
+            </div>
+            <div class="col-md-5">
+                ${OrderLines[i].Name}
+            </div>
+            <div class="col-md-3">
+                ${OrderLines[i].Width} x ${OrderLines[i].Height} px<br />
+                ${OrderLines[i].Dpi} DPI<br />
+                <span class="upcase">${OrderLines[i].Extension}</span>
+            </div>  
+            <div class="col-md-2">
+                #if (Status != "Processing" && Status != "Error") {#
+                    #if (!IsExpired) {#
+                        <a data-argosy-action="download-file" data-argosy-path="${OrderLines[i].DownloadPath}" class="btn btn-primary btn-sm">~{DownloadAsset}~</a>
+                    #} else {#
+                        <span class="text-danger">Expired</span>
+                    #}#
+                #}#
+            </div>
+        </div>
+        #}#
+    </div>
+</script>
+<script id="_DamViewOrderButtonsTemplate" type="text/x-kendo-tmpl">
+    <div class="w100 textr">
+        
+        #if (IsZipFileReady && !IsExpired) {#
+        <a data-argosy-action="download-file" data-argosy-path="${ZipFile}" class="btn btn-primary btn-sm">~{DownloadZip}~</a>
+        #} else if (IsZipFileReady) {#
+        <span class="text-danger">Expired</span>
+        #}#
+    </div>
+</script>

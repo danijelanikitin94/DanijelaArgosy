@@ -1,0 +1,96 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Common.Contracts.Core.Enum.Payment
+@using Argosy.Common.Contracts.Core.Extensions
+@model Argosy.Web.FrontEnd.Areas.Store.Models.PlaceOrderViewModel
+@if (Model.PaymentOptions != null && Model.PaymentOptions.Any())
+{
+    <div role="tabpanel">
+        @{
+            var activePaymentMethod = Model.PaymentOptions.First();
+            @Html.HiddenFor(m => m.UserSelectedPayment.SelectedPaymentMethod)
+            <ul class="nav nav-tabs" role="tablist" id="paymentTabs">
+
+                @foreach (var paymentOption in Model.PaymentOptions)
+                {
+                    var isActiveItem = activePaymentMethod == paymentOption;
+                    switch (paymentOption)
+                    {
+                        case PaymentMethod.CreditCard:
+                            <li role="presentation" class="@(isActiveItem ? "active" : "")">
+                                <a href="#CC_Entry" aria-controls="CC_Entry" role="tab" data-toggle="tab">~{CreditCard}~</a>
+                            </li>
+                            break;
+                        case PaymentMethod.PO:
+                            <li role="presentation" class="@(isActiveItem ? "active" : "")">
+                                <a href="#PO_Entry" aria-controls="PO_Entry" role="tab" data-toggle="tab">~{PO}~</a>
+                            </li>
+                            break;
+                        case PaymentMethod.DeferredBilling:
+                            <li role="presentation" class="@(isActiveItem ? "active" : "")">
+                                <a href="#BillMeLater_Entry" aria-controls="BillMeLater_Entry" role="tab" data-toggle="tab">~{BillMeLater}~</a>
+                            </li>
+                            break;
+                    }
+                }
+
+            </ul>
+            <div class="tab-content padu10">
+                @foreach (var paymentOption in Model.PaymentOptions)
+                {
+                    var isActiveItem = activePaymentMethod == paymentOption;
+                    switch (paymentOption)
+                    {
+                        case PaymentMethod.CreditCard:
+                            <div id="CC_Entry" role="tabpanel" class="tab-pane fade @(isActiveItem ? "in active" : "")">
+                                @if (FrontEndSession.Instance.UserSettings.AllowSavedCreditCards)
+                                {
+                                    <div class="padl20">
+                                        @Html.EditorFor(x => x.SaveCreditCard, "Boolean")
+                                    </div>
+                                }
+                                <div class="alert alert-warning">~{CreditCardMsg}~</div>
+                                @if (FrontEndSession.Instance.UserSettings.AllowSavedCreditCards && Model.SavedPaymentTokens.IsNotNullOrEmpty())
+                                {
+                                    <h4 class="padb10">
+                                        <i class="fa fa-floppy-o"></i> Saved Payment Methods &nbsp;&nbsp; <label class="hand" onclick="$('[name=token]').prop('checked', false);"><i class="fa fa-ban"></i> clear</label>
+                                    </h4>
+                                    <div class="floatl padl20">
+                                        @foreach (var token in Model.SavedPaymentTokens)
+                                        {
+                                            <input type="radio"
+                                                   name="token"
+                                                   id="token_@token.Id"
+                                                   value="@token.Token" rel="chkToken"
+                                                    @if (token.IsDefault) {
+                                                        @:checked="checked"
+                                                    }
+                                                   />
+                                            <label for="token_@token.Id">@token.NameOnCard ****@(token.Last4Digits??"XXXX") Exp: @(token.ExpirationDate.GetValueOrDefault().ToString("MM/yyyy"))</label>
+                                        }
+                                    </div>
+                                }
+                                @Html.HiddenFor(a => a.SelectedPaymentToken)
+                            </div>
+                            break;
+                        case PaymentMethod.PO:
+                            <div id="PO_Entry" class="tab-pane fade  @(isActiveItem ? "in active" : "")">
+                                <div class="col_full">
+                                    @Html.LabelFor(m => m.UserSelectedPayment.PoNumber, new { @class = "padu10 vmid" })<b class="co-warning">*</b>&emsp;
+                                    @Html.TextBoxFor(m => m.UserSelectedPayment.PoNumber, new { @class = "inner-input" })
+                                    <div class="input-validation-message-wrapper">
+                                        @Html.ValidationMessageFor(m => m.UserSelectedPayment.PoNumber)
+                                    </div>
+                                </div>
+                            </div>
+                            break;
+                        case PaymentMethod.DeferredBilling:
+                            <div id="BillMeLater_Entry" class="tab-pane fade  @(isActiveItem ? "in active" : "")">
+                                <div class="alert alert-warning">~{BillMeLaterMsg}~</div>
+                            </div>
+                            break;
+                        }
+                    }
+            </div>
+        }
+    </div>
+                                                }

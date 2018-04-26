@@ -1,0 +1,117 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@using Argosy.Web.FrontEnd.Models
+@model LoginViewModel
+
+<div>
+    @{
+            var companyId = 0;
+            var siteId = 0;
+            var hasSite = Model.Site != null;
+            if (Model.Company != null)
+            {
+                companyId = Model.Company.COMPANY_ID;
+            }
+            if (hasSite)
+            {
+                siteId = Model.Site.SITE_ID;
+        <div class="white-box">
+            <div class="login-box">
+
+                @using (Html.BeginForm("RegistrationLogin", "Register", new { area = "" }, FormMethod.Post, new { id = "login-form" }))
+                        {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(a => a.CompanyOrSiteUrl)
+                        @Html.HiddenFor(a => a.SiteId)
+                        @Html.HiddenFor(a => a.CompanyId)
+                        @Html.HiddenFor(a => a.IsCustomRegistrationPage)
+                    <div>
+                        @Html.ValidationSummary(false, "", new {
+                            @class = "text-danger"
+                        })
+                        @{
+                            var siteImage = Model.Site.GetSiteImage(Model.Company);
+                            Model.UseNonBrandedPartialView = true;
+                            @Html.HiddenFor(m => m.UseNonBrandedPartialView)
+                            @Html.HiddenFor(m => m.OriginalUserId)
+                        }
+                        <div>
+                            @Html.TextBoxFor(m => m.Username, new {
+                                @class = "form-control", placeholder = "Username", autofocus = true
+                            })
+                            @Html.ValidationMessageFor(x => x.Username, "", new {
+                                @class = "text-danger"
+                            })
+                        </div>
+                        <div class="padu20">
+                            @Html.PasswordFor(m => m.Password, new {
+                                @class = "form-control", placeholder = "Password"
+                            })
+                            @Html.ValidationMessageFor(x => x.Password, "", new {
+                                @class = "text-danger"
+                            })
+                        </div>
+                        <div class="col-sm-12 floatr padu5">
+                            <a href="#forgotPassword" class="fright fancybox">~{ForgotPassword}~</a>
+                        </div>
+                        @if (!Model.IsCustomRegistrationPage) {
+                            <div class="floatl @(siteImage == null || Model.Company == null ? " hidden" : "")">
+                                <img class="img-responsive" style="max-width: 150px;" alt="@Model.Site.SITE_COMPANY" src="@siteImage">
+                            </div>
+                        }
+                        @if (!Model.IsCustomRegistrationPage && Model.Company != null && Model.Company.FLAG_ALLOW_REGISTRATION) {
+                            <div class="floatr padl20">
+                                First time here?<br/>
+                                <a href="#register" class="fancybox btn btn-default upcase">~{CreateAccount}~</a>
+                            </div>
+                        }
+                        <div class="floatr maru15">
+                            <input type="button" id="btnLogin" class="btn btn-primary upcase" value="~{LogIn}~"/>
+
+                        </div>
+                        @Html.EditorForModel("LoginViewRestOfModel")
+                    </div>
+                        }
+            </div>
+        </div>
+
+            }
+    }
+</div>
+
+@if (!Model.IsCustomRegistrationPage)
+{
+    <div id="register" style="display: none;">
+        <h2>~{RegisterNewUser}~</h2>
+        @Html.Partial("Partials/_UserRegistration")
+    </div>
+}
+<div style="display: none;">
+    @Html.Partial("Partials/_ForgotPassword", new ForgotPasswordViewModel { CompanyId = companyId, SiteId = siteId })
+</div>
+<script language="javascript">
+    $(function () {
+        $("#btnLogin").click(function () {
+            $(document).trigger(argosyEvents.START_LOADING, { element: $('#wrapcontainer') });
+            var data = $("#login-form").serializeArray();
+            $.ajax("/Register/RegistrationLogin",
+            {
+                type: "POST",
+                contentType: "application/x-www-form-urlencoded",
+                data: data,
+                complete: function (e) {
+                    if (e.responseJSON) {
+                        if (e.responseJSON.Errors != null && e.responseJSON.Errors.length > 0) {
+                            $("#loginTarget").html(e.responseJSON.RenderedView);
+                            $(document).trigger(argosyEvents.END_LOADING, { element: $('#wrapcontainer') });
+                        } else if (e.responseJSON.TransferPage != null) {
+                            window.location = e.responseJSON.TransferPage;
+                        }
+                    } else {
+                        $(document).trigger(argosyEvents.END_LOADING, { element: $('#wrapcontainer') });
+                    }
+
+                }
+            });
+        });
+    });
+</script>

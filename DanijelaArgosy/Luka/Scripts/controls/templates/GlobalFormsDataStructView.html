@@ -1,0 +1,301 @@
+﻿
+<style>
+    body{background: #fafafa;}   
+    .label-style {float: left;width: 20%; margin-right: 20px;}
+    .input-style {float: left; width:70%}
+        .input-style input[type="text"], .input-style textarea, .input-style select {
+            width: 100%;
+        }
+    .k-grid td {
+        padding-bottom: 3px;
+    }
+    .k-grid .k-button .k-upload-button{
+        float: left !important;
+    }
+    .k-datepicker .k-state-hover, .k-dropdown .k-state-hover {
+        border: solid 1px #cccccc !important;
+    }
+   </style>
+
+
+
+<script id="_gfsMenuTemplate" type="text/x-kendo-tmpl">
+    <div id="_gfsMenuBindContainer">
+        <div class="divGlobalFormStruct">
+            <div class="hidden-xs hidden-sm">
+                <div class="padb10 small_txt">~{ClickCategoryToPopulateProfile}~</div>
+                <div data-template="_gfsMenuItemTemplate" data-bind="source:categories"></div>
+            </div>
+            <div class="hidden-md hidden-lg">
+                <select class="hidden-lg w100 pad10 f16" data-template="_gfsDropdownItemTemplate" data-bind="source:categories"></select>
+            </div>
+         </div>
+    </div>
+</script>
+<script id="_gfsMenuItemTemplate" type="text/x-kendo-tmpl">
+    <div class="cart-information marb5 finger" data-bind="click:menuClicked" >        
+        <span class="floatl nomargin">${Category}</span>
+        <i class="fa fa-plus floatr" style="margin-top: 3px"></i>
+        <br style="clear: both"/>
+    </div>
+</script>
+<div style="background: #fff; padding: 20px;">
+    <script id="_gfsDropdownItemTemplate" type="text/x-kendo-tmpl">
+        <option data-bind="click:menuClicked">${Category}</option>
+    </script>
+</div>
+<script id="_gfsTemplate" type="text/x-kendo-tmpl">
+    <div class="col_full gfsContainer" id="container_${GlobalFormStructId}" style="display:none;">
+        <div class="divGlobalFormStruct">
+            <div class=""><h3>#:Category#</h3></div>
+            <table style="border-style: none;" class="k-grid _globalFormGrid" data-id="${Category}" data-form="${GlobalFormStructId}">
+                <thead style="display: none;">
+                </thead>
+            </table>
+            <div style="background-color: transparent;background-image: url('/LoadingImage');background-size: 90px auto;background-repeat: no-repeat;
+                background-position: center top;-moz-opacity: 0.8;opacity: 0.8;border: none; height: 100px; z-index: 10000" class='loading-message-wrapper center-block loading-${GlobalFormStructId}'>
+                <div class="center-block center" style="text-align: center;">Loading Profile Data..</div>
+            </div>
+        </div>
+    </div>
+</script>
+<script id="_rowTemplate" type="text/x-kendo-tmpl">
+    <tr data-uid="#: uid #" style="overflow-x: hidden; overflow-y: hidden;border-style: none;" ${isHidden(data)}>
+        <td>
+            <div class="clear">
+                <div class="label-style">
+                    ${StructName}
+                    #if(IsRequired){#<b class="co-warning">*</b>#}#
+                </div>
+                <div class="input-style">
+                    #= renderGlobalFormsControlType(data) #
+                </div>
+            </div>
+        </td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsTextAreaControl">
+    <textarea  ${isEditable(data)} #if(IsRequired){#required#}# data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" class="k-textbox" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}" rows="5">${(Value != null && Value != "null")?Value:""}</textarea>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsCalendarControl">
+    <input  ${isEditable(data)}  #if(IsRequired){#required#}# data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" data-role="datepicker" value="${(Value != null && Value != "null")?Value:""}" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}" />
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsTextBoxControl">
+    #if (Mask != null && Mask.ControlType!='NumericTextBox') {#
+    
+    <input  ${isEditable(data)}  #if(IsRequired){#required#}# data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" type="text" data-role="maskedtextbox" data-value="${(Value != null && Value != "null")?Value:""}" data-mask="${Mask.Mask}" tooltip="${Mask.Tooltip}" value="${(Value != null && Value != "null")?Value:""}" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}" />
+    #} else if(Mask != null && Mask.ControlType=='NumericTextBox'){#
+    <input  ${isEditable(data)}  #if(IsRequired){#required#}# data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" type="text" data-role="numerictextbox" data-value="${(Value != null && Value != "null")?Value:""}" data-mask="${Mask.Mask}" tooltip="${Mask.Tooltip}" value="${(Value != null && Value != "null")?Value:""}" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}" data-spinners="false" />
+    #}else {#
+    <input  ${isEditable(data)}  #if(IsRequired){#required#}# data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" type="text" class="k-textbox" value="${(Value != null && Value != "null")?Value:""}" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}" />
+    #}#
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsImageUploadControl">
+    <div  ${isEditable(data)}  data-default-value="${Value}" class="submitAction upload_special" name="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" data-is-upload="true" data-role="imageeditor" data-min-height="150" data-min-width="150" data-fixed-aspect-ratio="false" data-max-image-size="3145728"></div>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsImageBankControl">
+    #
+        var dataSource = getDataSource(data);
+    #
+    <div>
+        <div class="w100 padb10">
+            <img onload="getPreviewImage('${getFormValue(data)}', 'struct_${GlobalFormStructId}_ListView_thumb')" src='/Content/images/generic.gif' id="struct_${GlobalFormStructId}_ListView_thumb" />
+        </div>
+        <div>
+            <a title="~{SelectDefault}~" class="btn btn-default ${hideDefaults(dataSource)}" id="struct_${GlobalFormStructId}_select_Default" onclick="selectDefaultImage('\\#struct_${GlobalFormStructId}_ListView')"><i class="fa fa-hand-pointer-o hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{SelectDefault}~</span></a>
+            <a title="~{Remove}~" class="btn btn-default ${hideDefaults(dataSource)}" id="struct_${GlobalFormStructId}_remove_Default" onclick="$('\\#struct_${GlobalFormStructId}_ListView_thumb').attr('src', ''); $('\\#struct_${GlobalFormStructId}').val('');"><i class="fa fa-remove hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{Remove}~</span></a>
+            <a title="~{UploadImages}~" class="btn btn-default" onclick="changeDataSource('\\#struct_${GlobalFormStructId}_ListView', ${GlobalFormStructId}, ${GlobalFormsProfileId})"><i class="fa fa-upload hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{UploadImages}~</span></a>
+            <a title="~{Clear}~" class="btn btn-default ${hideDefaults(dataSource)}" onclick="setDefaultImage('${DefaultValue}', '\\#struct_${GlobalFormStructId}', '\\#struct_${GlobalFormStructId}_ListView_thumb', '${data.DataSource}', ${GlobalFormStructId})"><i class="fa fa-times-circle hidden-lg hidden-md hidden-sm"></i><span class="hidden-xs">~{Clear}~</span></a>
+        </div>
+        <input #if(IsRequired){#required#}#
+               name="struct_${GlobalFormStructId}"
+               id="struct_${GlobalFormStructId}"
+               type="hidden"
+               value="${getFormValue(data)}" />
+        <input #if(IsRequired){#required#}#
+               name="struct_${GlobalFormStructId}_dataSource"
+               id="struct_${GlobalFormStructId}_dataSource"
+               type="hidden"
+               value="${getDataSourceValue(data)}" />
+    </div>
+    <div id="struct_${GlobalFormStructId}_ListView" class='row hide'>
+        <h2>~{SelectDefault}~</h2>
+        <div class='fancy800' style="min-height: 200px;">
+            #=renderImageBankImages(dataSource, GlobalFormStructId)#
+        </div>
+    </div>
+
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsImageBankImages">
+    # 
+    if (files == null || files.length < 1) return;
+    for (var i = 0; i < files.length; i++) {
+    #
+        <div id="divSelectDefault" style="display:inline-block;">
+            <div style="max-width:150px; max-height:150px;">
+                <img class="pad10 img-responsive hover hand" id="${i}_imageBankUpload_${globalFormsStructId}" onload="getPreviewImage('${files[i]}', '${i}_imageBankUpload_${globalFormsStructId}')" src="/Content/images/generic.gif" onclick="setDefaultImage('${files[i]}', '\\#struct_${globalFormsStructId}', '\\#struct_${globalFormsStructId}_ListView_thumb', null, null)" />
+            </div>
+        </div>
+    #}#
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalFormsDropDownListControl">
+    #if(DataSourceJson!=null && DataSourceJson.length>0){#
+    <select   ${isEditable(data)} #if(IsRequired){#required#}# value="${Value}" data-argosy-globalformstructdata="struct_${GlobalFormStructId}" id="struct_${GlobalFormStructId}" name="struct_${GlobalFormStructId}" data-role="dropdownlist" data-global-forms-struct-id="${GlobalFormStructId}" data-global-forms-profile-id="${GlobalFormsProfileId}" data-control-type="${ControlType}" data-global-struct-name="${StructName}">
+        <option>-- Select ${StructName} --</option>
+        #for (var i = 0; i < DataSourceJson.length; i++) {#
+        #if(DataSourceJson[i]==Value){#
+        <option value="${DataSourceJson[i]}" selected="selected">${DataSourceJson[i]}</option>#}else{#
+        <option value="${DataSourceJson[i]}">${DataSourceJson[i]}</option>#}#
+        #}#
+    </select>
+    #}#
+    
+</script>
+    <script type="text/javascript">
+        function isHidden(data) {
+            if (data.IsHidden) {
+                return "class=hidden";
+            }
+            return "";
+        }
+        function isEditable(data) {
+            if (data.IsLocked) {
+                return "disabled=disabled";
+            }
+            return "";
+        }
+        function renderGlobalFormsControlType(data) {
+            var controlType = "";
+            if (data.ControlType != null) {
+                controlType= data.ControlType.toLowerCase();
+            }
+            var templateName = null;
+            switch (controlType) {
+                case "textarea":
+                    templateName = "#_GlobalFormsTextAreaControl";
+                    break;
+                case "calendar":
+                    templateName = "#_GlobalFormsCalendarControl";
+                    break;
+                case "textbox":
+                    templateName = "#_GlobalFormsTextBoxControl";
+                    break;
+                case "imageupload":
+                    templateName = "#_GlobalFormsImageUploadControl";
+                    break;
+                case "imagebank":
+                    templateName = "#_GlobalFormsImageBankControl";
+                    break;
+                case "dropdownlist":
+                    templateName = "#_GlobalFormsDropDownListControl";
+                    break;
+                default:
+                    templateName = "#_GlobalFormsTextBoxControl";
+                    break;
+            }
+            if (templateName != null) {
+                return kendo.Template.compile($(templateName).html())(data);
+            } else {
+                return "";
+            }
+        }
+
+        function resizeFancyBox() {
+            $.fancybox.update();
+        }
+
+        function hideDefaults(data) {
+            if (data != null && data.length > 0) {
+                return "";
+            } else {
+                return "hide";
+            }
+        }
+
+        function getDataSourceValue(data) {
+            if (data.DataSource == null || data.DataSource == '') {
+                return "[]";
+            }
+            return data.DataSource;
+        }
+
+        function getFormValue(data) {
+            var value = (data.Value == null || data.Value == '') ? data.DefaultValue : data.Value;
+            if (value == null || value == '') {
+                return "no-image-found.png";
+            }
+            return value;
+        }
+
+        function getDataSource(variable) {
+            if (variable.DataSourceJson != null) {
+                return variable.DataSourceJson;
+            } else if (variable.DataSource != null) {
+                return eval(variable.DataSource);
+            }
+            return new Array();
+        }
+        function renderImageBankImages(data, globalFormsStructId) {
+            return kendo.Template.compile($('#_GlobalFormsImageBankImages').html())({
+                files: data,
+                globalFormsStructId: globalFormsStructId
+            });
+        }
+        function changeDataSource(modalListSelector, globalFormsStructId, globalFormsProfileId) {
+            $(document).one(argosyEvents.EVENT_GLOBAL_MULTI_UPLOAD_COMPLETE, function(e, data) {
+                $.ajax({
+                    url: "/Account/GlobalProfiles/SaveImageBankFiles",
+                    dataType: "json",
+                    method: "POST",
+                    data: {
+                        images: data.files,
+                        globalFormsProfileId: globalFormsProfileId,
+                        globalFormsStructId: globalFormsStructId
+                    },
+                    success: function (result) {
+                        updateImagesBank(result, globalFormsStructId);
+                        $.fancybox({
+                            href: modalListSelector
+                        });
+                    },
+                    error: function (result) {
+                        options.error(result);
+                    }
+                });
+            });
+            $(document).trigger(argosyEvents.EVENT_SHOW_GLOBAL_MULTI_UPLOAD);
+        }
+        function updateImagesBank(images, globalFormsStructId, clearDataSource) {
+            var imageWrapper = $("#struct_" + globalFormsStructId + "_ListView").children("div");
+            imageWrapper.empty();
+            imageWrapper.append(renderImageBankImages(images, globalFormsStructId));
+            var fileNames = new Array();
+            $(images).each(function(i, path) {
+                fileNames.push(path.substr((path.lastIndexOf("/") + 1)));
+            });
+            if (clearDataSource) {
+                $("#struct_" + globalFormsStructId + "_dataSource").val("");
+            } else {
+                $("#struct_" + globalFormsStructId + "_dataSource").val(JSON.stringify(fileNames));
+            }
+            if (fileNames.length > 0) {
+                $("#struct_" + globalFormsStructId + "_select_Default").removeClass("hide");
+            } else {
+                $("#struct_" + globalFormsStructId + "_select_Default").addClass("hide");
+            }
+        }
+        function selectDefaultImage(modal) {
+            $.fancybox({
+                href: modal
+            });
+        }
+        function setDefaultImage(value, input, preview, dataSource, globalFormsStructId) {
+            $(input).val(value);
+            //$(preview).attr("src", value + "?h=150&w=150");
+            getPreviewImage(value, preview.replace("#", ""));
+            $.fancybox.close();
+            if (dataSource != null) {
+                updateImagesBank(eval(dataSource), globalFormsStructId, true);
+            }
+        }
+    </script>

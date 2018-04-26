@@ -1,0 +1,12 @@
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.dll.config
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.dll
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\Argosy.DataAccess.pdb
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\EntityFramework.dll
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\EntityFramework.SqlServer.dll
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\EntityFramework.xml
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\bin\Debug\EntityFramework.SqlServer.xml
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csprojResolveAssemblyReference.cache
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csproj.CoreCompileInputs.cache
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.csproj.CopyComplete
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.dll
+D:\Propago - Code and Database\MyWork\DanijelaArgosy\Argosy.DataAccess\obj\Debug\Argosy.DataAccess.pdb

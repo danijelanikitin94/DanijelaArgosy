@@ -1,0 +1,24 @@
+﻿<script type="text/x-kendo-template" id="_GlobalProfileDropDownTemplate">
+    <div id="_GlobalProfileDropDownBindSection" class="padu5">
+        <div class="label-style">
+            <label>${label}</label>#if(required){# <b class="co-warning">*</b>#}#
+        </div>
+        <div class="input-style">
+            <input id="_GlobalProfileDropDownInput" name="_GlobalProfileDropDownInput" data-role="autocomplete"
+                   data-placeholder="Type a location e.g. 'Baltimore'"
+                   data-text-field="Name"
+                   data-bind="value: selectedProfile,
+                              source: globalProfiles,
+                              events: {
+                                change: onGlobalProfileChange,
+                              }"
+                   style="width: 100%;" />
+           
+        </div>
+        #if(required){#
+        <div class="input-validation-message-wrapper">
+            <span id="_GlobalProfileDropDownErrorSpan" class="field-validation-valid" data-valmsg-for="_GlobalProfileDropDownInput" data-valmsg-replace="true"></span>
+        </div>
+        #}#
+    </div>
+</script>

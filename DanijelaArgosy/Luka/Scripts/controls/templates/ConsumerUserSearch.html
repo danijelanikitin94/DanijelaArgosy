@@ -1,0 +1,28 @@
+﻿<script type="text/x-kendo-tmp" id="_ConsumerUserSearchViewTemplate">
+    <div id="_ConsumerUserBindContainer">
+        <div class="input-style marb5 addConsumer">
+            <a  class="btn btn-default fancybox" id="addConsumerBtn" href="#_ConsumerSearchModal">~{SelectConsumer}~</a>
+            <label  id="ConsumersFullName" />
+            <input type="hidden" id="_hiddenConsumerId" value="0" />
+            <a id="clearConsumerBtn" class="hidden"  data-bind="click:clearSelectedUser"><i class="fa fa-times" title="clear"></i></a><a id="searchConsumerBtn" class="hidden fancybox"  href="#_ConsumerSearchModal" ><i class="fa fa-search" title="search users"></i></a><a id="_createConsumerUser" href="#_ConsumerUserCreateModal" class="fancybox"><i class="fa fa-plus" title="add new consumer"></i></a>
+        </div>
+        <div style="display: none;" class="fancy800" id="_ConsumerSearchModal">
+            <div>
+                <h3>~{SearchConsumers}~</h3><div id="_ConsumerSearchAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    ~{NoConsumerSelected}~
+                </div>
+            </div>
+            <div class="padu10">
+                <div class="w98" data-argosy-view="ConsumerUserSearch">
+                </div>
+            </div>
+            <div class="padu5">
+                <div class="text-center">
+                    <a class="btn btn-default" data-bind="click:addUsers" href="#"><i class="fa fa-plus"></i> ~{Add}~</a>
+                </div>
+            </div>
+        </div>
+    
+    </div>
+</script>

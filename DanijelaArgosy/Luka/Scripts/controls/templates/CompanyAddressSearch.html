@@ -1,0 +1,73 @@
+﻿<script type="text/x-kendo-tmp" id="_CompanyAddressSearchViewTemplate">
+    <div class="input-style marb5">
+        <a class="btn btn-link fancybox" data-bind="events: {click: showAddressBook}"> ~{AddressBook}~ &nbsp;<i class="fa fa-book f18"  title="Click to See Address Book"></i></a>
+    </div>
+</script>
+<script type="text/x-kendo-tmpl" id="_CompanyAddressSearchModal">
+    <div class="fancy1200">
+        <div class="col-md-10 col-lg-offset-1">
+            <h3>~{SearchAddresses}~</h3>
+            <div id="_CompanyAddressSearchAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            </div>
+            <div id="_AddressContainer" class="padu10">
+                <div class="k-header k-grid-toolbar">
+                    <div class="k-keyword-search">
+                        <input type="text" id="_AddressSearchText" placeholder="~{SearchByNameAddress}~" data-argosy-search="Keyword" class="k-textbox">
+                        <a class="k-button-nbkg k-keyword-search-button" data-bind="click:searchAddress"><i class="fa fa-search"></i> </a>
+                    </div>
+                </div>
+                <div class="col-md-12 empty-address hidden">
+                    <div class="center">
+                        <div class="f24 grayout topmargin-lg bottommargin-lg">~{NoCompanyAddressesFound}~</div>
+                    </div>
+                </div>
+                <div id="_AddresslistView" data-role="listview" data-auto-bind="false"
+                     data-template="_CompanyAddressListViewItemTemplate"
+                     data-bind="source: addresses"
+                     style="min-height: 150px;max-height:300px; overflow: auto"></div>
+                <div id="_AddressPager" data-role="pager" data-source='{ "pageSize": 6 }' data-bind="source: addresses, events: { change: onChange }" class="hidden"></div>
+            </div>
+            <div id="_OrderAddressContainer" class="padu5 hide">
+                <h4>~{AddressesInPreviousOrders}~</h4>
+                <div id="_OrderAddresslistView" data-role="listview"
+                     data-template="_CompanyAddressListViewItemTemplate"
+                     data-bind="source: orderAddressDataSource"></div>
+                <div id="_OrderAddressPager"
+                     data-role="pager"
+                     data-source='{ "pageSize": 6 }'
+                     data-bind="source: orderAddressDataSource, events: { change: onChange }"
+                     class="hidden"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmpl" id="_CompanyAddressListViewItemTemplate">
+    <div class="col-xs-4 nomargin nopadding" data-bind="events: {click: updateAddress}">
+        <div class="address-wrapper">
+            <div class="single-item">
+                #if(Company && Company.length > 0) {#
+                <p><b>${Company}</b></p>
+                #}#
+                #if(Name && Name.length > 0) {#
+                <p><i>${Name}</i></p>
+                #}#
+                #if(AddressLine1 && AddressLine1.length > 0) {#
+                <p>${AddressLine1}</p>
+                #}#
+                #if(AddressLine2 && AddressLine2.length > 0) {#
+                <p>${AddressLine2}</p>
+                #}#
+                #if(AddressLine3 && AddressLine3.length > 0) {#
+                <p>${AddressLine3}</p>
+                #}#
+                <p>${City.length > 0? City +',':''} ${State && State.Name.length > 0?State.Name :''} ${ZipCode}</p>
+                #if(PhoneNumber && PhoneNumber.length > 0) {#
+                <p>${PhoneNumber.replace(/(\d\d\d)(\d\d\d)(\d\d\d\d)/, "$1-$2-$3")}</p>
+                #}#
+            </div>
+        </div>
+    </div>
+
+</script>
+

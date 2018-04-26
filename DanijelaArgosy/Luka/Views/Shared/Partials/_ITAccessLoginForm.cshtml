@@ -1,0 +1,32 @@
+﻿
+@model Argosy.Web.FrontEnd.Models.LoginITAccessViewModel
+@{
+    <div class="col-sm-10 col-sm-offset-2 maru40">
+        <div class="col_one_third maru40"><img class="img-responsive" alt="Propago" src="/content/images/placeholder/propago-logo.png"></div>
+        <div class="col_two_third col_last">
+            <div class="floatl gray-box col-sm-6 pad20 min-height225">
+                <div data-argosy-loading="Login" data-argosy-loading-message="~{MsgLoggingIn}~">
+                    @using (Ajax.BeginForm("Access", "Security", new AjaxOptions() { AllowCache = false, InsertionMode = InsertionMode.Replace, UpdateTargetId = "loginTarget", OnSuccess = "loginSuccess(data)", OnComplete = "loginSuccess(data)" }))
+                    {
+                        <div id="loginTarget">
+                            @Html.AntiForgeryToken()
+                            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                            <h3 class="padb10">Login</h3>
+                            <div>
+                                @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username" })
+                                @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="padu5">
+                                @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password" })
+                                @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="floatr padu10">
+                                <input type="submit" class="btn btn-primary" value="Log in" />
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+}

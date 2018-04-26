@@ -1,0 +1,8 @@
+﻿@using Argosy.BusinessLogic.Enums
+@using Argosy.Common.Enums
+@using Argosy.BusinessLogic.FrontEnd.Security
+<div class="col-sm-12 nohover"
+     data-argosy-control="MvcProductView"
+     data-argosy-options-wait-for-category-load="false"
+     data-argosy-options-show-category-thumbnails="@FrontEndSession.Instance.UserSettings.ShowPartCategoryThumbnails" 
+     data-argosy-options-show-hot-products-lander="@(FrontEndSession.Instance.UserSettings.UsergroupLandingSetting == LandingPageSettings.HotAndFeatured)"></div>

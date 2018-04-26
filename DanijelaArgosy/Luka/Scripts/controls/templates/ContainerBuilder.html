@@ -1,0 +1,74 @@
+﻿<script type="text/x-kendo-tmp" id="_ContainerBuilderCartLineTemplate">
+    <tr data-part-id="${PartId}">
+        <td data-bind="text: Sku"></td>
+        <td data-bind="text: Description"></td>
+        <td data-bind="text: Pieces" class="text-right"></td>
+        <td data-bind="text: getWeight" class="text-right"></td>
+        <td data-bind="text: getDimensions" class="text-right"></td>
+        <td data-bind="text: getDefaultPerBox" class="text-right"></td>
+        <td class="text-right"><input type="text" 
+                                      data-bind="events: {change: changeQuantity, focus: highlightInput}, value: CartQuantity" 
+                                      data-role="numerictextbox" 
+                                      data-decimals="0" 
+                                      data-step="1" 
+                                      data-min="0"
+                                      data-spinners="false"
+                                      data-format="n0" /></td>
+        <td class="text-right" data-bind="text: NumberOfPallets"></td>
+        <td class="text-right" data-bind="text: PalletWeight"></td>
+        <td class="text-right" data-bind="text: FeetCubed"></td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_ContainerBuilderContainerTemplates">   
+    <div class="border-top maru20"></div>
+    <h3 class="bold maru20" data-max-size="${data.parent().parent().getCubicFeet(data, false)}" data-max-weight="${MaxWeight}">${Name}<span class="floatr"></span></h3>
+    <div>
+        <p><b>-</b> ${data.parent().parent().getCubicFeet(data)} ft&sup3;</p>
+        #for(var i = 0; i < Info.length; i++) {
+            var info = Info[i];
+        #
+            <p><b>-</b> ${info.Info}</p>
+        #}#
+    </div>
+</script>
+
+<script type="text/x-kendo-tmp" id="_ContainerBuilderTemplate">
+    <h1 class="maru20 marb20">Container Builder</h1>
+    <div class="col_three_fourth">
+
+        <table class="table table-striped">
+            <thead class="thead-inverse">
+                <tr>
+                    <th>Item</th>
+                    <th>Description</th>
+                    <th class="text-right">Inner Pack</th>
+                    <th class="text-right">Case Weight (lbs)</th>
+                    <th class="text-right">Case ft&sup3;</th>
+                    <th class="text-right">Cases Per Pallet</th>
+                    <th class="text-right">Case Order Quantity</th>
+                    <th class="text-right">No. of Pallets</th>
+                    <th class="text-right">Weight (lbs)</th>
+                    <th class="text-right">ft&sup3;</th>
+                </tr>
+            </thead>
+            <tbody data-bind="source: parts" data-template="_ContainerBuilderCartLineTemplate">
+
+            </tbody>
+        </table>
+
+        <div class="row">
+            <button class="floatr btn btn-primary" data-role="button" data-bind="events: {click: updateCart}">Update Cart</button>
+        </div>
+    </div>
+
+    <div class="col_one_fourth col_last">
+
+        <h3 class="bold">Your Current Container</h3>
+
+        <p class="f24"><b>Total Cases:  &nbsp;</b><span class="floatr" data-bind="text: totalCases"></span></p>
+        <p class="f24"><b>Total Pallets:  &nbsp;</b><span class="floatr" data-bind="text: totalPallets"></span></p>
+        <p class="f24"><b>Total Weight:  &nbsp;</b><span class="floatr" data-bind="text: totalWeight"></span></p>
+        <p class="f24"><b>Total ft&sup3:  &nbsp;</b><span class="floatr" data-bind="text: totalSquareFeet"></span></p>
+        <div data-bind="source: parentContainers" data-template="_ContainerBuilderContainerTemplates"></div>
+    </div>
+</script>

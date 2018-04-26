@@ -1,0 +1,240 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Common.Contracts.Core.Enum
+@using Argosy.Common.Contracts.Core.Extensions
+@using Argosy.Common.Enums
+@using Argosy.Common.Extensions
+@using Argosy.Web.FrontEnd.Models
+@using Argosy.Web.FrontEnd.Core.Extensions
+@model Argosy.BusinessLogic.FrontEnd.Managers.OrderManager.Order
+@{ 
+    var isSavedOrder = Model.Status.Equals(OrderStatus.Saved.GetEnumValue());
+    if (!isSavedOrder)
+    {
+        ViewBag.ActionLinks.Add(new NavigationAction() { Name = " ~{PrintReceipt}~", InnerClass = "fa fa-print", OuterClass = "print btn btn-success", JavaScript = "printReciept();" });
+    }
+    string thankYouMessage = null;
+    if (ViewData.ContainsKey("ThankYouMessage"))
+    {
+        thankYouMessage = $"{ViewData["ThankYouMessage"]}";
+    }
+}
+<div id="printable">
+    <div class="col_full pad10">
+        <div class="col_one_fourth">
+            <p class="h6-invoice">~{OrderNumber}~<br /><b> @Model.OrderNumber</b></p>
+        </div>
+        <div class="col_one_fourth">
+            @if (FrontEndSession.Instance.UserSettings.IsDesiredShipDateVisible)
+            {
+                <p class="h6-invoice">~{DesiredShipDate}~<br /><b>@Model.DesiredShipDate.ToShortDateString()</b></p>
+            }
+        </div>
+        <div class="col_one_fourth">
+            <p class="h6-invoice">~{OrderStatus}~<br /><b>@Model.Status</b></p>
+        </div>
+        <div class="col_one_fourth col_last @(SessionHelpers.AddHiddenClassIf(!FrontEndSession.Instance.UserSettings.IsPriceInformationVisible))">
+            <p class="h6-invoice">~{OrderTotal}~<br /><b>@Model.OrderTotal.ToString("C")</b></p>
+        </div>
+    </div>
+    <div class="col_full nomargin">
+        <div style="background-color:#000; color: #fff; border-bottom: 1px solid #333" class="pad5 col_full"><p class="text-center text-uppercase">~{PaymentInformation}~</p></div>
+        @if (!string.IsNullOrEmpty(thankYouMessage))
+        {
+            <div class="clear" style="width: 100%">
+                <div class="alert alert-info bold center" role="alert">@Html.Raw(HttpUtility.UrlDecode(thankYouMessage))</div>
+            </div>
+        }
+        <div class="col_one_third nobottommargin @SessionHelpers.AddHiddenClassIf(FrontEndSession.Instance.UserSettings.HideShippingAddress)">
+            <h4>~{ShippingAddress}~</h4>
+            <p class="nowrap">@Model.ShipToCompany</p>
+            <p class="nowrap">@Model.Contact</p>
+            @if (!Model.IsEdeliveryOnly)
+            {
+                <p class="nowrap">@Model.Address1</p>
+                if (Model.Address2.NotNullOrEmpty())
+                {
+                    <p class="nowrap">@Model.Address2</p>
+                }
+                if (Model.Address3.NotNullOrEmpty())
+                {
+                    <p class="nowrap">@Model.Address3</p>
+                }
+                <p>@Model.City, @Model.StateName @Model.Zip</p>
+                <p>@Model.CountryName</p>
+                <p>@Model.PhoneNumber</p>
+                if (!string.IsNullOrEmpty(Model.AddressCode))
+                {
+                    <p><i>@Model.AddressCode</i>
+                    </p>
+                }
+            }
+            else
+            {
+                <p class="nowrap">@Model.Email</p>
+            }
+        </div>
+        <div class="col_one_third nobottommargin  @SessionHelpers.AddHiddenClassIf(!FrontEndSession.Instance.UserSettings.ShowBillingAddress)">
+            <h4 class="">~{BillingAddress}~</h4>
+            <p class="nowrap">@Model.BContact</p>
+            @if (FrontEndSession.Instance.UserSettings.ShowInvoiceOption)
+            {
+                if (!string.IsNullOrWhiteSpace(Model.InvoiceEmail))
+                {
+                    <p class="nowrap">Invoice to @Model.InvoiceEmail</p>
+                }
+                else
+                {
+                    <p class="nowrap">Mailed Invoice</p>
+                }
+            }
+            <p class="nowrap">@Model.BAddress1</p>
+            @if (Model.BAddress2.NotNullOrEmpty())
+            {
+                <p class="nowrap">@Model.BAddress2</p>
+            }
+            <p>@Model.BCity, @Model.BStateName @Model.BZip</p>
+            <p>@Model.BCountryName</p>
+            <p>@Model.BPhoneNumber</p>
+            @{
+                if (!string.IsNullOrEmpty(Model.BAddressCode))
+                {
+                    <p><i>@Model.BAddressCode</i></p>
+                }
+            }
+        </div>
+        <div class="col_one_third col_last @(SessionHelpers.AddHiddenClassIf(!FrontEndSession.Instance.UserSettings.IsPriceInformationVisible))">
+            <div class="pull-right">
+                <h4 class="">~{PaymentInformation}~</h4>
+                <table>
+                    <tr>
+                        <td>~{ItemsSubtotal}~:</td>
+                        <td class="textr" style="width: 100px;">@Model.OrderSubTotal.ToString("C")</td>
+                    </tr>
+                    @if (Model.Discount > 0)
+                    {
+                        <tr>
+                            <td>~{Discount}~:</td>
+                            <td class="textr text-danger" style="width: 100px;">@((Model.Discount * -1).ToString("C"))</td>
+                        </tr>
+                    }
+                    @if (Model.MailingCosts > 0)
+                    {
+                        <tr>
+                            <td>~{MailingCost}~:</td>
+                            <td class="textr" style="width: 100px;">@Model.MailingCosts.ToString("C")</td>
+                        </tr>
+                    }
+                    @if (Model.ThirdPartyListCost > 0)
+                    {
+                        <tr>
+                            <td>~{ListCost}~:</td>
+                            <td class="textr" style="width: 100px;">@Model.ThirdPartyListCost.ToString("C")</td>
+                        </tr>
+                    }
+                    <tr class="@(SessionHelpers.AddHiddenClassIf(Model.ShippingCosts <= 0))">
+                        <td>~{ShippingHandling}~:</td>
+                        <td class="textr" style="width: 100px;">@Model.ShippingCosts.ToString("C")</td>
+                    </tr>
+                    <tr class="@(SessionHelpers.AddHiddenClassIf(Model.Taxes <= 0))">
+                        <td>~{SalesTax}~:</td>
+                        <td class="textr" style="width: 100px;">@Model.Taxes.ToString("C")</td>
+                    </tr>
+                    @if (Model.CoopFundsUsed != 0)
+                    {
+                        <tr>
+                            <td>@Html.LabelFor(m => m.CoopFundsUsed, new { @class = "bold" })<b>:</b></td>
+                            <td class="textr" style="width: 100px;"><b>-@Model.CoopFundsUsed.ToString("C")</b></td>
+                        </tr>
+                    }
+                    @if (Model.PromoCodeDiscount > 0)
+                    {
+                        <tr>
+                            <td><b>~{Discount}~:</b></td>
+                            <td class="textr" style="width: 100px;"><b>-@Model.PromoCodeDiscount.ToString("C")</b></td>
+                        </tr>
+                    }
+                    @if (Model.InvoiceFee > 0)
+                    {
+                        <tr>
+                            <td>~{InvoiceFee}~:</td>
+                            <td class="textr" style="width: 100px;">@Model.InvoiceFee.ToString("C")</td>
+                        </tr>
+                    }
+                    
+                    <tr>
+                        <td>~{Total}~:</td>
+                        <td class="textr" style="width: 100px;">@Model.OrderTotal.ToString("C")</td>
+                    </tr>
+                    @if(!string.IsNullOrEmpty(Model.PoNumber))
+                    {
+                        <tr>
+                            <td>Payment Method:</td>
+                            <td class="textr" style="width:100px;">PO - @Model.PoNumber</td>
+                        </tr>
+                    }
+                </table>
+            </div>
+        </div>
+    </div>
+    <br style="clear: both" />
+    <div class="col_full">
+        <div style="background-color:#000; color: #fff; border-bottom: 1px #000 solid" class="pad5 topmargin"><p class="text-center text-uppercase">~{YourOrder}~</p></div>
+        @if (Model?.OrderLines != null)
+        {
+            foreach (var line in Model.OrderLines)
+             {
+                 <div class="row">
+                     <div class="col-md-10">
+                         <p class="padu10">
+                             <b>@Html.Raw(line.PartName)</b>
+                         </p>
+                         <p><i>~{Quantity}~: @line.OrderQty</i>
+                         </p>
+                         <p class="">@Html.Raw(line.PartDescription)</p>
+                         @if (!line.Attributes.IsNullOrEmpty())
+                         {
+                             foreach (var item in line.Attributes)
+                             {
+                                 <div class="row">
+                                     <p class="pull-left col-md-2 text-right align-top">@item.Type:</p>
+                                     <em class="col-md-2 pull-left align-top">@item.Name</em>
+                                     <span class="col-md-4 align-top">
+                                         @if (item.Value > 0)
+                                         {
+                                             @: +@item.Value.ToString("C2")
+                                         }
+                                     </span>
+                                 </div>
+                             }
+                         }
+                     </div>
+                     <div class="col-md-2">
+                         @if (line.OrderSubTotal > 0 && FrontEndSession.Instance.UserSettings.IsPriceInformationVisible)
+                         {
+                             <p class="textr padb5">
+                                 <div class="text-right">
+                                     <b>@line.OrderSubTotal.ToString("C")</b>
+                                 </div>
+                                 @if (line.Discount > 0)
+                                 {
+                                     <div class="text-right text-danger ">
+                                         <b>-@line.Discount.ToString("C")</b>
+                                     </div>
+                                 }
+                             </p>
+                         }
+                     </div>
+                 </div>
+             }
+        }
+    </div>
+</div>
+<script src="~/Scripts/jQuery.print.js"></script>
+<script type="text/javascript">
+
+    function printReciept() {
+        $.print("#printable");
+    }
+
+</script>

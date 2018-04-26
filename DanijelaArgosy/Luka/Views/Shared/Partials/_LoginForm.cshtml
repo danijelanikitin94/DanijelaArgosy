@@ -1,0 +1,133 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@using Argosy.Web.FrontEnd.Models
+@model LoginViewModel
+<div id="loginTarget">
+    @{
+        if (Model.Details.HasSite)
+        {
+            <div class="white-box">
+                <div class="login-box">
+
+                    @if (Model.IsRegistrationPage)
+                    {
+                        <div class="padb20">
+                            <p>Enter your login credentials below.</p>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="center  padb5 mw300">
+                            <img class="img-responsive maru20" style="max-height:100px" alt="@(Model.Details.LogoName)" src="@(Model.Details.LogoUrl)">
+                        </div>
+                    }
+
+                    <div>
+                        @using (Html.BeginForm("Index", "Login", new { area = "" }, FormMethod.Post, new { id = "login-form" }))
+                        {
+                            @Html.AntiForgeryToken()
+                            @Html.HiddenFor(a => a.CompanyOrSiteUrl)
+                            @Html.HiddenFor(a => a.SiteId)
+                            <div>
+                                @Html.ValidationSummary(true, "", new { @class = "mimic-bootstrap-alert" })
+                                @{
+                                    var siteImage = Model.Site.GetSiteImage(Model.Company);
+                                }
+                                <div class="padu20">
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Username", autofocus = true })
+                                    @Html.ValidationMessageFor(x => x.Username, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="padu10">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Password"  })
+                                    @Html.ValidationMessageFor(x => x.Password, "", new { @class = "text-danger" })
+                                </div>
+                                <div class="col-sm-12 floatr padu10">
+                                    <a href="#fogotPasswordConatiner" class="floatr fancybox">Forgot Password?</a>
+                                </div>
+                                <div class="padb20">
+                                    <input type="submit" id="btnLogin" class="btn btn-primary upcase w100" style="padding: 15px 0 15px 0" value="Log in" />
+                                </div>
+
+                                @if (Model.Company != null && Model.Company.FLAG_ALLOW_REGISTRATION)
+                                {
+                                    <div class="padu10 border-top">
+                                        <p class="small_txt maru5">First time here?</p><br />
+                                        @if (Model.RegistrationUser.CustomRegistrationUrl.NotNullOrEmpty())
+                                        {
+                                            <a href="@Model.RegistrationUser.CustomRegistrationUrl" class="btn btn-default upcase w100">Create Account</a>
+                                        }
+                                        else
+                                        {
+                                            <a href="#register" class="fancybox btn btn-default upcase w100">Register Now</a>
+                                        }
+
+                                    </div>
+                                }
+                                @if (Model.CustomUiMessage.NotNullOrEmpty())
+                                {
+                                    <div class="clear">
+                                        <div role="alert">@Html.Raw(Model.CustomUiMessage)</div>
+                                    </div>
+                                }
+                               <div class="padu20 padb10 text-center @(siteImage == null || Model.Company == null ? " hidden" : "")">
+                                   <img class="img-responsive" style="max-width: 150px;" alt="@Model.Site.SITE_COMPANY" src="@siteImage">
+                               </div>
+                                        @Html.EditorForModel("LoginViewRestOfModel")
+                          </div>
+                        }
+                    </div>
+                </div>
+            </div>
+            if (!Model.IsRegistrationPage)
+            {
+                <div class="padu20">
+                    @Html.Partial("Partials/_LoginLinkToPortal")
+                </div>
+                }
+            }
+            else
+            {
+                <div class="col-sm-6 col-sm-offset-3 maru40">
+                    <div class="white-box">
+                        <div class="pad20 clearfix">
+                            <img style="max-height:150px" class="img-responsive" alt="@(Model.Details.LogoName)" src="@(Model.Details.LogoUrl)">
+                        </div>
+                        <div class="min-height225 clearfix">
+
+                            <h3 class="center maru40"> Please contact your Site Administrator for login instructions.</h3>
+                        </div>
+                    </div>
+                    @if (!Model.IsRegistrationPage)
+                    {
+                        <div class="padu20"><a  target="_blank" href="http://www.propago.com"><b>Marketing Portal</b></a> by Propago</div>
+                    }
+                </div>
+            }
+    }
+    <div id="register" style="display: none;">
+        @Html.Partial("Partials/_UserRegistration")
+    </div>
+    @Html.Partial("Partials/_ForgotPassword", new ForgotPasswordViewModel { CompanyId = Model.Details.CompanyId, SiteId = Model.Details.SiteId })
+    <script language="javascript">
+        @functions{
+
+            public string TokenHeaderValue()
+            {
+                string cookieToken, formToken;
+                AntiForgery.GetTokens(null, out cookieToken, out formToken);
+                return cookieToken + ":" + formToken;
+            }
+
+        }
+        $(document).ready(function () {
+
+            $("#Username,#Password").keypress(function (ev) {
+                var keycode = (ev.keyCode ? ev.keyCode : ev.which);
+                if (keycode === 13) {
+                    ev.preventDefault();
+                    $("#btnLogin").trigger('click');
+                }
+            });
+        });
+
+    </script>
+</div>

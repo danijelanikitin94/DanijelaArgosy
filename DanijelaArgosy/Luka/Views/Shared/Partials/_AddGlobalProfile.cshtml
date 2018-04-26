@@ -1,0 +1,67 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.BusinessLogic.FrontEnd.Managers.Proofing.GlobalProfileManager.GlobalProfile
+<script type="text/javascript">
+    function submitForm(button) {
+        button = $(button);
+        var ddl = $("select[data-argosy-view=CompanyGlobalFormsDropDown]").getKendoDropDownList();
+
+        if ($("#Name").val() == "") {
+            prompt.notify({
+                question: "Please input Profile Name.",
+                type: "error"
+            });
+            $("#Name").focus();
+            button.removeAttr("disabled");
+            return;
+        }
+
+        if (ddl != null && ddl.value() != "") {
+            $("#GlobalFormsId").val(ddl.value());
+        } else {
+            prompt.notify({
+                question: "Please Select Global Form.",
+                type: "error"
+            });
+            button.removeAttr("disabled");
+            return;
+        }
+        if (button.attr("disabled") != "disabled") {
+            button.attr('disabled','disabled');
+            $("form.add-globalprofile")[0].submit();
+        }
+    }
+</script>
+
+<div class="fancy400">
+    <h3 style="text-align:center">~{CreateNewProfile}~</h3>
+    @using (Html.BeginForm("Add", "GlobalProfiles", FormMethod.Post, new { role = "form", @class = "add-globalprofile" }))
+    {
+        @Html.ValidationSummary(true)
+        <div class="row">
+
+            @Html.HiddenFor(m => m.GlobalFormsId)
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{ProfileName}~
+                </div>
+                <div class="input-style">
+                    @Html.TextBoxFor(m => m.Name)
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{GlobalForm}~
+                </div>
+                <div class="input-style">
+                    <select data-argosy-control="CompanyGlobalFormsDropDown" data-argosy-options-company-id="@FrontEndSession.Instance.CompanyId.GetValueOrDefault(0)" data-argosy-view="CompanyGlobalFormsDropDown"></select>
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="text-center padu10">
+                    <a class="btn btn-default" onclick="submitForm(this);">~{CreateProfile}~</a>
+                </div>
+            </div>
+
+        </div>
+    }
+</div>

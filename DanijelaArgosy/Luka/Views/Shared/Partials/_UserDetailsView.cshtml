@@ -1,0 +1,112 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.BusinessLogic.FrontEnd.Managers.UserManager.User
+@{ 
+    var isDisabled = Request.Url.AbsoluteUri.ToLower().Contains("admin") ? false : !FrontEndSession.Instance.UserSettings.CanEditUserInfo;
+}
+<div id="userSharedProperties">
+    <div class="col-sm-6">
+        <div class="info clear">
+            <h3>~{UserDetails}~</h3>
+            <div class="form">
+                <div class="label-style">
+                    ~{UserName}~
+                </div>
+                <div class="padu5 input-style padl10 padb10 textclip">
+                    <b>@Model.Username</b>
+                </div>
+                @Html.HiddenFor(m => m.Username)
+                @Html.EditorFor(m => m.Email, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.CCEmail, "NewString", new { disabled = isDisabled })
+                @(FrontEndSession.Instance.UserSettings.ShowInvoiceOption ? Html.EditorFor(m => m.InvoiceEmail, "NewString", new { disabled = isDisabled }) : Html.HiddenFor(m => m.InvoiceEmail))
+                @Html.EditorFor(m => m.FirstName, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.LastName, "NewString", new { disabled = isDisabled })
+                @if (FrontEndSession.Instance.UserSettings.ShowInvoiceOption)
+                {
+                    <div class="padu5 clearfix">
+                        <div>
+                            <div class="label-style">
+                                @Html.LabelFor(a => a.PaperInvoice)
+                            </div>
+                            <div class="input-style">
+                                @Html.EditorFor(m => m.PaperInvoice, "ToggleSwitch", new { disabled = isDisabled })
+                            </div>
+                            <br style="clear: both">
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    @Html.HiddenFor(m => m.PaperInvoice)
+                }
+                @Html.HiddenFor(m => m.Photo)
+                @Html.HiddenFor(m => m.DefaultLogo)
+                <h3 class="padu20">~{OtherInformation}~</h3>
+                @Html.EditorFor(m => m.DivisionName, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.Website, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.UserTitle, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.Title2, "NewString", new { disabled = isDisabled })
+
+                @if (FrontEndSession.Instance.UserSettings.IsAdmin && !(ViewBag.EmployeeEdit != null && ViewBag.EmployeeEdit))
+                {
+                    <div>
+                        @Html.EditorFor(m => m.Custom01, "NewString", new { disabled = isDisabled })
+                        @Html.EditorFor(m => m.Custom02, "NewString", new { disabled = isDisabled })
+                        @Html.EditorFor(m => m.Custom03, "NewString", new { disabled = isDisabled })
+                    </div>
+
+                    <h3 class="padu20">~{UserControls}~</h3>
+                    <div class="padu5">
+                        @Html.EditorFor(m => m.UserGroupId, "UserGroup", new { disabled = isDisabled })
+                    </div>
+                    <div class="padu5">
+                        @Html.EditorFor(m => m.ExternalId, "NewString", new { disabled = isDisabled })
+                    </div>
+                    <div class="padu5">
+                        @Html.EditorFor(m => m.ApprovingManagerId, "ApprovingManager", new { disabled = isDisabled })
+                    </div>
+                    <div class="padu5">
+                        @Html.EditorFor(m => m.SpendingLimit, "CurrencyLabel", new { disabled = isDisabled })
+                    </div>
+                    <h5 class="padu10 small_txt">~{EnforcedWhenApprovingManagerSelected}~</h5>
+                }
+            </div>
+
+        </div>
+    </div>
+
+    <div class="col-sm-6 borderl">
+        <div class="info clear">
+            <div class="form">
+                <h3>
+                    ~{AddressInformation}~
+                </h3>
+                @Html.EditorFor(m => m.Address1, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.Address2, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.Address3, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.City, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.StateId, "State", new { disabled = isDisabled ? "disabled" : "" })
+                @Html.EditorFor(m => m.ZipCode, "NewString", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.CountryId, "Country", new { disabled = isDisabled ? "disabled" : "" })
+                @Html.EditorFor(m => m.PhoneNumber, "Telephone", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.PhoneNumber2, "Telephone", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.PhoneNumber3, "Telephone", new { disabled = isDisabled })
+                @Html.EditorFor(m => m.Fax, "Telephone", new { disabled = isDisabled })
+            </div>
+        </div>
+    </div>
+    @if (Model.UserId > 0 && FrontEndSession.Instance.UserSettings != null && FrontEndSession.Instance.UserSettings.AllowSystemDollar)
+    {
+        <div class="col-sm-12 padu10 maru10 nopadding">
+            <div class="bottommargin-lg"
+                 data-argosy-options-controller-name="@ViewContext.RouteData.Values["controller"]"
+                 data-argosy-options-action-name="@ViewContext.RouteData.Values["action"]"
+                 data-argosy-control="UserCoopFundsGrid"
+                 data-argosy-options-user-balance="~{UserBalance}~ <b>@((Model.UserBalance).ToString("C2"))</b>"
+                 data-argosy-options-user-id="@Model.UserId"
+                 data-argosy-options-user-group-id="@Model.UserGroupId"
+                 data-argosy-options-company-id="@FrontEndSession.Instance.CompanyId.GetValueOrDefault()"
+                 data-argosy-view="UserCoopFundsGrid"
+                 data-argosy-options-is-admin="@(FrontEndSession.Instance.IsAdmin && HttpContext.Current.Request.RequestContext.RouteData.Values["controller"].ToString().ToUpper()=="USERS" || (ViewBag.EmployeeEdit != null && ViewBag.EmployeeEdit))"></div>
+        </div>
+    }
+</div>

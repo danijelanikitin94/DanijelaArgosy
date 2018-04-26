@@ -1,0 +1,206 @@
+﻿<script type="text/javascript">
+    function getColumnClass(data) {
+        return data.horizontal ? "col-md-12" : "col-md-4"
+    }
+    function getPaddingClass(data) {
+        return data.horizontal ? "" : "padu20"
+    }
+    function getInnerPaddingClass(data) {
+        return data.horizontal ? "padl20 padr20 padu10 padb10" : "pad20"
+    }
+    function getThirdPartyListCost(data) {
+        var perRecordCost = data.ThirdPartyList.PerRecordCost != null ? data.ThirdPartyList.PerRecordCost : 0,
+            perListCost = data.ThirdPartyList.PerListCost != null ? data.ThirdPartyList.PerListCost : 0,
+            minListCost = data.ThirdPartyList.MinListCost != null ? data.ThirdPartyList.MinListCost : 0;
+        data.ThirdPartyList.Price = (perRecordCost * data.RequestedCount) + perListCost;
+        if (data.ThirdPartyList.Price < minListCost) {
+            data.ThirdPartyList.Price = minListCost;
+        }
+        return data.ThirdPartyList.Price;
+    }
+    function getMinListCount(data) {
+        if (data.ThirdPartyList != null && data.ThirdPartyList.MinimumListCount != null) {
+            return data.ThirdPartyList.MinimumListCount
+        }
+        return null;
+    }
+</script>
+
+<script type="text/x-kendo-template" id="_MailingListShippingOptionsTemplate">
+    #if (!hideTitle) {#
+    <div class="row">
+        <h1>~{ChooseMailingMethodFor}~ <i>${Name}</i></h1>
+    </div>
+    #}#
+    <div class="row">
+        <div class="col-md-12 maru20">
+            <div class="${getColumnClass(data)}">
+                <div class="text-center">
+                    <div class="bkg-gray ${getInnerPaddingClass(data)}">
+                        <h3 class="text-center">~{FinishedProcessingMailingList}~</h3>
+                        <div class="big-txt" id="listFinalCount">${kendo.toString(NumberOfRows, "n0")}</div>
+                        <div>~{Records}~</div>
+                        #if (CanOverrideCount) {#
+                        <div class="padu10"><a class="btn btn-primary" data-bind="events: {click: regenerate}"><i class="fa fa-refresh fa-rotate-90"></i> Generate Count</a></div>
+                        #}#
+                    </div>
+                </div>
+            </div>
+            #if (CanOverrideCount) {#
+            <div class="${getColumnClass(data)} padb20">
+                <div>
+                    <div class="bkg-gray ${getInnerPaddingClass(data)}">
+                        <div class="text-left">
+                            <div class="label-style">
+                                Records Needed:
+                            </div>
+                            <div class="floatl">
+                                <input type="text" style="width: auto;"
+                                       value="${RequestedCount}"
+                                       id="overrideListCount"
+                                       data-role="numerictextbox"
+                                       data-spinners="false"
+                                       data-decimals="0"
+                                       data-format="n0"
+                                       data-increment="1"
+                                       data-max="${NumberOfRows}"
+                                       data-min="${getMinListCount(data)}"
+                                       class="recordsNeeded"
+                                       data-bind="events: {change: updateTotals}" />
+                            </div><br style="clear:both;" />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            #}#
+            #if (SuggestedFileName != undefined && SuggestedFileName != null) {#
+            <div class="${getColumnClass(data)} padb20">
+                <h3>
+                    <i class="fa fa-list-alt"></i> Mailing List Name
+                </h3>
+                <div class="text-left">
+                    <div>
+
+                        <p class="text-left"><div class="label-style">~{ListName}~:</div><div class="input-style"><input type="text" value="${SuggestedFileName}" id="listSaveName" /></div><br style="clear:both" /></p>
+                        <p class="text-left f12"><i>~{NameYourList}~</i></p>
+                    </div>
+                </div>
+            </div>
+            #}#
+            <div class="${getColumnClass(data)}">
+                #if (MailingOptions.length > 0) {#
+                <div>
+                    <h3>
+                        <i class="fa fa-envelope"></i> Mailing Options
+                    </h3>
+                    <div class="text-left">
+                        #
+                        for (var i = 0; i < MailingOptions.length; i++) {
+                        var option = MailingOptions[i];
+                        var selected = option.PartServiceId == SelectMailingOption.PartServiceId;
+                        #
+                        <div>
+                            <div class="input-style">
+                                <input type="radio" name="mailingOption" id="option-${option.PartServiceId}" #if (selected){#checked#}# value="${option.PartServiceId}" data-bind="events: {change: updateShippingOption}" />
+                                <label for="option-${option.PartServiceId}">${option.ServiceName}</label>
+                            </div>
+                            <div class="label-style textr">${kendo.toString(option.PricePer,"C")}</div><br style="clear:both">
+                        </div>
+                        #
+                        }
+                        #
+                    </div>
+                </div>
+                #}#
+                
+                #if (showMultiUseOption) {#
+                <div class="padu30">
+                    <h3>
+                        <i class="fa fa-list"></i> List Use
+                    </h3>
+                    <div class="text-left">
+                        <div>
+                            <div class="input-style">
+                                <input type="radio" name="useOption" id="useOptionSingle" #if (!isMultiUse){#checked#}# value="false" data-bind="events: {change: updateListUseOption}" />
+                                <label for="useOptionSingle">Single Use</label>
+                            </div>
+                            <div class="label-style textr">${kendo.toString(singleUseCost,"C")}/${kendo.toString(singlePerRecordCost,"C")}</div><br style="clear:both">
+                        </div>
+                        <div>
+                            <div class="input-style">
+                                <input type="radio" name="useOption" id="useOptionMulti" #if (isMultiUse){#checked#}# value="true" data-bind="events: {change: updateListUseOption}" />
+                                <label for="useOptionMulti">Multi Use</label>
+                            </div>
+                            <div class="label-style textr">${kendo.toString(multiUseCost,"C")}/${kendo.toString(multiPerRecordCost,"C")}</div><br style="clear:both">
+                        </div>
+                    </div>
+                </div>
+                #}#
+
+                <div class="padu30" id="_mailingListShippingOptionsTotal">
+                </div>
+                <div class="padu10 center">
+                    <a class="btn btn-primary btn-block" data-bind="events: {click: addToCart}">~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+<script type="text/x-kendo-template" id="_MailingListShippingOptionsTotalTemplate">
+    <h3>
+        <i class="fa fa-check-square-o"></i> Summary of Mailing
+    </h3>
+    <div class="table-responsive grid_info bkg-white">
+        <table class="admin table">
+            <thead>
+                <tr class="grid_menu">
+                    <td class="textl">~{Item}~</td>
+                    <td class="textr">~{Count}~</td>
+                    <td class="textr">~{Price}~</td>
+                    <td class="textr">~{MailingCost}~</td>
+                    <td class="textr">~{Total}~</td>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td class="textl">${Sku}</td>
+                    <td class="textr">${kendo.toString(RequestedCount, "n0")}</td>
+                    <td class="textr">${kendo.toString(PartPrice, "C")}</td>
+                    #if (SelectMailingOption == null) {#
+                    <td class="textr">${kendo.toString(0,"C")}</td>
+                    <td class="textr">${kendo.toString(PartPrice,"C")}</td>
+                    #} else {#
+                    <td class="textr">${kendo.toString(SelectMailingOption.PricePer * RequestedCount,"C")}</td>
+                    <td class="textr">${kendo.toString((SelectMailingOption.PricePer * RequestedCount)+PartPrice,"C")}</td>
+                    #} #
+                </tr>
+                #if (ThirdPartyList != null && ThirdPartyList.Price > 0) {#
+                <tr>
+                    <td class="textl" colspan="4">List Cost</td>
+                    #if (SelectMailingOption == null) {#
+                    <td class="textr"></td>
+                    #} else {#                    
+                    <td class="textr">${kendo.toString(getThirdPartyListCost(data),"C")}</td>
+                    #} #
+                </tr>
+                #}#
+                #
+                var subTotal = (SelectMailingOption.PricePer * RequestedCount)+PartPrice;
+                if (ThirdPartyList != null && ThirdPartyList.Price > 0) {
+                    subTotal += ThirdPartyList.Price;
+                }
+                #
+                <tr>
+                    <td class="textl" colspan="4">Subtotal</td>
+                    #if (SelectMailingOption == null) {#
+                    <td class="textr">${kendo.toString(PartPrice,"C")}</td>
+                    #} else {#
+                    <td class="textr">${kendo.toString(subTotal,"C")}</td>
+                    #} #
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</script>

@@ -1,0 +1,188 @@
+﻿<script type="text/x-kendo-tmp" id="_userCoopFundsMainTemplate">
+    <div id="_userCoopFundsContainer" class="row">
+        <div class="alert alert-warning" id="_coopAlert" role="alert" style="display:none;"></div>
+        <div class="col-sm-12">
+            <div data-role="grid" style="padding-right: 0px!important;"
+                 data-id="_userCoopFundsGrid"
+                 data-sortable="false"
+                 data-scrollable="true"
+                 data-exportToExcel="false"
+                 data-pageable="{
+                                refresh: false,
+                                pageSizes: false,
+                                buttonCount: 1
+                            }"
+                 data-toolbar='[
+                                {
+                                    template: kendo.template($("\\#toolbarTemplate").html())
+                                }
+                            ]'
+                 data-row-template="rowTemplate"
+                 data-columns="[
+                            {
+                                field: 'TransactionDate',
+                                title: '~{TransactionDate}~'
+                            }, {
+                                title: '~{Amount}~',
+                                headerAttributes: {
+                                    style: 'text-align: right'
+                                }
+                            }, {
+                                field: 'IsUserGroup',
+                                title: 'Group',
+                                headerAttributes: {
+                                    style: 'text-align: center'
+                                }
+                            }, {
+                                field: 'OrderNumber',
+                                title: '~{OrderNumber}~',
+                            }, {
+                                title: 'Bucket',
+                                 minScreenWidth: 767
+                            }, {
+                                title: '~{AdjustmentReason}~',
+                                 minScreenWidth: 767
+                            }, {
+                                title: '~{Comments}~',
+                                minScreenWidth: 767                         
+
+                            }
+                        ]"
+                 data-bind="source: transactions,
+                        events: {
+                            dataBound: transactionsDataBound
+                        }">
+            </div>
+        </div>
+        <div class="col-sm-12" style="display: none" id="_userCoopBucketDetails">
+            <div data-role="grid"
+                 data-id="_userCoopBucketDetailsGrid"
+                 data-sortable="true"
+                 data-exportToExcel="false"
+                 data-pageable="{
+                                refresh: false,
+                                pageSizes: false,
+                                buttonCount: 1
+                            }"
+                 data-columns="[
+                            {
+                                title: 'Bucket',
+                                field: 'Name',
+                                width: '35%'
+                            }, {
+                                title: 'Group',
+                                field: 'IsUserGroup',
+                                width: '30%',
+                                headerAttributes: {
+                                    style: 'text-align: center'
+                                },
+                            }, {
+                                title: 'Balance',
+                                field: 'Balance',
+                                headerAttributes: {
+                                    style: 'text-align: right'
+                                },
+                                attributes: {
+                                    style: 'text-align: right; font-weight: bold'
+                                },
+                                format: '{0:c}',
+                                width: '35%'
+                            }
+                        ]"
+                 data-bind="source: funds"
+                 data-row-template="bucketRowTemplate">
+            </div>
+        </div>
+    </div>
+</script>
+<script id="bucketRowTemplate" type="text/x-kendo-tmpl">
+    <tr data-uid="${uid}">
+        <td>
+            #if (Name != null){#
+            ${Name}
+            #}#
+        </td>
+        <td style="text-align: center">
+            #if (IsUserGroup) {#
+            YES
+            #} else {#
+            NO
+            #}#
+        </td>
+        <td style="text-align: right; font-weight: bold">
+            ${kendo.toString(Balance, "c0")}
+        </td>
+    </tr>
+</script>
+<script id="rowTemplate" type="text/x-kendo-tmpl">
+    <tr data-uid="${uid}">
+        <td>
+            ${kendo.toString(kendo.parseDate(TransactionDate), "MM/dd/yyyy")}
+        </td>
+        <td>
+            <div class='textr nowrap'><b>${kendo.toString(AdjustmentAmount,'c')}</b></div>
+        </td>
+        <td style="text-align: center">
+            #if (IsUserGroup) {#
+            Yes
+            #} else {#
+            No
+            #}#
+        </td>
+        <td>
+            #if (OrderNumber != null) {
+            if (window.location.pathname.split("/")[1] === "Admin" && userSettings.IsAdmin) {#
+            <a href='/Admin/Orders/Edit/${OrderNumber}'>${OrderNumber}</a>
+            #} else {#
+            <a href='/Account/Orders/Edit/${OrderNumber}'>${OrderNumber}</a>
+            #}
+            }#
+        </td>
+        <td>
+            #if (userSettings.IsAdmin) {
+            if (BucketId != null) {#
+            <a data-id='${BucketId}' data-bind='click: showBucketDetails'>${BucketName}</a>
+            #} else if(BucketId != null) {#
+            ${BucketName}
+            #}
+            } else {
+            if (BucketId != null) {#
+            ${BucketName}
+            #}
+            }#
+        </td>
+        <td class="hidden-xs">
+            ${AdjustmentReason}
+        </td>
+        <td class="hidden-xs">
+            #if (Comments != null) {#
+            ${Comments}
+            #}#
+        </td>
+    </tr>
+
+</script>
+<script id="toolbarTemplate" type="text/x-kendo-tmpl">
+    <div class="k-header k-grid-toolbar row"  id="_userCoopFundsToolbar">
+        <div class="k-keyword-search pull-left nopadding maru5" data-bind="visible: showSearch">
+            <input type="text" placeholder="Search by Order\\# or Reason" class="k-textbox" id="_coopFundsKeyword"
+                   data-bind="value: keyword, events: { change: searchCoopFunds }">
+            <a class="k-button-nbkg k-keyword-search-button"
+               data-bind="events: { click: searchCoopFunds }">
+                <i class="fa fa-search"></i>
+            </a>
+    
+            <select id="_userCoopFundsBucketsDdl"
+                    data-role="dropdownlist"
+                    data-bind="value: currentBucket,
+                                source: buckets,
+                                events: { change: searchCoopFunds }"
+                    data-option-label="Select a Bucket"
+                    data-text-field="Name"
+                    data-value-field="Id"></select>
+        </div>
+        <div class="nopadding pull-right maru10">
+            <span data-bind="html: toolbarText" style="float: right"></span>
+        </div>
+    </div>
+</script>

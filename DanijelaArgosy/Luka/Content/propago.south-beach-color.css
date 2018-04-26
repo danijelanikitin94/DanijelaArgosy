@@ -1,0 +1,181 @@
+﻿h2 {
+    color: #026B6E;
+}
+
+h3, .info h3 {
+    color: #026B6E;
+}
+
+h5, h5 a {
+    color: #ef4036;
+}
+
+h5 a:hover {
+        color: #22695E;
+    }
+
+h6 {
+    color: #22695E;
+}
+
+a {
+    color: #22695E;
+}
+
+    a:hover, p.product-name:hover, .a-big, .a-big:hover {
+        color: #22695E;
+    }
+
+    .grid-price, p.product-price, .big-price {
+    color: #ff9845;
+}
+
+    .navbar-toggle {
+    background-color: #22695E;
+}
+
+    .dropdown-menu li a:hover, .dropdown-menu li a:focus {
+    background-color: #22695E;
+    color: #FFFFFF;
+}
+
+    .btn-default, .k-button {
+    color: #333;
+    background-color: #d7d7d7;
+
+}
+
+.btn-default:hover{
+    color: #333;
+    background-color: #aaa9a9;}
+
+
+.btn-primary {
+    color: #fff;
+    background-color: #ff9845;}
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #22695E;}
+
+.btn-primary .btn-sm {
+    color: #fff;
+    background-color: #026B6E;}
+
+.btn-primary .btn-sm:hover{
+    color: #fff;
+    background-color: #22695E;}
+
+.btn-success {
+    color: #026B6E;
+    background-color: transparent;}
+
+.btn-success:hover {
+    color: #22695E;
+    background-color: transparent;}
+
+.btn-link, .k-grid .k-button-nbkg {
+    color: #22695E;
+    background-color: transparent;}
+
+
+.btn-link:hover, .k-grid .k-button-nbkg:hover {
+    color: #22695E;
+    text-decoration: none;}
+
+.btn-danger {
+    color: #333;
+    background-color: #d7d7d7;}
+
+.btn-danger:hover
+{
+    color: #333;
+    background-color: #aaa9a9;}
+
+input.k-textbox:hover, textarea.k-textbox:hover, input.k-textbox:focus, textarea.k-textbox:focus, .k-dropdown-wrap.k-state-default.k-state-focused.k-state-active, .k-numeric-wrap.k-state-hover {
+    border: solid 1px #026B6E;
+    background: #f8f8e1;
+}
+
+.select-color.selected, .select-color:hover {
+    border: solid 2px #ff9845;
+}
+
+.header-bottom, .mobiletitle, .mobile-nav ul 
+{
+    background: #026B6E;
+}
+
+    .mobile-nav li.search-box input {
+        border: 3px solid #026B6E;
+    }
+
+.k-menu .k-state-default:hover, .k-menu .k-state-active, .k-menu.k-state-active:hover, #menu a:hover, #menu a.active, #menu a.active:hover,.mobile-menu a:hover, .mobile-menu a:focus, .mobile-menu a:active
+{
+background-color: #ff9845;
+    background: #ff9845;
+    color: #FFF;
+}
+
+
+
+.k-treeview .k-item span.k-in:hover, .k-state-selected, .k-state-selected:link, .k-state-selected:visited, .k-list > .k-state-selected, .k-list > .k-state-highlight, .k-panel > .k-state-selected, .k-ghost-splitbar-vertical, .k-ghost-splitbar-horizontal, .k-draghandle.k-state-selected:hover, .k-scheduler .k-scheduler-toolbar .k-state-selected, .k-scheduler .k-today.k-state-selected, .k-marquee-color, .k-state-focused.k-state-selected {
+    background-color: #ff9845;
+    background: #ff9845;
+    border: solid 1px #ff9845;
+    color: #FFF;
+}
+
+.k-state-selected, .k-list > .k-state-selected {
+    border-color: #ff9845;
+    background-color: #ff9845;
+    background-image: none;
+}
+
+.k-state-hover > .k-link {
+    background: #ff9845;
+    color: #FFF;
+}
+
+.k-list > .k-state-selected {
+    color: #ffffff;
+    background-color: #ff9845;
+    border-color: #ff9845;
+}
+
+.gt-accordion > h4.accordion.active {
+    background: #ff9845;
+    color: #fff;
+}
+
+.gt-accordion > h4.accordion, .group-heading {
+    background: #22695E;
+    color: #fff;
+}
+
+.toggle-switch-wrapper.toggle-switch-checked {
+    background-color: #22695E;
+}
+
+input[type="checkbox"]:not(.bootstrap-toggle):checked + label:before {
+    content: "\f14a";
+    color: #ff9845;
+}
+
+.search-grid {
+    border-top: 5px solid #ff9845;
+}
+.border-container {
+    border-left: 5px solid #ff9845;
+}
+
+
+.search-grid-btn {
+    background: #ff9845;
+    color: #FFFFFF;
+}
+
+.search-grid-btn:hover, .view-product h3:hover {
+    background: #22695E;
+    color: #FFFFFF;
+}

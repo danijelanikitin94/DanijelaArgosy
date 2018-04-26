@@ -1,0 +1,431 @@
+﻿<div class="hide">
+    <div data-argosy-modal="ModalPartConfiguration" class="fancywidth">
+
+    </div>
+</div>
+<script type="text/javascript">
+    function renderConfigurationTemplate(data) {
+        switch (data.template) {
+            case "single":
+                return kendo.Template.compile($('#_ModalPartConfigurationSingleTemplate').html())(data);
+            case "matrix":
+                return kendo.Template.compile($('#_ModalPartConfigurationMatrixTemplate').html())(data);
+            case "multi":
+                return kendo.Template.compile($('#_ModalPartConfigurationMultiTemplate').html())(data);
+            case "attribute":
+                data.includeQty = true;
+                return kendo.Template.compile($('#_ModalPartConfigurationAttributeTemplate').html())(data);
+        }
+    }
+
+    function renderAttributeWrapperTemplate(data) {
+        data.includeQty = false;
+        return kendo.Template.compile($('#_ModalPartConfigurationAttributeTemplate').html())(data);
+    }
+
+    function renderAttributeTemplate(data) {
+        switch (data.ControlType.toLowerCase()) {
+            case "textbox":
+                return kendo.Template.compile($('#_PartConfigurationAttributesTextBoxTemplate').html())(data);
+            case "dropdownlist":
+                return kendo.Template.compile($('#_PartConfigurationAttributesDropDownListTemplate').html())(data);
+        }
+    }
+
+    function getParent(data) {
+        var parent = data.parent();
+        while (parent.parent() != null) {
+            parent = parent.parent();
+        }
+        return parent;
+    }
+
+    function renderMatrixHeaderRow(data) {
+        return kendo.Template.compile($('#_MatrixHeaderRowTemplate').html())(data);
+    }
+    function renderMatrixColumn(data, col, row) {
+        var configValues = [
+            { PartConfigTypePartId: col.parent().parent().PartConfigTypePartId, PartConfigTypeValueId: col.PartConfigTypeValueId },
+            { PartConfigTypePartId: row.parent().parent().PartConfigTypePartId, PartConfigTypeValueId: row.PartConfigTypeValueId }
+        ];
+        var matchingPartConfigs = data.parent().getMatchingConfigParts(configValues);
+        var partId = 0;
+        if (matchingPartConfigs.length > 0) {
+            partId = matchingPartConfigs[0].PartId;
+        }
+        var configOption = {
+            partId: partId
+        };
+        return kendo.Template.compile($('#_MatrixColumnTemplate').html())(configOption);
+    }
+    function getAttributes(data) {
+        return data.Attributes;
+    }
+    function getAttributeById(data, id) {
+        var attribute = null;
+        $.each(data, function (i, attr) {
+            if (attr.Id == id) {
+                attribute = attr;
+            }
+        });
+        return attribute;
+    }
+</script>
+<script type="text/x-kendo-template" id="_ModalPartConfigurationTemplate">
+    <h2 class="nopadding nomargin padl10" data-bind="html: ParentPart.PartName"></h2>
+    <div class="row">
+        <div data-bind="css: {col-sm-3: isSmallWindow, col-md-5: isLargeWindow}">
+            <div class="padu20 padr20 hidden-xs" data-template="_PartConfigImageViewTemplate"  #if(template == "matrix" || template == "single"){# data-bind="source: ParentPart" #} else {# data-bind="source: ActivePart" #}#></div>
+            <div class="padu10" data-template="_PartHeaderViewTemplate" #if(template == "matrix" || template == "single"){# data-bind="source: ParentPart" #} else {# data-bind="source: ActivePart" #}#></div>
+        </div>
+        <div data-bind="css: {col-sm-9: isSmallWindow, col-md-7: isLargeWindow}">
+            #= renderConfigurationTemplate(data) #
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ModalPartConfigurationAttributeTemplate">
+    <div class="clearfix padu20" id="_modalPartConfigBindSection">
+        #=renderAttributesDisplay(data)#
+    </div>
+    #if (includeQty) {#
+    <div class="summary-information maru20 clear" data-bind="visible: isDefaultAddToCart">
+        <div class="padr20 nomargin row">
+            <div class="floatl padu5" data-bind="css:{hidden:isCustomizePart}">
+                <b>Qty</b>
+            </div>
+            <div class="floatl padl10 mobilepadb20" data-template="_ModalPartConfigurationActivePartPricingTemplate" data-bind="source: ActivePart,css:{hidden:isCustomizePart}">
+            </div>
+            <div class="nomargin mobile100" style="float: right" data-template="_ModalPartConfigurationAddCartBtnTemplate" data-bind="source: ActivePart">
+            </div>
+        </div>
+        <div class="padr20 nomargin row" data-bind="visible: isMinQtyVisible, css: {hidden:isCustomizePart,text-danger: AddToCartDisabled, call-to-action: showCallToAction}"><b><i data-bind="text: getMinimumQuantityText"></i></b></div>
+    </div><br style="clear:both" />
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_PartConfigurationAttributesDropDownListTemplate">
+    <select class="pull-left attributeOptions w100"
+            data-role="dropdownlist"
+            data-bind="source: Attributes_${Id}, events: {change: onAttributeChange}"
+            data-template="_PartConfigurationAttributesDropdownTemplate"
+            data-value-template="_PartConfigurationAttributesDropdownValueTemplate"
+            data-text-field="Type.Name"
+            data-value-field="Id"
+            data-option-label="Select an Option..."
+            #if (IsRequired) {#required#}#>
+    </select>
+</script>
+<script type="text/x-kendo-template" id="_PartConfigurationAttributesTextBoxTemplate">
+    <input type="text"
+           class="attributeOptions w100"
+           data-bind="events: {change: onTextBoxChange}"
+           data-type-id="${data.Attributes[0].Type.Id}"
+           data-cost="${data.Attributes[0].Value}"
+           #if (IsRequired) {#required#}# />
+</script>
+<script type="text/x-kendo-template" id="_PartConfigurationAttributesViewTemplate">
+        <br />
+        <div class="clearfix col-md-12 padb10">
+            <label class="col-md-5">${Name} #if (IsRequired) {#<span class="text-danger">*</span>#}#</label>
+            <div class="col-md-7">
+                #if (data.ControlType.toLowerCase() == "textbox") {#
+                <input type="text"
+                       class="attributeOptions w100"
+                       data-bind="events: {change: onTextBoxChange}"
+                       data-type-id="${Attributes[0].Type.Id}"
+                       data-cost="${Attributes[0].Value}"
+                       #if (IsRequired) {#required#}# />
+                #} else {#
+                <select class="pull-left attributeOptions w100"
+                        data-role="dropdownlist"
+                        data-bind="source: Attributes, events: {change: onAttributeChange}"
+                        data-template="_PartConfigurationAttributesDropdownTemplate"
+                        data-value-template="_PartConfigurationAttributesDropdownValueTemplate"
+                        data-text-field="Type.Name"
+                        data-value-field="Id"
+                        data-option-label="Select an Option..."
+                        #if (IsRequired) {#required#}#></select>
+                #}#
+            </div>
+            <span class="col-md-4 attributeCost"></span>
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="_ModalPartConfigurationSingleTemplate">
+        <div class="clearfix padu20" id="_modalPartConfigBindSection">
+            <div class="clearfix table table-responsive padl20 information" data-template="_PartConfigurationTableViewTemplate" data-bind="source: PartConfiguration.ConfigTypeParts" style="max-height:300px;overflow-x:auto;overflow-y:auto">
+            </div>
+            #if (data.PartAttributes != null && data.PartAttributes.length > 0) {#
+                #= renderAttributeWrapperTemplate(data) #
+            #}#
+            <div class="clearfix summary-information maru10">
+                <div class="floatr">
+                    <div class="floatl padu5 marr10"><span class="floatl" data-bind="visible: isMinQtyVisible, css: {text-danger: AddToCartDisabled, call-to-action: showCallToAction}"><b><i data-bind="text: getMinimumQuantityText"></i></b> </span></div>
+                    <div class="floatl" data-template="_ModalPartConfigurationAddCartBtnTemplate" data-bind="source: ActivePart"></div>
+                </div>
+            </div><br style="clear:both" />
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="_PartConfigurationTableViewTemplate">
+        <table class="list table" data-template="_PartConfigurationRowViewTemplate" data-bind="source: ConfigTypeValues"></table>
+    </script>
+    <script type="text/x-kendo-template" id="_PartConfigurationRowViewTemplate">
+        <tr>
+            <td data-template="_PartConfigurationPartNameViewTemplate" data-bind="source: this"></td>
+            #
+            var partConfig = getParent(data).getActivePartForValue(data);
+            var part = getParent(data).getPart(partConfig.PartId);
+            #
+            <td class="nowrap textr padr10">#=renderProductPriceViewTemplate(part, null, true)#</td>
+            <td class="globals-qtyavailable nowrap textr hidden-xs">#= renderProductQuantityAvailableTemplate(part, true) #</td>
+            <td class="nowrap textr hidden-xs">#= renderProductQuantityOnHandTemplate(part, true) #</td>
+            <td class="nowrap textr"
+                data-value="0"
+                data-part-id="${part.PartId}"
+                data-part-name="${part.PartName}"
+                data-role="partpricing"
+                data-append-zero-discount="true"
+                data-ignore-first-change="false"></td>
+        </tr>
+    </script>
+    <script type="text/x-kendo-template" id="_PartConfigurationPartNameViewTemplate">
+        <span data-bind="html:getSingleViewPartNameHtml"></span>
+    </script>
+
+
+    <script type="text/x-kendo-template" id="_ModalPartConfigurationMatrixTemplate">
+        <div class="clearfix padu20" id="_modalPartConfigBindSection">
+            <div class="clearfix table table-responsive padl20 information" data-template="_PartConfigurationMatrixViewTableTemplate" data-bind="source: PartConfiguration" style="max-height:350px;overflow-x:auto;overflow-y:auto">
+            </div>            
+            #if (data.PartAttributes != null && data.PartAttributes.length > 0) {#
+            #= renderAttributeWrapperTemplate(data) #
+            #}#
+            <div class="clearfix summary-information maru10">
+                <div class="floatr">
+                    <span class="floatl" data-bind="visible: isMinQtyVisible, css: {text-danger: AddToCartDisabled, call-to-action: showCallToAction}"><b><i data-bind="text: getMinimumQuantityText"></i></b> </span>
+                    <span data-template="_ModalPartConfigurationAddCartBtnTemplate" data-bind="source: ActivePart"></span>
+
+                </div>
+            </div><br style="clear:both" />
+        </div>
+    </script>
+
+    <script type="text/x-kendo-template" id="_PartConfigurationMatrixViewTableTemplate">
+        <table class="table">
+            #= renderMatrixHeaderRow(data.ConfigTypeParts[1].ConfigTypeValues) #
+            #
+            var rows = data.ConfigTypeParts[0].ConfigTypeValues;
+            var cols = data.ConfigTypeParts[1].ConfigTypeValues;
+            #
+            #for (var i = 0; i < rows.length; i++) {
+            var row = rows[i];#
+            <tr>
+                <td>${row.Value}</td>
+                #for (var x = 0; x < cols.length; x++) {
+                var col = cols[x];#
+                #= renderMatrixColumn(data, col, row)#
+                #}#
+            </tr>
+            #}#
+        </table>
+
+    </script>
+
+    <script type="text/x-kendo-template" id="_MatrixHeaderRowTemplate">
+        <tr>
+            <td>&nbsp;</td>
+            #for (var i = 0; i < data.length; i++) {#
+            <td class="text-center">${data[i].Value}</td>
+            #}#
+        </tr>
+    </script>
+
+    <script type="text/x-kendo-template" id="_MatrixColumnTemplate">
+        <td class="text-center"
+            data-part-id="${partId}"
+            data-show-price-summary="true"
+            data-append-zero-discount="true"
+            data-value="0"
+            data-role="partpricing"></td>
+    </script>
+    <script type="text/x-kendo-template" id="_ModalPartConfigurationActivePartPricingTemplate">
+        <td class="text-center"
+            data-part-id="${PartId}"
+            data-part-name="${PartName}"
+            data-append-zero-discount="false"
+            data-role="partpricing"></td>
+    </script>
+    <script type="text/x-kendo-template" id="_ModalPartConfigurationAddCartBtnTemplate">
+        #if (!IsExpired) {#
+        <a class="btn btn-primary" data-bind="css:{btn-block: needToAddCss, mobile100: needToAddCss}, click: addToCart, events: {mouseover: onAddToCartMouseOver, mouseout: onAddToCartMouseOut}">
+            <i class="fa fa-shopping-cart"></i>
+            #if (CanCustomize && !CanUpload) {#
+            Personalize
+            #} else if (CanUpload) {#
+            Upload Now
+            #} else {#
+            ~{AddToCart}~
+            #}#
+        </a>
+        #}#
+    </script>
+    <script type="text/x-kendo-template" id="_ModalPartConfigurationMultiTemplate">
+
+        <div class="clearfix _appendArea" data-template="_PartConfigurationMultiViewConfigurationTemplate" data-bind="source: PartConfiguration.ConfigTypeParts, attr: {data-selected-part-id: CurrentConfiguration.PartId}">
+        </div>        
+        #if (data.PartAttributes != null && data.PartAttributes.length > 0) {#
+        #= renderAttributeWrapperTemplate(data) #
+        #}#
+        #if (!hasInputType) {#
+        <div class="summary-information maru20 clear" data-bind="visible: isDefaultAddToCart">
+            <div class="padr20 nomargin row">
+                <div class="floatl padu5" data-bind="css:{hidden:isCustomizePart}">
+                    <b>Qty</b>
+                </div>
+                <div class="floatl padl10 mobilepadb20" data-template="_ModalPartConfigurationActivePartPricingTemplate" data-bind="source: ActivePart,css:{hidden:isCustomizePart}">
+                </div>
+                <div class="nomargin mobile100" style="float: right" data-template="_ModalPartConfigurationAddCartBtnTemplate" data-bind="source: ActivePart">
+                </div>
+            </div>
+            <div class="padr20 nomargin row" data-bind="visible: isMinQtyVisible, css: {hidden:isCustomizePart,text-danger: AddToCartDisabled, call-to-action: showCallToAction}"><b><i data-bind="text: getMinimumQuantityText"></i></b></div>
+        </div>
+        #}#
+        <br style="clear:both" />
+
+    </script>
+    <script type="text/x-kendo-template" id="_PartConfigurationMultiViewConfigurationTemplate">
+        <div class="topmargin-sm clear #if (data.DisplayType =='Input') {#summary-information#}#">
+            <div class="padu5">
+                <b data-bind="text: DisplayName"></b>#if (data.DisplayType =="Input") {#<span class="padl10 small"><i>Enter quantities below</i></span> #}#
+            </div>
+            <div class="">
+                #if (data.DisplayType =="ButtonList") {#
+                <div data-template="_ButtonListTemplate" data-bind="source: ConfigTypeValues"></div>
+                #} else if (data.DisplayType =="ImageList") {#
+                <ul class="image-list-template" data-template="_ImageListTemplate" data-bind="source: ConfigTypeValues"></ul>
+                #} else if (data.DisplayType =="Input") {#
+                <div class="row" data-template="_InputListBlockTemplate" data-bind="source: ConfigTypeValues">
+                </div>
+                #} else {#
+                <select class=" _dropDowns f20 w100" data-template="_DropDownOptionTemplate" data-bind="source: ConfigTypeValues, events:{change: dropDownSelected}"></select>
+                #}#
+            </div>
+            #if (data.DisplayType =="Input") {#
+            <div class="padu5">
+                <span class="floatl" data-bind="visible: isMinQtyVisible, css: {text-danger: AddToCartDisabled, call-to-action: showCallToAction}"><b><i data-bind="text: getMinimumQuantityText"></i></b> </span>
+                <div class="nomargin mobile100 floatr" data-template="_ModalPartConfigurationAddCartBtnTemplate" data-bind="source: ActivePart">
+
+                </div>
+            </div>
+            #}#
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="_InputListBlockTemplate">
+        #
+        var currentPart = getParent(data).getActivePartForValue(data);
+        #
+        <div class="col-sm-2">
+            <div class="text-center padr20"><b>${Value}</b></div>
+            #if (currentPart != null) {#
+            <div class="text-center"
+                 data-value="0"
+                 data-append-zero-discount="true"
+                 data-part-id="${currentPart.PartId}"
+                 data-part-name="${currentPart.PartName}"
+                 data-role="partpricing">
+            </div>
+            #} else {#
+            <div class="text-center">
+                <input disabled type="text" class="k-formatted-value qty_input submitAction k-input" />
+            </div>
+            #}#
+        </div>
+    </script>
+    <script type="text/x-kendo-template" id="_DropDownOptionTemplate">
+        <option data-bind="disabled: parent().parent().parent().isOptionDisabled, visible:parent().parent().parent().isOptionVisible" data-part-config-type-value-id="${PartConfigTypeValueId}" ${data.parent().parent().parent().parent().parent().isDropDownSelected(data)}>${Value}</option>
+    </script>
+    <script type="text/x-kendo-template" id="_ImageListTemplate">
+        <li class="box-colored" data-bind="click: parent().parent().parent().listItemSelected" data-part-config-type-value-id="${PartConfigTypeValueId}"><img class="select-color" data-bind="attr: {src: DisplayImage, alt: Value, title: Value}, css: {selected: parent().parent().parent().isOptionSelected,disabled: parent().parent().parent().isOptionDisabled}" /></li>
+    </script>
+    <script type="text/x-kendo-template" id="_ButtonListTemplate">
+        <input type="button" value="${Value}" data-part-config-type-value-id="${PartConfigTypeValueId}" class="part-config-btn" data-bind="click: parent().parent().parent().selectButtonClicked, disabled: parent().parent().parent().isOptionDisabled, css: {selected: parent().parent().parent().isOptionSelected, disabled: parent().parent().parent().isOptionDisabled}" />
+    </script>
+    <script type="text/x-kendo-template" id="_PartHeaderViewTemplate">
+        #if (userSettings.IsPriceInformationVisible) {#
+            <p class="big-price" data-bind="text: FormatedPrice"></p>
+            #
+            var basePrice = getBasePrice(BasePrice);
+            if(basePrice != null && basePrice.FlatFee != null && basePrice.FlatFee != undefined){#
+                <p class="smallest_txt">${kendo.toString(basePrice.FlatFee, "C")}&nbsp;#if(basePrice.FlatFeeLabel != null){#${basePrice.FlatFeeLabel}#}#</p>
+            #}#
+        #}#
+        <p class="hidden-xs padr10">#= Description #</p>
+
+    </script>
+    <script type="text/x-kendo-template" id="_PartConfigImageViewTemplate">
+        #if(AdditionalPartFiles != null && AdditionalPartFiles.length > 0){#
+            <div class="padb20 padr20 view-product">
+                <div id="carouselOrder${Sku}" class="carousel slide" data-ride="carousel">
+                    <ol class="carousel-indicators" style="margin-bottom:0px;">
+                        <li data-target='\\#carouselOrder${Sku}' data-slide-to='0' class='active'></li>
+
+                        #for(i = 0; i < AdditionalPartFiles.length; i++){#
+                        <li data-target="\\#carouselOrder${Sku}" data-slide-to="#= i+1 #"></li>
+                        #}#
+                    </ol>
+                    <div class="carousel-inner" style="height:100%; width: 100%;" role="listbox">
+                        <div class="item active" style="padding:0">
+                            <div onclick="showImage('${PartId}', '${ LargeThumbnailFile }')" class="view-product">
+                                <img class="img-responsive img-border" title="Enlarge Image" alt="${Sku}" src="${LargeThumbnailFile}?h=500&w=500">
+                                <h3>
+                                    <i class="i5 fa la fa-expand"></i>
+                                </h3>
+                            </div>
+                            <div class="carousel-caption" style="bottom: 0%; padding-bottom:0px; text-shadow:none; width:100%; right:0; left:0;">
+                                #if (PdfFilePath != null) {#
+                                <div id="divDownloadPDF" class="text-center padu10">
+                                    <a onclick="downloadFile('${PdfFilePath}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~</a>
+                                </div>
+                                #} else if (NonImageFilePath) {#
+                                <div id="divDownloadFile" class="text-center padu10">
+                                    <a onclick="downloadFile('${NonImageFilePath}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~</a>
+                                </div>
+                                #}#
+                            </div>
+                        </div>
+                        #for(i = 0; i < AdditionalPartFiles.length; i++){#
+                        <div class="item" style="padding:0px;">
+                            <div onclick="showImage('${PartId}', '${AdditionalPartFiles[i].File.PreviewPath}')" class="view-product">
+                                <img class="img-responsive img-border" title="Enlarge Image" src="${AdditionalPartFiles[i].File.PreviewPath}?h=500&w=500">
+                                <h3>
+                                    <i class="i5 fa la fa-expand"></i>
+                                </h3>
+                            </div>
+                            <div class="carousel-caption" style="bottom: 0%; padding-bottom:0px; text-shadow:none; width:100%; right:0; left:0;">
+                                #if (AdditionalPartFiles[i].File.FileName.includes(".pdf")) {#
+                                <div>
+                                    <a onclick="downloadFile('${AdditionalPartFiles[i].File.FileName}', true, '${Sku}.pdf', ${PartId})"><i class="fa fa-file-pdf-o"></i> ~{DownloadPDF}~ </a>
+                                </div>
+                                #} else if(!data.AdditionalPartFiles[i].File.IsImage) {#
+                                <div>
+                                    <a onclick="downloadFile('${AdditionalPartFiles[i].File.FileName}', true, null, ${PartId})"><i class="fa fa-file-o"></i> ~{DownloadFile}~ </a>
+                                </div>
+                                #}#
+                            </div>
+                        </div>
+                        #}#
+                        <a class="left carousel-control" style="top: 0%;" href="\\#carouselOrder${Sku}" data-slide="prev">
+                            <span class="glyphicon glyphicon-chevron-left"></span>
+                            <span class="sr-only">Previous</span>
+                        </a>
+                        <a class="right carousel-control" style="top: 0%;" href="\\#carouselOrder${Sku}" data-slide="next">
+                            <span class="glyphicon glyphicon-chevron-right"></span>
+                            <span class="sr-only">Next</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        #} else {#
+            <div class="view-product information">
+                <img class="img-responsive _partConfigImg" alt="${Sku}" src="${LargeThumbnailFile}?h=500&w=500" />
+            </div>
+        #}#
+    </script>

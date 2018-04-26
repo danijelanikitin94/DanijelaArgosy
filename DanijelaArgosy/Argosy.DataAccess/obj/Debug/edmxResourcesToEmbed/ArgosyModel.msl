@@ -1,0 +1,961 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="ArgosyModelStoreContainer" CdmEntityContainer="ArgosyEntities">
+    <EntitySetMapping Name="AspNetUserPasswords">
+      <EntityTypeMapping TypeName="ArgosyModel.AspNetUserPassword">
+        <MappingFragment StoreEntitySet="AspNetUserPasswords">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="AspNetUsers">
+      <EntityTypeMapping TypeName="ArgosyModel.AspNetUser">
+        <MappingFragment StoreEntitySet="AspNetUsers">
+          <ScalarProperty Name="Id" ColumnName="Id" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+          <ScalarProperty Name="UserId" ColumnName="UserId" />
+          <ScalarProperty Name="Email" ColumnName="Email" />
+          <ScalarProperty Name="EmailConfirmed" ColumnName="EmailConfirmed" />
+          <ScalarProperty Name="PasswordHash" ColumnName="PasswordHash" />
+          <ScalarProperty Name="SecurityStamp" ColumnName="SecurityStamp" />
+          <ScalarProperty Name="PhoneNumber" ColumnName="PhoneNumber" />
+          <ScalarProperty Name="PhoneNumberConfirmed" ColumnName="PhoneNumberConfirmed" />
+          <ScalarProperty Name="TwoFactorEnabled" ColumnName="TwoFactorEnabled" />
+          <ScalarProperty Name="LockoutEndDateUtc" ColumnName="LockoutEndDateUtc" />
+          <ScalarProperty Name="LockoutEnabled" ColumnName="LockoutEnabled" />
+          <ScalarProperty Name="AccessFailedCount" ColumnName="AccessFailedCount" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="UsergroupId" ColumnName="UsergroupId" />
+          <ScalarProperty Name="LastPasswordChangedDate" ColumnName="LastPasswordChangedDate" />
+          <ScalarProperty Name="IsBackendAdmin" ColumnName="IsBackendAdmin" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_COMP_USERGROUP">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_COMP_USERGROUP">
+        <MappingFragment StoreEntitySet="ESM_COMP_USERGROUP">
+          <ScalarProperty Name="COMP_USERGROUP_ID" ColumnName="COMP_USERGROUP_ID" />
+          <ScalarProperty Name="COMP_ID" ColumnName="COMP_ID" />
+          <ScalarProperty Name="ASSET_ROLE_ID" ColumnName="ASSET_ROLE_ID" />
+          <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
+          <ScalarProperty Name="GROUP_DESCRIPTION" ColumnName="GROUP_DESCRIPTION" />
+          <ScalarProperty Name="MAXORDERAMOUNT" ColumnName="MAXORDERAMOUNT" />
+          <ScalarProperty Name="DIRECT_MAIL_SPENDING_MINIMUM" ColumnName="DIRECT_MAIL_SPENDING_MINIMUM" />
+          <ScalarProperty Name="ORDER_NUMBER_SUFIX" ColumnName="ORDER_NUMBER_SUFIX" />
+          <ScalarProperty Name="ORDER_NUMBER_PREFIX" ColumnName="ORDER_NUMBER_PREFIX" />
+          <ScalarProperty Name="CYCLE" ColumnName="CYCLE" />
+          <ScalarProperty Name="WAREHOUSE_ID" ColumnName="WAREHOUSE_ID" />
+          <ScalarProperty Name="LANDING_PAGE_SETTING" ColumnName="LANDING_PAGE_SETTING" />
+          <ScalarProperty Name="ORDERUNITS" ColumnName="ORDERUNITS" />
+          <ScalarProperty Name="ORDERSTATUS" ColumnName="ORDERSTATUS" />
+          <ScalarProperty Name="ORDERAPPROVAL" ColumnName="ORDERAPPROVAL" />
+          <ScalarProperty Name="CHANGESHIPADDRESSTO" ColumnName="CHANGESHIPADDRESSTO" />
+          <ScalarProperty Name="DESIREDSHIPDATE" ColumnName="DESIREDSHIPDATE" />
+          <ScalarProperty Name="CHANGESHIPVIA" ColumnName="CHANGESHIPVIA" />
+          <ScalarProperty Name="SHOWPRICE" ColumnName="SHOWPRICE" />
+          <ScalarProperty Name="ENFORCEORDERQTY" ColumnName="ENFORCEORDERQTY" />
+          <ScalarProperty Name="SHOWNEWPRODUCTGROUP" ColumnName="SHOWNEWPRODUCTGROUP" />
+          <ScalarProperty Name="SHIPPINGCOST" ColumnName="SHIPPINGCOST" />
+          <ScalarProperty Name="ESTIMATEDSHIPPINGDATE" ColumnName="ESTIMATEDSHIPPINGDATE" />
+          <ScalarProperty Name="SHOWINVENTORY" ColumnName="SHOWINVENTORY" />
+          <ScalarProperty Name="SHOWPARTTHUMBNAIL" ColumnName="SHOWPARTTHUMBNAIL" />
+          <ScalarProperty Name="BROWSEDISPLAY" ColumnName="BROWSEDISPLAY" />
+          <ScalarProperty Name="CAPTURECREDITCARD" ColumnName="CAPTURECREDITCARD" />
+          <ScalarProperty Name="USEPRECLOSESTATUS" ColumnName="USEPRECLOSESTATUS" />
+          <ScalarProperty Name="CREDITCARDPROCESS" ColumnName="CREDITCARDPROCESS" />
+          <ScalarProperty Name="PRICELISTID" ColumnName="PRICELISTID" />
+          <ScalarProperty Name="ISACTIVE" ColumnName="ISACTIVE" />
+          <ScalarProperty Name="FLAG_CONSUMER_MODULE" ColumnName="FLAG_CONSUMER_MODULE" />
+          <ScalarProperty Name="FLAG_EMAIL_CREATE_MESSAGE" ColumnName="FLAG_EMAIL_CREATE_MESSAGE" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_PLACED" ColumnName="FLAG_EMAIL_ORDER_PLACED" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_SHIPPED" ColumnName="FLAG_EMAIL_ORDER_SHIPPED" />
+          <ScalarProperty Name="FLAG_EMAIL_INVENTORY_WARNING" ColumnName="FLAG_EMAIL_INVENTORY_WARNING" />
+          <ScalarProperty Name="FLAG_EMAIL_PROJECT_REVISION" ColumnName="FLAG_EMAIL_PROJECT_REVISION" />
+          <ScalarProperty Name="FLAG_ALLOW_LIST_PURCHASES" ColumnName="FLAG_ALLOW_LIST_PURCHASES" />
+          <ScalarProperty Name="FLAG_ALLOW_EXISTING_LIST" ColumnName="FLAG_ALLOW_EXISTING_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_BUILD_LIST" ColumnName="FLAG_ALLOW_BUILD_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_UPLOAD_LIST" ColumnName="FLAG_ALLOW_UPLOAD_LIST" />
+          <ScalarProperty Name="FLAG_SHOW_CORPORATE_LIST" ColumnName="FLAG_SHOW_CORPORATE_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_MULTI_PRICE_LIST" ColumnName="FLAG_ALLOW_MULTI_PRICE_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_PROMO_CODES" ColumnName="FLAG_ALLOW_PROMO_CODES" />
+          <ScalarProperty Name="PAYMENT_CREDIT_CARD_IS_ALLOWED" ColumnName="PAYMENT_CREDIT_CARD_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_ECHECK_IS_ALLOWED" ColumnName="PAYMENT_ECHECK_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_PO_IS_ALLOWED" ColumnName="PAYMENT_PO_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_BILL_LATER_IS_ALLOWED" ColumnName="PAYMENT_BILL_LATER_IS_ALLOWED" />
+          <ScalarProperty Name="IS_RETAIL" ColumnName="IS_RETAIL" />
+          <ScalarProperty Name="IS_TAXABLE" ColumnName="IS_TAXABLE" />
+          <ScalarProperty Name="FLAG_ASSET_RESTRICTED" ColumnName="FLAG_ASSET_RESTRICTED" />
+          <ScalarProperty Name="IS_FREIGHT_ONLY_BILLING" ColumnName="IS_FREIGHT_ONLY_BILLING" />
+          <ScalarProperty Name="FLAG_INCLUDE_CUSTOM_FIELDS" ColumnName="FLAG_INCLUDE_CUSTOM_FIELDS" />
+          <ScalarProperty Name="SHIPPING_DAY" ColumnName="SHIPPING_DAY" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="SHOWPARTCATEGORYTHUMBNAIL" ColumnName="SHOWPARTCATEGORYTHUMBNAIL" />
+          <ScalarProperty Name="FLAG_ALLOW_EDIT_PRICE" ColumnName="FLAG_ALLOW_EDIT_PRICE" />
+          <ScalarProperty Name="FLAG_IS_SYSTEM_DOLLAR" ColumnName="FLAG_IS_SYSTEM_DOLLAR" />
+          <ScalarProperty Name="FLAG_STOP_ORDERS" ColumnName="FLAG_STOP_ORDERS" />
+          <ScalarProperty Name="FLAG_SHOW_CROSS_SALE" ColumnName="FLAG_SHOW_CROSS_SALE" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_ALL_ORDERS" ColumnName="FLAG_APPROVAL_ON_ALL_ORDERS" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_AU" ColumnName="FLAG_APPROVAL_ON_AU" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_PART_THRESHHOLD" ColumnName="FLAG_APPROVAL_ON_PART_THRESHHOLD" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_SPENDING_LIMIT" ColumnName="FLAG_APPROVAL_ON_SPENDING_LIMIT" />
+          <ScalarProperty Name="FLAG_BYPASS_APPROVAL_ON_CC" ColumnName="FLAG_BYPASS_APPROVAL_ON_CC" />
+          <ScalarProperty Name="FLAG_APPROVAL_WORK_FLOW_TYPE" ColumnName="FLAG_APPROVAL_WORK_FLOW_TYPE" />
+          <ScalarProperty Name="MANAGE_BUDGET_LEVEL_SETTING" ColumnName="MANAGE_BUDGET_LEVEL_SETTING" />
+          <ScalarProperty Name="TIME_INTERVAL" ColumnName="TIME_INTERVAL" />
+          <ScalarProperty Name="GROUP_MANAGER_ID" ColumnName="GROUP_MANAGER_ID" />
+          <ScalarProperty Name="USER_GROUP_BUDGET" ColumnName="USER_GROUP_BUDGET" />
+          <ScalarProperty Name="FLAG_SALES_TAX_TYPE" ColumnName="FLAG_SALES_TAX_TYPE" />
+          <ScalarProperty Name="FLAT_SALES_TAX_RATE" ColumnName="FLAT_SALES_TAX_RATE" />
+          <ScalarProperty Name="THEME_ID" ColumnName="THEME_ID" />
+          <ScalarProperty Name="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" ColumnName="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_ORDERS_PER_DAY" ColumnName="FLAG_APPROVAL_ON_ORDERS_PER_DAY" />
+          <ScalarProperty Name="INCLUSION_TAGS" ColumnName="INCLUSION_TAGS" />
+          <ScalarProperty Name="EXCLUSION_TAGS" ColumnName="EXCLUSION_TAGS" />
+          <ScalarProperty Name="IS_PUBLIC" ColumnName="IS_PUBLIC" />
+          <ScalarProperty Name="FLAG_LOCK_ADDRESS" ColumnName="FLAG_LOCK_ADDRESS" />
+          <ScalarProperty Name="IS_DYNAMIC_GROUP" ColumnName="IS_DYNAMIC_GROUP" />
+          <ScalarProperty Name="DISPLAY_NAME" ColumnName="DISPLAY_NAME" />
+          <ScalarProperty Name="DISPLAY_IMAGE" ColumnName="DISPLAY_IMAGE" />
+          <ScalarProperty Name="PAYMENT_CO_OP_ONLY" ColumnName="PAYMENT_CO_OP_ONLY" />
+          <ScalarProperty Name="FLAG_LOCK_ADDRESS_BT" ColumnName="FLAG_LOCK_ADDRESS_BT" />
+          <ScalarProperty Name="COMPANY_LOGO" ColumnName="COMPANY_LOGO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_COMP_USERS">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_COMP_USERS">
+        <MappingFragment StoreEntitySet="ESM_COMP_USERS">
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="ADDRESS_ID" ColumnName="ADDRESS_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="MULTIPLIER_ID" ColumnName="MULTIPLIER_ID" />
+          <ScalarProperty Name="DEFAULT_SKIN_ID" ColumnName="DEFAULT_SKIN_ID" />
+          <ScalarProperty Name="STYLE_SHEET_ID" ColumnName="STYLE_SHEET_ID" />
+          <ScalarProperty Name="THEME_ID" ColumnName="THEME_ID" />
+          <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="TITLE" ColumnName="TITLE" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="zPHONE" ColumnName="zPHONE" />
+          <ScalarProperty Name="PHONE_NUMBER" ColumnName="PHONE_NUMBER" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="ADDRESS1" ColumnName="ADDRESS1" />
+          <ScalarProperty Name="ADDRESS2" ColumnName="ADDRESS2" />
+          <ScalarProperty Name="ADDRESS3" ColumnName="ADDRESS3" />
+          <ScalarProperty Name="CITY" ColumnName="CITY" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+          <ScalarProperty Name="ZIP" ColumnName="ZIP" />
+          <ScalarProperty Name="SPENDING_LIMIT" ColumnName="SPENDING_LIMIT" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="ADMIN_ACCESS" ColumnName="ADMIN_ACCESS" />
+          <ScalarProperty Name="PROJECT_REVISION_ACCESS" ColumnName="PROJECT_REVISION_ACCESS" />
+          <ScalarProperty Name="POWER_BUYER" ColumnName="POWER_BUYER" />
+          <ScalarProperty Name="EMAIL_DISTR" ColumnName="EMAIL_DISTR" />
+          <ScalarProperty Name="PRINT_ORDERS" ColumnName="PRINT_ORDERS" />
+          <ScalarProperty Name="BILLING_ACCESS" ColumnName="BILLING_ACCESS" />
+          <ScalarProperty Name="DISCOUNT_LEVEL" ColumnName="DISCOUNT_LEVEL" />
+          <ScalarProperty Name="DISCOUNT_DOLLARS" ColumnName="DISCOUNT_DOLLARS" />
+          <ScalarProperty Name="REGISTER_DATE" ColumnName="REGISTER_DATE" />
+          <ScalarProperty Name="DEFAULT_LOGO" ColumnName="DEFAULT_LOGO" />
+          <ScalarProperty Name="DIVISION_NAME" ColumnName="DIVISION_NAME" />
+          <ScalarProperty Name="WEBSITE" ColumnName="WEBSITE" />
+          <ScalarProperty Name="FAX" ColumnName="FAX" />
+          <ScalarProperty Name="CUSTOM01" ColumnName="CUSTOM01" />
+          <ScalarProperty Name="CUSTOM02" ColumnName="CUSTOM02" />
+          <ScalarProperty Name="CUSTOM03" ColumnName="CUSTOM03" />
+          <ScalarProperty Name="EXT_IDENTIFIER" ColumnName="EXT_IDENTIFIER" />
+          <ScalarProperty Name="USER_PROFILE_GROUP_ID" ColumnName="USER_PROFILE_GROUP_ID" />
+          <ScalarProperty Name="COMP_USERGROUP_ID" ColumnName="COMP_USERGROUP_ID" />
+          <ScalarProperty Name="FLAG_RFQ_MODULE" ColumnName="FLAG_RFQ_MODULE" />
+          <ScalarProperty Name="FLAG_EMAIL_CREATE_MESSAGE" ColumnName="FLAG_EMAIL_CREATE_MESSAGE" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_PLACED" ColumnName="FLAG_EMAIL_ORDER_PLACED" />
+          <ScalarProperty Name="FLAG_EMAIL_PROJECT_REVISION" ColumnName="FLAG_EMAIL_PROJECT_REVISION" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_SHIPPED" ColumnName="FLAG_EMAIL_ORDER_SHIPPED" />
+          <ScalarProperty Name="FLAG_EMAIL_INVENTORY_WARNING" ColumnName="FLAG_EMAIL_INVENTORY_WARNING" />
+          <ScalarProperty Name="FLAG_CONSUMER_MODULE" ColumnName="FLAG_CONSUMER_MODULE" />
+          <ScalarProperty Name="FLAG_APPROVALS" ColumnName="FLAG_APPROVALS" />
+          <ScalarProperty Name="FLAG_AGREED_TO_USRAGR" ColumnName="FLAG_AGREED_TO_USRAGR" />
+          <ScalarProperty Name="FLAG_ALLOW_BULK_ORDER_PLACEMENT" ColumnName="FLAG_ALLOW_BULK_ORDER_PLACEMENT" />
+          <ScalarProperty Name="IS_STORE" ColumnName="IS_STORE" />
+          <ScalarProperty Name="IS_RETAIL" ColumnName="IS_RETAIL" />
+          <ScalarProperty Name="EMAIL_SENT" ColumnName="EMAIL_SENT" />
+          <ScalarProperty Name="USRAGR_DATE" ColumnName="USRAGR_DATE" />
+          <ScalarProperty Name="USRAGR_IP" ColumnName="USRAGR_IP" />
+          <ScalarProperty Name="USRAGR_NAME" ColumnName="USRAGR_NAME" />
+          <ScalarProperty Name="USRAGR_COMPANY" ColumnName="USRAGR_COMPANY" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="ACCOUNTING_UNIT_ID" ColumnName="ACCOUNTING_UNIT_ID" />
+          <ScalarProperty Name="TITLE2" ColumnName="TITLE2" />
+          <ScalarProperty Name="USER_PHOTO" ColumnName="USER_PHOTO" />
+          <ScalarProperty Name="PHONE_NUMBER2" ColumnName="PHONE_NUMBER2" />
+          <ScalarProperty Name="PHONE_NUMBER3" ColumnName="PHONE_NUMBER3" />
+          <ScalarProperty Name="ASSET_ROLE_ID" ColumnName="ASSET_ROLE_ID" />
+          <ScalarProperty Name="COMP_USER_GUID" ColumnName="COMP_USER_GUID" />
+          <ScalarProperty Name="IS_RETAIL_CONTRIBUTOR" ColumnName="IS_RETAIL_CONTRIBUTOR" />
+          <ScalarProperty Name="COMP_USER_HASH" ColumnName="COMP_USER_HASH" />
+          <ScalarProperty Name="INCLUSION_TAGS" ColumnName="INCLUSION_TAGS" />
+          <ScalarProperty Name="EXCLUSION_TAGS" ColumnName="EXCLUSION_TAGS" />
+          <ScalarProperty Name="EXTERNAL_ID" ColumnName="EXTERNAL_ID" />
+          <ScalarProperty Name="IS_SSO" ColumnName="IS_SSO" />
+          <ScalarProperty Name="DYNAMIC_USERGROUP_ID" ColumnName="DYNAMIC_USERGROUP_ID" />
+          <ScalarProperty Name="IS_GENERIC_USER" ColumnName="IS_GENERIC_USER" />
+          <ScalarProperty Name="IS_PRICE_ADMIN" ColumnName="IS_PRICE_ADMIN" />
+          <ScalarProperty Name="CC_EMAIL" ColumnName="CC_EMAIL" />
+          <ScalarProperty Name="INVOICE_EMAIL" ColumnName="INVOICE_EMAIL" />
+          <ScalarProperty Name="PAPER_INVOICE" ColumnName="PAPER_INVOICE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_COMPANY">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_COMPANY">
+        <MappingFragment StoreEntitySet="ESM_COMPANY">
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="COMP_CONTACT_ID" ColumnName="COMP_CONTACT_ID" />
+          <ScalarProperty Name="PARTNER_ID" ColumnName="PARTNER_ID" />
+          <ScalarProperty Name="IMAGE_ID" ColumnName="IMAGE_ID" />
+          <ScalarProperty Name="THEME_ID" ColumnName="THEME_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="DEFAULT_USER_ID" ColumnName="DEFAULT_USER_ID" />
+          <ScalarProperty Name="WAREHOUSE_ID" ColumnName="WAREHOUSE_ID" />
+          <ScalarProperty Name="COMPANY_NAME" ColumnName="COMPANY_NAME" />
+          <ScalarProperty Name="STORE_USER_ID" ColumnName="STORE_USER_ID" />
+          <ScalarProperty Name="DEFAULT_SKIN_ID" ColumnName="DEFAULT_SKIN_ID" />
+          <ScalarProperty Name="STORE_GUID" ColumnName="STORE_GUID" />
+          <ScalarProperty Name="COMPANY_URL" ColumnName="COMPANY_URL" />
+          <ScalarProperty Name="CUSTOM_LOGINPATH" ColumnName="CUSTOM_LOGINPATH" />
+          <ScalarProperty Name="CUSTOM_PACKLIST_PATH" ColumnName="CUSTOM_PACKLIST_PATH" />
+          <ScalarProperty Name="REPORT_CODE" ColumnName="REPORT_CODE" />
+          <ScalarProperty Name="FILENAME" ColumnName="FILENAME" />
+          <ScalarProperty Name="LEAD_TIME" ColumnName="LEAD_TIME" />
+          <ScalarProperty Name="CUSTOM_COUNT" ColumnName="CUSTOM_COUNT" />
+          <ScalarProperty Name="PREPRESS_CHARGE" ColumnName="PREPRESS_CHARGE" />
+          <ScalarProperty Name="ORDER_CHARGE" ColumnName="ORDER_CHARGE" />
+          <ScalarProperty Name="LINE_CHARGE" ColumnName="LINE_CHARGE" />
+          <ScalarProperty Name="EACH_CHARGE" ColumnName="EACH_CHARGE" />
+          <ScalarProperty Name="MAX_ORDER_AMOUNT" ColumnName="MAX_ORDER_AMOUNT" />
+          <ScalarProperty Name="MIN_ORDER_AMT" ColumnName="MIN_ORDER_AMT" />
+          <ScalarProperty Name="EDELIVERY_PRICE" ColumnName="EDELIVERY_PRICE" />
+          <ScalarProperty Name="ECOMMERCE_ACCESS_CODE" ColumnName="ECOMMERCE_ACCESS_CODE" />
+          <ScalarProperty Name="LANDING_PAGE_HTML" ColumnName="LANDING_PAGE_HTML" />
+          <ScalarProperty Name="LANDING_PAGE_SETTING" ColumnName="LANDING_PAGE_SETTING" />
+          <ScalarProperty Name="FTP_SITE" ColumnName="FTP_SITE" />
+          <ScalarProperty Name="FTP_USERNAME" ColumnName="FTP_USERNAME" />
+          <ScalarProperty Name="FTP_PASSWORD" ColumnName="FTP_PASSWORD" />
+          <ScalarProperty Name="USER_DEFAULT_PART_IMAGE_MAX" ColumnName="USER_DEFAULT_PART_IMAGE_MAX" />
+          <ScalarProperty Name="USER_DEFAULT_PART_IMAGE_MIN" ColumnName="USER_DEFAULT_PART_IMAGE_MIN" />
+          <ScalarProperty Name="CYCLE" ColumnName="CYCLE" />
+          <ScalarProperty Name="ORDER_NUMBER_SUFIX" ColumnName="ORDER_NUMBER_SUFIX" />
+          <ScalarProperty Name="ORDER_MID_NUM" ColumnName="ORDER_MID_NUM" />
+          <ScalarProperty Name="ORDER_NUMBER_PREFIX" ColumnName="ORDER_NUMBER_PREFIX" />
+          <ScalarProperty Name="TIME_EXPEDITE" ColumnName="TIME_EXPEDITE" />
+          <ScalarProperty Name="TIME_CUTOFF" ColumnName="TIME_CUTOFF" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="PAYMENT_CREDIT_CARD_IS_ALLOWED" ColumnName="PAYMENT_CREDIT_CARD_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_ECHECK_IS_ALLOWED" ColumnName="PAYMENT_ECHECK_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_PO_IS_ALLOWED" ColumnName="PAYMENT_PO_IS_ALLOWED" />
+          <ScalarProperty Name="PAYMENT_BILL_LATER_IS_ALLOWED" ColumnName="PAYMENT_BILL_LATER_IS_ALLOWED" />
+          <ScalarProperty Name="DIRECT_MAIL_SPENDING_MINIMUM" ColumnName="DIRECT_MAIL_SPENDING_MINIMUM" />
+          <ScalarProperty Name="ISACTIVE" ColumnName="ISACTIVE" />
+          <ScalarProperty Name="IS_TAXABLE" ColumnName="IS_TAXABLE" />
+          <ScalarProperty Name="IS_FREIGHT_ONLY_BILLING" ColumnName="IS_FREIGHT_ONLY_BILLING" />
+          <ScalarProperty Name="IS_ECOMMERCE_CODE_REQUIRED" ColumnName="IS_ECOMMERCE_CODE_REQUIRED" />
+          <ScalarProperty Name="ALLOW_PART_RESTRICTION" ColumnName="ALLOW_PART_RESTRICTION" />
+          <ScalarProperty Name="FLAG_REQUIRE_PO" ColumnName="FLAG_REQUIRE_PO" />
+          <ScalarProperty Name="FLAG_APPROVALS" ColumnName="FLAG_APPROVALS" />
+          <ScalarProperty Name="FLAG_SPENDING_LIMITS" ColumnName="FLAG_SPENDING_LIMITS" />
+          <ScalarProperty Name="FLAG_ADDRESS_EDIT_ST" ColumnName="FLAG_ADDRESS_EDIT_ST" />
+          <ScalarProperty Name="FLAG_SHOW_PRICE" ColumnName="FLAG_SHOW_PRICE" />
+          <ScalarProperty Name="FLAG_SHOW_INV" ColumnName="FLAG_SHOW_INV" />
+          <ScalarProperty Name="FLAG_PARTIAL_SHIP" ColumnName="FLAG_PARTIAL_SHIP" />
+          <ScalarProperty Name="FLAG_ORDER_UNITS" ColumnName="FLAG_ORDER_UNITS" />
+          <ScalarProperty Name="FLAG_ORDER_QTY_MAX" ColumnName="FLAG_ORDER_QTY_MAX" />
+          <ScalarProperty Name="FLAG_EMAIL_HTML" ColumnName="FLAG_EMAIL_HTML" />
+          <ScalarProperty Name="FLAG_GEN_XML" ColumnName="FLAG_GEN_XML" />
+          <ScalarProperty Name="FLAG_INCLUDE_CUSTOM_FIELDS" ColumnName="FLAG_INCLUDE_CUSTOM_FIELDS" />
+          <ScalarProperty Name="FLAG_VERIFY_ADDRESS" ColumnName="FLAG_VERIFY_ADDRESS" />
+          <ScalarProperty Name="FLAG_AUTO_DEPLETE" ColumnName="FLAG_AUTO_DEPLETE" />
+          <ScalarProperty Name="FLAG_COLAB_TOOL" ColumnName="FLAG_COLAB_TOOL" />
+          <ScalarProperty Name="FLAG_CUSTOMIZE" ColumnName="FLAG_CUSTOMIZE" />
+          <ScalarProperty Name="FLAG_CARRIER" ColumnName="FLAG_CARRIER" />
+          <ScalarProperty Name="FLAG_ORDER_STATUS" ColumnName="FLAG_ORDER_STATUS" />
+          <ScalarProperty Name="FLAG_SHIPPING_COSTS" ColumnName="FLAG_SHIPPING_COSTS" />
+          <ScalarProperty Name="FLAG_DESIRED_SHIP_DATE" ColumnName="FLAG_DESIRED_SHIP_DATE" />
+          <ScalarProperty Name="FLAG_ESTIMATE_SHIP_DATE" ColumnName="FLAG_ESTIMATE_SHIP_DATE" />
+          <ScalarProperty Name="FLAG_BROWSE_DISPLAY" ColumnName="FLAG_BROWSE_DISPLAY" />
+          <ScalarProperty Name="FLAG_CC_REQUIRED" ColumnName="FLAG_CC_REQUIRED" />
+          <ScalarProperty Name="FLAG_USE_PRECLOSE" ColumnName="FLAG_USE_PRECLOSE" />
+          <ScalarProperty Name="FLAG_CC_PROCESS" ColumnName="FLAG_CC_PROCESS" />
+          <ScalarProperty Name="FLAG_SHOW_PART_THUMBS" ColumnName="FLAG_SHOW_PART_THUMBS" />
+          <ScalarProperty Name="FLAG_ALLOW_EDIT_GROUP_TITLES" ColumnName="FLAG_ALLOW_EDIT_GROUP_TITLES" />
+          <ScalarProperty Name="FLAG_ALLOW_GEOROUT" ColumnName="FLAG_ALLOW_GEOROUT" />
+          <ScalarProperty Name="FLAG_SHOW_NEW_PRODUCTS_GROUP" ColumnName="FLAG_SHOW_NEW_PRODUCTS_GROUP" />
+          <ScalarProperty Name="FLAG_FREE_CF_PARTS" ColumnName="FLAG_FREE_CF_PARTS" />
+          <ScalarProperty Name="FLAG_FAST_PICKPACK" ColumnName="FLAG_FAST_PICKPACK" />
+          <ScalarProperty Name="FLAG_FAST_PICKPACK_DEFAULT" ColumnName="FLAG_FAST_PICKPACK_DEFAULT" />
+          <ScalarProperty Name="FLAG_ALLOW_SPLIT_SHIPPING" ColumnName="FLAG_ALLOW_SPLIT_SHIPPING" />
+          <ScalarProperty Name="FLAG_ALLOW_CONSOLIDATE_ORDERS" ColumnName="FLAG_ALLOW_CONSOLIDATE_ORDERS" />
+          <ScalarProperty Name="FLAG_CONSUMER_MODULE" ColumnName="FLAG_CONSUMER_MODULE" />
+          <ScalarProperty Name="FLAG_ASSET_MODULE" ColumnName="FLAG_ASSET_MODULE" />
+          <ScalarProperty Name="FLAG_ASSET_RESTRICTED" ColumnName="FLAG_ASSET_RESTRICTED" />
+          <ScalarProperty Name="FLAG_ALLOW_LIST_PURCHASES" ColumnName="FLAG_ALLOW_LIST_PURCHASES" />
+          <ScalarProperty Name="FLAG_ALLOW_UPLOAD_LIST" ColumnName="FLAG_ALLOW_UPLOAD_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_EXISTING_LIST" ColumnName="FLAG_ALLOW_EXISTING_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_BUILD_LIST" ColumnName="FLAG_ALLOW_BUILD_LIST" />
+          <ScalarProperty Name="FLAG_USERS_CAN_EDIT_PERSONAL_INFORMATION" ColumnName="FLAG_USERS_CAN_EDIT_PERSONAL_INFORMATION" />
+          <ScalarProperty Name="FLAG_NEEDS_INVENTORY_APPROVAL" ColumnName="FLAG_NEEDS_INVENTORY_APPROVAL" />
+          <ScalarProperty Name="FLAG_HAS_PART_LIMITS" ColumnName="FLAG_HAS_PART_LIMITS" />
+          <ScalarProperty Name="FLAG_REQUIRE_SIGNATURE" ColumnName="FLAG_REQUIRE_SIGNATURE" />
+          <ScalarProperty Name="FLAG_IS_SYSTEM_DOLLAR" ColumnName="FLAG_IS_SYSTEM_DOLLAR" />
+          <ScalarProperty Name="FLAG_ECOMMERCE_CUSTOMER" ColumnName="FLAG_ECOMMERCE_CUSTOMER" />
+          <ScalarProperty Name="FLAG_SHOW_PART_CATEGORY_THUMBS" ColumnName="FLAG_SHOW_PART_CATEGORY_THUMBS" />
+          <ScalarProperty Name="FLAG_SHOW_CORPORATE_LIST" ColumnName="FLAG_SHOW_CORPORATE_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_EDIT_PRICE" ColumnName="FLAG_ALLOW_EDIT_PRICE" />
+          <ScalarProperty Name="FLAG_ALLOW_MULTI_PRICE_LIST" ColumnName="FLAG_ALLOW_MULTI_PRICE_LIST" />
+          <ScalarProperty Name="FLAG_ALLOW_PARTIAL_WAVE_FOR_KITS" ColumnName="FLAG_ALLOW_PARTIAL_WAVE_FOR_KITS" />
+          <ScalarProperty Name="FLAG_STOP_ORDERS" ColumnName="FLAG_STOP_ORDERS" />
+          <ScalarProperty Name="FLAG_REQUIRE_CARTONS" ColumnName="FLAG_REQUIRE_CARTONS" />
+          <ScalarProperty Name="FLAG_USER_CAN_CHANGE_SKIN" ColumnName="FLAG_USER_CAN_CHANGE_SKIN" />
+          <ScalarProperty Name="FLAG_ALLOW_PROMO_CODES" ColumnName="FLAG_ALLOW_PROMO_CODES" />
+          <ScalarProperty Name="FLAG_SHOW_CROSS_SALE" ColumnName="FLAG_SHOW_CROSS_SALE" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_ALL_ORDERS" ColumnName="FLAG_APPROVAL_ON_ALL_ORDERS" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_AU" ColumnName="FLAG_APPROVAL_ON_AU" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_PART_THRESHHOLD" ColumnName="FLAG_APPROVAL_ON_PART_THRESHHOLD" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_SPENDING_LIMIT" ColumnName="FLAG_APPROVAL_ON_SPENDING_LIMIT" />
+          <ScalarProperty Name="FLAG_BYPASS_APPROVAL_ON_CC" ColumnName="FLAG_BYPASS_APPROVAL_ON_CC" />
+          <ScalarProperty Name="FLAG_APPROVAL_WORK_FLOW_TYPE" ColumnName="FLAG_APPROVAL_WORK_FLOW_TYPE" />
+          <ScalarProperty Name="FLAG_ALLOW_WEEKEND_SHIP" ColumnName="FLAG_ALLOW_WEEKEND_SHIP" />
+          <ScalarProperty Name="FLAG_SHOW_HIGH_RES_PROOF" ColumnName="FLAG_SHOW_HIGH_RES_PROOF" />
+          <ScalarProperty Name="SHIPPING_DAY" ColumnName="SHIPPING_DAY" />
+          <ScalarProperty Name="TIME_INTERVAL" ColumnName="TIME_INTERVAL" />
+          <ScalarProperty Name="CONSUMER_VIEW_RIGHTS" ColumnName="CONSUMER_VIEW_RIGHTS" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="RETAIL_SIGNATURE_NUMBER" ColumnName="RETAIL_SIGNATURE_NUMBER" />
+          <ScalarProperty Name="IS_TEST_CUSTOMER" ColumnName="IS_TEST_CUSTOMER" />
+          <ScalarProperty Name="FLAG_ALLOW_REGISTRATION" ColumnName="FLAG_ALLOW_REGISTRATION" />
+          <ScalarProperty Name="FLAG_SALES_TAX_TYPE" ColumnName="FLAG_SALES_TAX_TYPE" />
+          <ScalarProperty Name="FLAT_SALES_TAX_RATE" ColumnName="FLAT_SALES_TAX_RATE" />
+          <ScalarProperty Name="FLAG_CREATE_PAY_REC_FOR_ALL" ColumnName="FLAG_CREATE_PAY_REC_FOR_ALL" />
+          <ScalarProperty Name="COMPANY_GUID" ColumnName="COMPANY_GUID" />
+          <ScalarProperty Name="FLAG_SAVE_ACCOUNTING_UNIT_TO_ORDERLINE" ColumnName="FLAG_SAVE_ACCOUNTING_UNIT_TO_ORDERLINE" />
+          <ScalarProperty Name="FLAG_CXML_PUNCHOUT" ColumnName="FLAG_CXML_PUNCHOUT" />
+          <ScalarProperty Name="RETURN_URL" ColumnName="RETURN_URL" />
+          <ScalarProperty Name="FLAG_LOCK_PROOF_NAME" ColumnName="FLAG_LOCK_PROOF_NAME" />
+          <ScalarProperty Name="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" ColumnName="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" />
+          <ScalarProperty Name="FLAG_APPROVAL_ON_ORDERS_PER_DAY" ColumnName="FLAG_APPROVAL_ON_ORDERS_PER_DAY" />
+          <ScalarProperty Name="FLAG_SHOW_ALERT_IF_APPROVAL_TRIGGERED" ColumnName="FLAG_SHOW_ALERT_IF_APPROVAL_TRIGGERED" />
+          <ScalarProperty Name="WHITE_LABEL" ColumnName="WHITE_LABEL" />
+          <ScalarProperty Name="WHITE_LABEL_SITE_LOGO" ColumnName="WHITE_LABEL_SITE_LOGO" />
+          <ScalarProperty Name="WHITE_LABEL_LOADING_IMAGE" ColumnName="WHITE_LABEL_LOADING_IMAGE" />
+          <ScalarProperty Name="WHITE_LABEL_SITE_ICON" ColumnName="WHITE_LABEL_SITE_ICON" />
+          <ScalarProperty Name="FLAG_LOCK_ADDRESS" ColumnName="FLAG_LOCK_ADDRESS" />
+          <ScalarProperty Name="EXTERNAL_ID_1" ColumnName="EXTERNAL_ID_1" />
+          <ScalarProperty Name="EXTERNAL_ID_2" ColumnName="EXTERNAL_ID_2" />
+          <ScalarProperty Name="SITE_GATEWAY_ID" ColumnName="SITE_GATEWAY_ID" />
+          <ScalarProperty Name="PAYMENT_CO_OP_ONLY" ColumnName="PAYMENT_CO_OP_ONLY" />
+          <ScalarProperty Name="FULFILL_MIN_COST" ColumnName="FULFILL_MIN_COST" />
+          <ScalarProperty Name="FULFILL_MIN_ORDER_COST" ColumnName="FULFILL_MIN_ORDER_COST" />
+          <ScalarProperty Name="ORDER_PAYMENT_TYPE" ColumnName="ORDER_PAYMENT_TYPE" />
+          <ScalarProperty Name="EXPIRING_SOON_DAYS" ColumnName="EXPIRING_SOON_DAYS" />
+          <ScalarProperty Name="NEW_SHOWS_CONTROL_FIELD" ColumnName="NEW_SHOWS_CONTROL_FIELD" />
+          <ScalarProperty Name="NEW_SHOWS_FOR_DAYS" ColumnName="NEW_SHOWS_FOR_DAYS" />
+          <ScalarProperty Name="UPDATED_SHOWS_CONTROL_FIELD" ColumnName="UPDATED_SHOWS_CONTROL_FIELD" />
+          <ScalarProperty Name="UPDATED_SHOWS_FOR_DAYS" ColumnName="UPDATED_SHOWS_FOR_DAYS" />
+          <ScalarProperty Name="FLAG_VIEW_SKU_ON_BROWSE" ColumnName="FLAG_VIEW_SKU_ON_BROWSE" />
+          <ScalarProperty Name="FLAG_ALWAYS_REQUIRE_SHIPPING_ADDRESS" ColumnName="FLAG_ALWAYS_REQUIRE_SHIPPING_ADDRESS" />
+          <ScalarProperty Name="FLAG_ALWAYS_REQUIRE_BILLING_ADDRESS" ColumnName="FLAG_ALWAYS_REQUIRE_BILLING_ADDRESS" />
+          <ScalarProperty Name="IS_APPROVAL_WORKFLOW" ColumnName="IS_APPROVAL_WORKFLOW" />
+          <ScalarProperty Name="FLAG_LOCK_ADDRESS_BT" ColumnName="FLAG_LOCK_ADDRESS_BT" />
+          <ScalarProperty Name="FLAG_ALLOW_SAVE_CC" ColumnName="FLAG_ALLOW_SAVE_CC" />
+          <ScalarProperty Name="SHOW_PASSWORD_ON_WELCOME_EMAIL" ColumnName="SHOW_PASSWORD_ON_WELCOME_EMAIL" />
+          <ScalarProperty Name="INVOICE_FEE" ColumnName="INVOICE_FEE" />
+          <ScalarProperty Name="FLAG_SHOW_INVOICE_FEE" ColumnName="FLAG_SHOW_INVOICE_FEE" />
+          <ScalarProperty Name="FLAG_ALLOW_USER_MANAGEMENT" ColumnName="FLAG_ALLOW_USER_MANAGEMENT" />
+          <ScalarProperty Name="FLAG_DEFAULT_SHIPPING" ColumnName="FLAG_DEFAULT_SHIPPING" />
+          <ScalarProperty Name="FLAG_DEFAULT_BILLING" ColumnName="FLAG_DEFAULT_BILLING" />
+          <ScalarProperty Name="PORTAL_DISPLAY_JSON" ColumnName="PORTAL_DISPLAY_JSON" />
+          <ScalarProperty Name="TAX_ENTITY_ID" ColumnName="TAX_ENTITY_ID" />
+          <ScalarProperty Name="IS_SHIPPING_HIDDEN" ColumnName="IS_SHIPPING_HIDDEN" />
+          <ScalarProperty Name="FLAG_OPEN_PORTAL_COMPANY_NAME_REQUIRED" ColumnName="FLAG_OPEN_PORTAL_COMPANY_NAME_REQUIRED" />
+          <ScalarProperty Name="FLAG_SHOW_ADDITIONAL_PART_DETAILS" ColumnName="FLAG_SHOW_ADDITIONAL_PART_DETAILS" />
+          <ScalarProperty Name="FLAG_ALLOW_ADDITIONAL_ORDER_FILES" ColumnName="FLAG_ALLOW_ADDITIONAL_ORDER_FILES" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_COUNTRIES">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_COUNTRIES">
+        <MappingFragment StoreEntitySet="ESM_COUNTRIES">
+          <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+          <ScalarProperty Name="COUNTRY" ColumnName="COUNTRY" />
+          <ScalarProperty Name="COUNTRY_CODE" ColumnName="COUNTRY_CODE" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="IS_STATE_REQUIRED" ColumnName="IS_STATE_REQUIRED" />
+          <ScalarProperty Name="IS_ZIP_REQUIRED" ColumnName="IS_ZIP_REQUIRED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_GATEWAY_TYPE">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_GATEWAY_TYPE">
+        <MappingFragment StoreEntitySet="ESM_GATEWAY_TYPE">
+          <ScalarProperty Name="GATEWAY_TYPE_ID" ColumnName="GATEWAY_TYPE_ID" />
+          <ScalarProperty Name="NAME" ColumnName="NAME" />
+          <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+          <ScalarProperty Name="DATE_UPDATED" ColumnName="DATE_UPDATED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_GROUPS">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_GROUPS">
+        <MappingFragment StoreEntitySet="ESM_GROUPS">
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+          <ScalarProperty Name="PARENT_GROUP_ID" ColumnName="PARENT_GROUP_ID" />
+          <ScalarProperty Name="GROUP_NAME" ColumnName="GROUP_NAME" />
+          <ScalarProperty Name="GROUP_DESCRIP" ColumnName="GROUP_DESCRIP" />
+          <ScalarProperty Name="LONG_DESCRIPTION" ColumnName="LONG_DESCRIPTION" />
+          <ScalarProperty Name="IMAGE_NAME" ColumnName="IMAGE_NAME" />
+          <ScalarProperty Name="GROUP_RANKING" ColumnName="GROUP_RANKING" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="PRIVATE" ColumnName="PRIVATE" />
+          <ScalarProperty Name="IS_ORDER_TEMPLATE" ColumnName="IS_ORDER_TEMPLATE" />
+          <ScalarProperty Name="IS_DEFAULT_OPEN" ColumnName="IS_DEFAULT_OPEN" />
+          <ScalarProperty Name="IS_GRAPHICAL_INTERFACE" ColumnName="IS_GRAPHICAL_INTERFACE" />
+          <ScalarProperty Name="IS_DISTRIBUTION_PUSH" ColumnName="IS_DISTRIBUTION_PUSH" />
+          <ScalarProperty Name="AVAIL_DATE" ColumnName="AVAIL_DATE" />
+          <ScalarProperty Name="EXPIRE_DATE" ColumnName="EXPIRE_DATE" />
+          <ScalarProperty Name="EST_SHIP_DATE" ColumnName="EST_SHIP_DATE" />
+          <ScalarProperty Name="PRINT_DATE" ColumnName="PRINT_DATE" />
+          <ScalarProperty Name="LAST_ORDER_DATE" ColumnName="LAST_ORDER_DATE" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+          <ScalarProperty Name="COMPANY_PAGE_ID" ColumnName="COMPANY_PAGE_ID" />
+          <ScalarProperty Name="FLAG_HIDE_FROM_CATALOG_MENU" ColumnName="FLAG_HIDE_FROM_CATALOG_MENU" />
+          <ScalarProperty Name="COMPANY_LOGO" ColumnName="COMPANY_LOGO" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_HIERARCHY">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_HIERARCHY">
+        <MappingFragment StoreEntitySet="ESM_HIERARCHY">
+          <ScalarProperty Name="HIERARCHY_ID" ColumnName="HIERARCHY_ID" />
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="MGR_USER_ID" ColumnName="MGR_USER_ID" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_LOGIN_AUDIT">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_LOGIN_AUDIT">
+        <MappingFragment StoreEntitySet="ESM_LOGIN_AUDIT">
+          <ScalarProperty Name="LOGIN_ID" ColumnName="LOGIN_ID" />
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="IP_ADDRESS" ColumnName="IP_ADDRESS" />
+          <ScalarProperty Name="SERVER_NAME" ColumnName="SERVER_NAME" />
+          <ScalarProperty Name="SESSION_ID" ColumnName="SESSION_ID" />
+          <ScalarProperty Name="FAILED_ATTEMPT_COUNT" ColumnName="FAILED_ATTEMPT_COUNT" />
+          <ScalarProperty Name="FLAG_LOCKED_ACCOUNT" ColumnName="FLAG_LOCKED_ACCOUNT" />
+          <ScalarProperty Name="FLAG_LOGGED_IN" ColumnName="FLAG_LOGGED_IN" />
+          <ScalarProperty Name="FLAG_RESET_PASSWORD" ColumnName="FLAG_RESET_PASSWORD" />
+          <ScalarProperty Name="DATE_PASSWORD_RESET" ColumnName="DATE_PASSWORD_RESET" />
+          <ScalarProperty Name="DATE_LAST_LOGIN" ColumnName="DATE_LAST_LOGIN" />
+          <ScalarProperty Name="DATE_LAST_LOGIN_ATTEMPT" ColumnName="DATE_LAST_LOGIN_ATTEMPT" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_LOGIN_TOKEN">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_LOGIN_TOKEN">
+        <MappingFragment StoreEntitySet="ESM_LOGIN_TOKEN">
+          <ScalarProperty Name="LOGIN_TOKEN_ID" ColumnName="LOGIN_TOKEN_ID" />
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="REQUEST_IP" ColumnName="REQUEST_IP" />
+          <ScalarProperty Name="AUTH_TOKEN" ColumnName="AUTH_TOKEN" />
+          <ScalarProperty Name="DATEEXPIRES" ColumnName="DATEEXPIRES" />
+          <ScalarProperty Name="AUTHORIZED_PAGE" ColumnName="AUTHORIZED_PAGE" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="FLAG_TOKEN_USED" ColumnName="FLAG_TOKEN_USED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_ORDERS">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_ORDERS">
+        <MappingFragment StoreEntitySet="ESM_ORDERS">
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="TYPE_ID" ColumnName="TYPE_ID" />
+          <ScalarProperty Name="STATUS_ID" ColumnName="STATUS_ID" />
+          <ScalarProperty Name="CARRIER_ID" ColumnName="CARRIER_ID" />
+          <ScalarProperty Name="CONSOLIDATE_ID" ColumnName="CONSOLIDATE_ID" />
+          <ScalarProperty Name="RETAIL_PROJ_ID" ColumnName="RETAIL_PROJ_ID" />
+          <ScalarProperty Name="ACCOUNTING_UNIT_ID" ColumnName="ACCOUNTING_UNIT_ID" />
+          <ScalarProperty Name="ORDER_DISP_NO" ColumnName="ORDER_DISP_NO" />
+          <ScalarProperty Name="PO_NUM" ColumnName="PO_NUM" />
+          <ScalarProperty Name="ORDER_DATE" ColumnName="ORDER_DATE" />
+          <ScalarProperty Name="CLOSE_DATE" ColumnName="CLOSE_DATE" />
+          <ScalarProperty Name="PICK_DATE" ColumnName="PICK_DATE" />
+          <ScalarProperty Name="DESIRED_SHIP_DATE" ColumnName="DESIRED_SHIP_DATE" />
+          <ScalarProperty Name="INVOICE_DATE" ColumnName="INVOICE_DATE" />
+          <ScalarProperty Name="CREDIT_CARD_INFO" ColumnName="CREDIT_CARD_INFO" />
+          <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+          <ScalarProperty Name="EXPEDITE" ColumnName="EXPEDITE" />
+          <ScalarProperty Name="PRICE_TYPE" ColumnName="PRICE_TYPE" />
+          <ScalarProperty Name="CZ" ColumnName="CZ" />
+          <ScalarProperty Name="PICKER" ColumnName="PICKER" />
+          <ScalarProperty Name="EST_SHIPPING_COSTS" ColumnName="EST_SHIPPING_COSTS" />
+          <ScalarProperty Name="FULFILL_ORDER_COST" ColumnName="FULFILL_ORDER_COST" />
+          <ScalarProperty Name="FULFILL_LINE_COST" ColumnName="FULFILL_LINE_COST" />
+          <ScalarProperty Name="FULFILL_EACH_COST" ColumnName="FULFILL_EACH_COST" />
+          <ScalarProperty Name="LIST_COST" ColumnName="LIST_COST" />
+          <ScalarProperty Name="DISCOUNT" ColumnName="DISCOUNT" />
+          <ScalarProperty Name="SALES_TAX_CHARGES" ColumnName="SALES_TAX_CHARGES" />
+          <ScalarProperty Name="THIRD_PARTY_ACCOUNT_NUMBER" ColumnName="THIRD_PARTY_ACCOUNT_NUMBER" />
+          <ScalarProperty Name="INVOICE_STATUS" ColumnName="INVOICE_STATUS" />
+          <ScalarProperty Name="CONSUMER_ID" ColumnName="CONSUMER_ID" />
+          <ScalarProperty Name="PAYMENT_IS_COMPLETE" ColumnName="PAYMENT_IS_COMPLETE" />
+          <ScalarProperty Name="IS_INCOMPLETE_ORDER" ColumnName="IS_INCOMPLETE_ORDER" />
+          <ScalarProperty Name="EMAIL_SENT" ColumnName="EMAIL_SENT" />
+          <ScalarProperty Name="FLAG_CONSOLIDATED" ColumnName="FLAG_CONSOLIDATED" />
+          <ScalarProperty Name="FLAG_ALLOW_PARTIAL_SHIP" ColumnName="FLAG_ALLOW_PARTIAL_SHIP" />
+          <ScalarProperty Name="FLAG_ALLOW_CONSOLIDATE_ORDERS" ColumnName="FLAG_ALLOW_CONSOLIDATE_ORDERS" />
+          <ScalarProperty Name="FLAG_REQUIRE_CARTONS" ColumnName="FLAG_REQUIRE_CARTONS" />
+          <ScalarProperty Name="IS_FREIGHT_ONLY_BILLING" ColumnName="IS_FREIGHT_ONLY_BILLING" />
+          <ScalarProperty Name="IS_PAID_IN_FULL_AT_TIME_OF_ORDER" ColumnName="IS_PAID_IN_FULL_AT_TIME_OF_ORDER" />
+          <ScalarProperty Name="FLAG_PAYMENT" ColumnName="FLAG_PAYMENT" />
+          <ScalarProperty Name="FAST_PICKPACK" ColumnName="FAST_PICKPACK" />
+          <ScalarProperty Name="FLAG_REQUIRE_SIGNATURE" ColumnName="FLAG_REQUIRE_SIGNATURE" />
+          <ScalarProperty Name="APPROVAL_WORK_FLOW_TYPE" ColumnName="APPROVAL_WORK_FLOW_TYPE" />
+          <ScalarProperty Name="EXEMPT_SHIPPING_AND_HANDLING" ColumnName="EXEMPT_SHIPPING_AND_HANDLING" />
+          <ScalarProperty Name="SHIPPING_AND_HANDLING_PAID_BY_THIRD_PARTY" ColumnName="SHIPPING_AND_HANDLING_PAID_BY_THIRD_PARTY" />
+          <ScalarProperty Name="CUSTOM01" ColumnName="CUSTOM01" />
+          <ScalarProperty Name="CUSTOM02" ColumnName="CUSTOM02" />
+          <ScalarProperty Name="CUSTOM03" ColumnName="CUSTOM03" />
+          <ScalarProperty Name="CUSTOM04" ColumnName="CUSTOM04" />
+          <ScalarProperty Name="CUSTOM05" ColumnName="CUSTOM05" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="APPROVE_DENY_DATE" ColumnName="APPROVE_DENY_DATE" />
+          <ScalarProperty Name="WAREHOUSE_ID" ColumnName="WAREHOUSE_ID" />
+          <ScalarProperty Name="PROMO_CODE" ColumnName="PROMO_CODE" />
+          <ScalarProperty Name="PROMO_CODE_DISCOUNT" ColumnName="PROMO_CODE_DISCOUNT" />
+          <ScalarProperty Name="DESIRE_PROD_DATE" ColumnName="DESIRE_PROD_DATE" />
+          <ScalarProperty Name="APPROVAL_PENDING_REASON" ColumnName="APPROVAL_PENDING_REASON" />
+          <ScalarProperty Name="ORDER_TAG" ColumnName="ORDER_TAG" />
+          <ScalarProperty Name="ORDER_WEIGHT" ColumnName="ORDER_WEIGHT" />
+          <ScalarProperty Name="ORDER_GUID" ColumnName="ORDER_GUID" />
+          <ScalarProperty Name="IS_TRANSMITTED" ColumnName="IS_TRANSMITTED" />
+          <ScalarProperty Name="APPROVAL_SUMMARY" ColumnName="APPROVAL_SUMMARY" />
+          <ScalarProperty Name="CURRANCY_CODE" ColumnName="CURRANCY_CODE" />
+          <ScalarProperty Name="LANGUAGE_CULTURE" ColumnName="LANGUAGE_CULTURE" />
+          <ScalarProperty Name="CURRENCY_CODE" ColumnName="CURRENCY_CODE" />
+          <ScalarProperty Name="SHIPPING_ESTIMATE_CALC_JSON" ColumnName="SHIPPING_ESTIMATE_CALC_JSON" />
+          <ScalarProperty Name="INVOICE_FEE" ColumnName="INVOICE_FEE" />
+          <ScalarProperty Name="MAIL_INVOICE" ColumnName="MAIL_INVOICE" />
+          <ScalarProperty Name="INVOICE_EMAIL" ColumnName="INVOICE_EMAIL" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_PART">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_PART">
+        <MappingFragment StoreEntitySet="ESM_PART">
+          <ScalarProperty Name="PART_ID" ColumnName="PART_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="VENDOR_ID" ColumnName="VENDOR_ID" />
+          <ScalarProperty Name="CF_PART_ID" ColumnName="CF_PART_ID" />
+          <ScalarProperty Name="ALIAS_PARENT_PART_ID" ColumnName="ALIAS_PARENT_PART_ID" />
+          <ScalarProperty Name="SOFTPROOF_PROJECT_ID" ColumnName="SOFTPROOF_PROJECT_ID" />
+          <ScalarProperty Name="PART_BUYER_GROUP_ID" ColumnName="PART_BUYER_GROUP_ID" />
+          <ScalarProperty Name="DISPLAY_SKU" ColumnName="DISPLAY_SKU" />
+          <ScalarProperty Name="PART_NAME" ColumnName="PART_NAME" />
+          <ScalarProperty Name="DESCRIPTION" ColumnName="DESCRIPTION" />
+          <ScalarProperty Name="LONG_DESCRIPTION" ColumnName="LONG_DESCRIPTION" />
+          <ScalarProperty Name="PIECES" ColumnName="PIECES" />
+          <ScalarProperty Name="QTY_AVAIL" ColumnName="QTY_AVAIL" />
+          <ScalarProperty Name="QTY_ONHAND" ColumnName="QTY_ONHAND" />
+          <ScalarProperty Name="QTY_INPRODUCTION" ColumnName="QTY_INPRODUCTION" />
+          <ScalarProperty Name="WEIGHT" ColumnName="WEIGHT" />
+          <ScalarProperty Name="CPQ" ColumnName="CPQ" />
+          <ScalarProperty Name="ORDER_UNIT" ColumnName="ORDER_UNIT" />
+          <ScalarProperty Name="PRINT_FILE_NAME" ColumnName="PRINT_FILE_NAME" />
+          <ScalarProperty Name="FILENAME" ColumnName="FILENAME" />
+          <ScalarProperty Name="TN_FILENAME" ColumnName="TN_FILENAME" />
+          <ScalarProperty Name="GI_FILENAME" ColumnName="GI_FILENAME" />
+          <ScalarProperty Name="UNIT_PRICE" ColumnName="UNIT_PRICE" />
+          <ScalarProperty Name="UNIT_COST" ColumnName="UNIT_COST" />
+          <ScalarProperty Name="MIN_QTY" ColumnName="MIN_QTY" />
+          <ScalarProperty Name="MIN_QTY2" ColumnName="MIN_QTY2" />
+          <ScalarProperty Name="MAX_QTY" ColumnName="MAX_QTY" />
+          <ScalarProperty Name="MAX_ORDER_QTY" ColumnName="MAX_ORDER_QTY" />
+          <ScalarProperty Name="APPROVAL_THRESHOLD_QUANTITY" ColumnName="APPROVAL_THRESHOLD_QUANTITY" />
+          <ScalarProperty Name="PART_LEAD_TIME" ColumnName="PART_LEAD_TIME" />
+          <ScalarProperty Name="DEPLETE_CHILD" ColumnName="DEPLETE_CHILD" />
+          <ScalarProperty Name="AVAIL_DATE" ColumnName="AVAIL_DATE" />
+          <ScalarProperty Name="EXPIRATION_DATE" ColumnName="EXPIRATION_DATE" />
+          <ScalarProperty Name="COMMENTS" ColumnName="COMMENTS" />
+          <ScalarProperty Name="VENDOR_SKU" ColumnName="VENDOR_SKU" />
+          <ScalarProperty Name="CLIENT_CODE" ColumnName="CLIENT_CODE" />
+          <ScalarProperty Name="INTERNAL_PART_ID" ColumnName="INTERNAL_PART_ID" />
+          <ScalarProperty Name="FORM_NUM" ColumnName="FORM_NUM" />
+          <ScalarProperty Name="SHORT_CODE" ColumnName="SHORT_CODE" />
+          <ScalarProperty Name="COMMOD_CODE" ColumnName="COMMOD_CODE" />
+          <ScalarProperty Name="ITEM_TYPE" ColumnName="ITEM_TYPE" />
+          <ScalarProperty Name="MANUFACTURER" ColumnName="MANUFACTURER" />
+          <ScalarProperty Name="PLANT" ColumnName="PLANT" />
+          <ScalarProperty Name="KIT_TYPE" ColumnName="KIT_TYPE" />
+          <ScalarProperty Name="KIT_INSTR" ColumnName="KIT_INSTR" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="FLAG_CUSTOMIZE" ColumnName="FLAG_CUSTOMIZE" />
+          <ScalarProperty Name="FLAG_PREVIEW" ColumnName="FLAG_PREVIEW" />
+          <ScalarProperty Name="FLAG_OFFERED" ColumnName="FLAG_OFFERED" />
+          <ScalarProperty Name="FLAG_PO_REQUIRED" ColumnName="FLAG_PO_REQUIRED" />
+          <ScalarProperty Name="FLAG_KIT" ColumnName="FLAG_KIT" />
+          <ScalarProperty Name="FLAG_EXPIRE_PART" ColumnName="FLAG_EXPIRE_PART" />
+          <ScalarProperty Name="FLAG_IS_CUSTOMER_OWNED" ColumnName="FLAG_IS_CUSTOMER_OWNED" />
+          <ScalarProperty Name="FEATURED_ITEM" ColumnName="FEATURED_ITEM" />
+          <ScalarProperty Name="ALLOW_UPLOAD" ColumnName="ALLOW_UPLOAD" />
+          <ScalarProperty Name="FLAG_ALIASED" ColumnName="FLAG_ALIASED" />
+          <ScalarProperty Name="DIRECT_MAIL_ALLOWED" ColumnName="DIRECT_MAIL_ALLOWED" />
+          <ScalarProperty Name="IS_RETAIL" ColumnName="IS_RETAIL" />
+          <ScalarProperty Name="IS_SERVICE_CHARGE_PART" ColumnName="IS_SERVICE_CHARGE_PART" />
+          <ScalarProperty Name="IS_PRINT_WORK_FLOW" ColumnName="IS_PRINT_WORK_FLOW" />
+          <ScalarProperty Name="HAS_SERIAL_NUMBER" ColumnName="HAS_SERIAL_NUMBER" />
+          <ScalarProperty Name="IS_FEATURED_PART" ColumnName="IS_FEATURED_PART" />
+          <ScalarProperty Name="MIN_ORDER_QTY" ColumnName="MIN_ORDER_QTY" />
+          <ScalarProperty Name="IS_LIMIT_PART_ORDERING_QTY" ColumnName="IS_LIMIT_PART_ORDERING_QTY" />
+          <ScalarProperty Name="CUSTOM01" ColumnName="CUSTOM01" />
+          <ScalarProperty Name="CUSTOM02" ColumnName="CUSTOM02" />
+          <ScalarProperty Name="CUSTOM03" ColumnName="CUSTOM03" />
+          <ScalarProperty Name="CUSTOM04" ColumnName="CUSTOM04" />
+          <ScalarProperty Name="CUSTOM05" ColumnName="CUSTOM05" />
+          <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="PART_PRICE_AGGREGATE_ID" ColumnName="PART_PRICE_AGGREGATE_ID" />
+          <ScalarProperty Name="ALLOW_LIST" ColumnName="ALLOW_LIST" />
+          <ScalarProperty Name="IS_MAILING_LIST" ColumnName="IS_MAILING_LIST" />
+          <ScalarProperty Name="ALLOW_LIST_PURCHASE" ColumnName="ALLOW_LIST_PURCHASE" />
+          <ScalarProperty Name="LIST_IS_REQUIRED" ColumnName="LIST_IS_REQUIRED" />
+          <ScalarProperty Name="UPLOAD_IS_REQUIRED" ColumnName="UPLOAD_IS_REQUIRED" />
+          <ScalarProperty Name="FLAG_DELIVERY" ColumnName="FLAG_DELIVERY" />
+          <ScalarProperty Name="DESIGN_XML" ColumnName="DESIGN_XML" />
+          <ScalarProperty Name="PRINT_SPECS" ColumnName="PRINT_SPECS" />
+          <ScalarProperty Name="IS_LOT_NUMBER_REQUIRED" ColumnName="IS_LOT_NUMBER_REQUIRED" />
+          <ScalarProperty Name="FINISHED_DOCUMENT_NUMBER_OF_PAGES" ColumnName="FINISHED_DOCUMENT_NUMBER_OF_PAGES" />
+          <ScalarProperty Name="FINISHED_TRIM_WIDTH" ColumnName="FINISHED_TRIM_WIDTH" />
+          <ScalarProperty Name="FINISHED_TRIM_HEIGHT" ColumnName="FINISHED_TRIM_HEIGHT" />
+          <ScalarProperty Name="NO_PO_REQUIRED" ColumnName="NO_PO_REQUIRED" />
+          <ScalarProperty Name="FLAG_GRID_VIEW_CONFIGURATION" ColumnName="FLAG_GRID_VIEW_CONFIGURATION" />
+          <ScalarProperty Name="GLOBAL_FORMS_PROFILE_ID" ColumnName="GLOBAL_FORMS_PROFILE_ID" />
+          <ScalarProperty Name="RET_SIGN_PACK_ID" ColumnName="RET_SIGN_PACK_ID" />
+          <ScalarProperty Name="DAYS_OF_STOCK_MIN" ColumnName="DAYS_OF_STOCK_MIN" />
+          <ScalarProperty Name="FLAG_SHOW_HIGH_RES_PROOF" ColumnName="FLAG_SHOW_HIGH_RES_PROOF" />
+          <ScalarProperty Name="CUSTOMIZATION_TEMPLATE_ID" ColumnName="CUSTOMIZATION_TEMPLATE_ID" />
+          <ScalarProperty Name="NUMBER_OF_SERIALS" ColumnName="NUMBER_OF_SERIALS" />
+          <ScalarProperty Name="IS_PURCHASE_WORKFLOW" ColumnName="IS_PURCHASE_WORKFLOW" />
+          <ScalarProperty Name="PRODUCTION_QUEUE_ID" ColumnName="PRODUCTION_QUEUE_ID" />
+          <ScalarProperty Name="PAPER_STOCK_ID" ColumnName="PAPER_STOCK_ID" />
+          <ScalarProperty Name="KEYWORDS" ColumnName="KEYWORDS" />
+          <ScalarProperty Name="LOCK_ORDER_QTY" ColumnName="LOCK_ORDER_QTY" />
+          <ScalarProperty Name="LG_FILENAME" ColumnName="LG_FILENAME" />
+          <ScalarProperty Name="GLOBAL_FORMS_ID" ColumnName="GLOBAL_FORMS_ID" />
+          <ScalarProperty Name="OVERRIDE_FILENAME" ColumnName="OVERRIDE_FILENAME" />
+          <ScalarProperty Name="DATE_REVISED" ColumnName="DATE_REVISED" />
+          <ScalarProperty Name="INCLUSION_TAGS" ColumnName="INCLUSION_TAGS" />
+          <ScalarProperty Name="EXCLUSION_TAGS" ColumnName="EXCLUSION_TAGS" />
+          <ScalarProperty Name="IS_DELETED" ColumnName="IS_DELETED" />
+          <ScalarProperty Name="COMMENTS_ADMIN" ColumnName="COMMENTS_ADMIN" />
+          <ScalarProperty Name="PERSONALIZATION_COMMENTS" ColumnName="PERSONALIZATION_COMMENTS" />
+          <ScalarProperty Name="PS_DUPLEX" ColumnName="PS_DUPLEX" />
+          <ScalarProperty Name="PS_BLEED" ColumnName="PS_BLEED" />
+          <ScalarProperty Name="PS_FOLDS" ColumnName="PS_FOLDS" />
+          <ScalarProperty Name="SITE_SHIPMENT_GROUP_ID" ColumnName="SITE_SHIPMENT_GROUP_ID" />
+          <ScalarProperty Name="BOX_SIZE_ID" ColumnName="BOX_SIZE_ID" />
+          <ScalarProperty Name="SECONDARY_NAME" ColumnName="SECONDARY_NAME" />
+          <ScalarProperty Name="CALL_TO_ACTION" ColumnName="CALL_TO_ACTION" />
+          <ScalarProperty Name="SITE_UNIT_OF_MEASURE_ID" ColumnName="SITE_UNIT_OF_MEASURE_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_PARTGROUP">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_PARTGROUP">
+        <MappingFragment StoreEntitySet="ESM_PARTGROUP">
+          <ScalarProperty Name="PARTGROUP_ID" ColumnName="PARTGROUP_ID" />
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+          <ScalarProperty Name="PART_ID" ColumnName="PART_ID" />
+          <ScalarProperty Name="ORDER_TEMPLATE_COLUMN_NUMBER" ColumnName="ORDER_TEMPLATE_COLUMN_NUMBER" />
+          <ScalarProperty Name="ORDER_TEMPLATE_BOX_NUMBER" ColumnName="ORDER_TEMPLATE_BOX_NUMBER" />
+          <ScalarProperty Name="ORDER_TEMPLATE_ITEM_RANK" ColumnName="ORDER_TEMPLATE_ITEM_RANK" />
+          <ScalarProperty Name="PART_RANKING" ColumnName="PART_RANKING" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_PAYMENT_AUTH">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_PAYMENT_AUTH">
+        <MappingFragment StoreEntitySet="ESM_PAYMENT_AUTH">
+          <ScalarProperty Name="PAYMENT_AUTH_ID" ColumnName="PAYMENT_AUTH_ID" />
+          <ScalarProperty Name="ORDER_ID" ColumnName="ORDER_ID" />
+          <ScalarProperty Name="PAYMENT_METHOD_ID" ColumnName="PAYMENT_METHOD_ID" />
+          <ScalarProperty Name="CREDIT_CARD_TYPE_ID" ColumnName="CREDIT_CARD_TYPE_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="AUTHORIZATION_PNREF" ColumnName="AUTHORIZATION_PNREF" />
+          <ScalarProperty Name="ORIGINAL_ORDER_TOTAL_PRICE" ColumnName="ORIGINAL_ORDER_TOTAL_PRICE" />
+          <ScalarProperty Name="CREDIT_CARD_ENDING_DIGITS" ColumnName="CREDIT_CARD_ENDING_DIGITS" />
+          <ScalarProperty Name="STATUS" ColumnName="STATUS" />
+          <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+          <ScalarProperty Name="CREATED_BY" ColumnName="CREATED_BY" />
+          <ScalarProperty Name="DATE_MODIFIED" ColumnName="DATE_MODIFIED" />
+          <ScalarProperty Name="MODIFIED_BY" ColumnName="MODIFIED_BY" />
+          <ScalarProperty Name="ERROR_MESSAGE" ColumnName="ERROR_MESSAGE" />
+          <ScalarProperty Name="EXCETPION_DETAILS" ColumnName="EXCETPION_DETAILS" />
+          <ScalarProperty Name="SPREEDLY_CARD_TOKEN" ColumnName="SPREEDLY_CARD_TOKEN" />
+          <ScalarProperty Name="SPREEDLY_XML_RESPONSE" ColumnName="SPREEDLY_XML_RESPONSE" />
+          <ScalarProperty Name="COMP_USER_PAYMENT_METHOD_ID" ColumnName="COMP_USER_PAYMENT_METHOD_ID" />
+          <ScalarProperty Name="BUCKET_ID" ColumnName="BUCKET_ID" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_SITE">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_SITE">
+        <MappingFragment StoreEntitySet="ESM_SITE">
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="MP_ID" ColumnName="MP_ID" />
+          <ScalarProperty Name="PAYMENT_GATEWAY_ID" ColumnName="PAYMENT_GATEWAY_ID" />
+          <ScalarProperty Name="SITE_COMPANY" ColumnName="SITE_COMPANY" />
+          <ScalarProperty Name="CC_SITENAME" ColumnName="CC_SITENAME" />
+          <ScalarProperty Name="IMG_FILENAME" ColumnName="IMG_FILENAME" />
+          <ScalarProperty Name="UPLOAD_DIR" ColumnName="UPLOAD_DIR" />
+          <ScalarProperty Name="REPORT_CODE" ColumnName="REPORT_CODE" />
+          <ScalarProperty Name="FLAG_ARGOSY_WMS" ColumnName="FLAG_ARGOSY_WMS" />
+          <ScalarProperty Name="FLAG_ADDRESS_VERIFICATION" ColumnName="FLAG_ADDRESS_VERIFICATION" />
+          <ScalarProperty Name="SHIP_FROM_CONTACT" ColumnName="SHIP_FROM_CONTACT" />
+          <ScalarProperty Name="SHIP_FROM_ADDRESS1" ColumnName="SHIP_FROM_ADDRESS1" />
+          <ScalarProperty Name="SHIP_FROM_ADDRESS2" ColumnName="SHIP_FROM_ADDRESS2" />
+          <ScalarProperty Name="SHIP_FROM_CITY" ColumnName="SHIP_FROM_CITY" />
+          <ScalarProperty Name="SHIP_FROM_STATE" ColumnName="SHIP_FROM_STATE" />
+          <ScalarProperty Name="SHIP_FROM_ZIP" ColumnName="SHIP_FROM_ZIP" />
+          <ScalarProperty Name="SHIP_FROM_COUNTRY" ColumnName="SHIP_FROM_COUNTRY" />
+          <ScalarProperty Name="SHIP_FROM_PHONE" ColumnName="SHIP_FROM_PHONE" />
+          <ScalarProperty Name="SHIP_FROM_FAX" ColumnName="SHIP_FROM_FAX" />
+          <ScalarProperty Name="MINMAX_EMAIL" ColumnName="MINMAX_EMAIL" />
+          <ScalarProperty Name="VS_USER" ColumnName="VS_USER" />
+          <ScalarProperty Name="VS_PARTNER" ColumnName="VS_PARTNER" />
+          <ScalarProperty Name="VS_VENDOR" ColumnName="VS_VENDOR" />
+          <ScalarProperty Name="VS_PWD" ColumnName="VS_PWD" />
+          <ScalarProperty Name="VS_LIVE_SERVER" ColumnName="VS_LIVE_SERVER" />
+          <ScalarProperty Name="FLAG_RFQ_MODULE" ColumnName="FLAG_RFQ_MODULE" />
+          <ScalarProperty Name="VIRTUAL_DIRECTORY" ColumnName="VIRTUAL_DIRECTORY" />
+          <ScalarProperty Name="AMTREX_LOGIN" ColumnName="AMTREX_LOGIN" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="ORDER_MID_NUM" ColumnName="ORDER_MID_NUM" />
+          <ScalarProperty Name="PHONE" ColumnName="PHONE" />
+          <ScalarProperty Name="VERSION" ColumnName="VERSION" />
+          <ScalarProperty Name="SOFTPROOFING_FTP_SITE" ColumnName="SOFTPROOFING_FTP_SITE" />
+          <ScalarProperty Name="BATCH_PROCESSING_FOLDER" ColumnName="BATCH_PROCESSING_FOLDER" />
+          <ScalarProperty Name="FLAT_RATE_CARRIER" ColumnName="FLAT_RATE_CARRIER" />
+          <ScalarProperty Name="SITE_CC_CHARGE_NAME" ColumnName="SITE_CC_CHARGE_NAME" />
+          <ScalarProperty Name="INSTATE_TAX_RATE" ColumnName="INSTATE_TAX_RATE" />
+          <ScalarProperty Name="IS_ACTIVE" ColumnName="IS_ACTIVE" />
+          <ScalarProperty Name="BATCH_SITE_CONNECTOR_ID" ColumnName="BATCH_SITE_CONNECTOR_ID" />
+          <ScalarProperty Name="SITE_URL" ColumnName="SITE_URL" />
+          <ScalarProperty Name="SITE_LABEL" ColumnName="SITE_LABEL" />
+          <ScalarProperty Name="SITE_SQUARE_LOGO" ColumnName="SITE_SQUARE_LOGO" />
+          <ScalarProperty Name="GUID" ColumnName="GUID" />
+          <ScalarProperty Name="FAVORITE_ICON_FILE" ColumnName="FAVORITE_ICON_FILE" />
+          <ScalarProperty Name="LOADING_IMAGE_FILE" ColumnName="LOADING_IMAGE_FILE" />
+          <ScalarProperty Name="FLAG_ALLOW_COMPANY_WHITE_LABEL" ColumnName="FLAG_ALLOW_COMPANY_WHITE_LABEL" />
+          <ScalarProperty Name="FLAG_TRACK_INVENTORY_COST" ColumnName="FLAG_TRACK_INVENTORY_COST" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_SITE_GATEWAY">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_SITE_GATEWAY">
+        <MappingFragment StoreEntitySet="ESM_SITE_GATEWAY">
+          <ScalarProperty Name="SITE_GATEWAY_ID" ColumnName="SITE_GATEWAY_ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="GATEWAY_TYPE_ID" ColumnName="GATEWAY_TYPE_ID" />
+          <ScalarProperty Name="SITE_GATEWAY_OPTION_ID" ColumnName="SITE_GATEWAY_OPTION_ID" />
+          <ScalarProperty Name="GATEWAY_TOKEN" ColumnName="GATEWAY_TOKEN" />
+          <ScalarProperty Name="GATEWAY_NAME" ColumnName="GATEWAY_NAME" />
+          <ScalarProperty Name="GATEWAY_DESCRIPTION" ColumnName="GATEWAY_DESCRIPTION" />
+          <ScalarProperty Name="GATEWAY_CREATE_RESPONSE" ColumnName="GATEWAY_CREATE_RESPONSE" />
+          <ScalarProperty Name="FLAG_TEST_MODE" ColumnName="FLAG_TEST_MODE" />
+          <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+          <ScalarProperty Name="DATE_UPDATED" ColumnName="DATE_UPDATED" />
+          <ScalarProperty Name="DISPLAY_NAME" ColumnName="DISPLAY_NAME" />
+          <ScalarProperty Name="IS_DEFAULT" ColumnName="IS_DEFAULT" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_SITE_GATEWAY_OPTION">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_SITE_GATEWAY_OPTION">
+        <MappingFragment StoreEntitySet="ESM_SITE_GATEWAY_OPTION">
+          <ScalarProperty Name="SITE_GATEWAY_OPTION_ID" ColumnName="SITE_GATEWAY_OPTION_ID" />
+          <ScalarProperty Name="FLAG_SUPPORTS_PURCHASE" ColumnName="FLAG_SUPPORTS_PURCHASE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_AUTHROIZE" ColumnName="FLAG_SUPPORTS_AUTHROIZE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_CAPTURE" ColumnName="FLAG_SUPPORTS_CAPTURE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_CREDITS" ColumnName="FLAG_SUPPORTS_CREDITS" />
+          <ScalarProperty Name="FLAG_SUPPORTS_GENERAL_CREDIT" ColumnName="FLAG_SUPPORTS_GENERAL_CREDIT" />
+          <ScalarProperty Name="FLAG_SUPPORTS_VOID" ColumnName="FLAG_SUPPORTS_VOID" />
+          <ScalarProperty Name="FLAG_SUPPORTS_VERIFY" ColumnName="FLAG_SUPPORTS_VERIFY" />
+          <ScalarProperty Name="FLAG_SUPPORTS_REFERENCE_PURCHASE" ColumnName="FLAG_SUPPORTS_REFERENCE_PURCHASE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_PURCHASE_VIA_PREAUTH" ColumnName="FLAG_SUPPORTS_PURCHASE_VIA_PREAUTH" />
+          <ScalarProperty Name="FLAG_SUPPORTS_OFFSITE_PURCHASE" ColumnName="FLAG_SUPPORTS_OFFSITE_PURCHASE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_OFFSITE_AUTHORIZE" ColumnName="FLAG_SUPPORTS_OFFSITE_AUTHORIZE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_3DSECURE_PURCHASE" ColumnName="FLAG_SUPPORTS_3DSECURE_PURCHASE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_3DSECURE_AUTHORIZE" ColumnName="FLAG_SUPPORTS_3DSECURE_AUTHORIZE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_STORE" ColumnName="FLAG_SUPPORTS_STORE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_REMOVE" ColumnName="FLAG_SUPPORTS_REMOVE" />
+          <ScalarProperty Name="FLAG_SUPPORTS_FRAUD_REVIEW" ColumnName="FLAG_SUPPORTS_FRAUD_REVIEW" />
+          <ScalarProperty Name="FLAG_SUPPORTS_REFERENCE_AUTHORIZATION" ColumnName="FLAG_SUPPORTS_REFERENCE_AUTHORIZATION" />
+          <ScalarProperty Name="DATE_CREATED" ColumnName="DATE_CREATED" />
+          <ScalarProperty Name="DATE_UPDATED" ColumnName="DATE_UPDATED" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_STATES">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_STATES">
+        <MappingFragment StoreEntitySet="ESM_STATES">
+          <ScalarProperty Name="STATE_ID" ColumnName="STATE_ID" />
+          <ScalarProperty Name="COUNTRY_ID" ColumnName="COUNTRY_ID" />
+          <ScalarProperty Name="STATE" ColumnName="STATE" />
+          <ScalarProperty Name="STATE_CODE" ColumnName="STATE_CODE" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_TYPEAHEAD">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_TYPEAHEAD">
+        <MappingFragment StoreEntitySet="ESM_TYPEAHEAD">
+          <ScalarProperty Name="ID" ColumnName="ID" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="TYPEAHEAD_TYPE_ID" ColumnName="TYPEAHEAD_TYPE_ID" />
+          <ScalarProperty Name="WORDS" ColumnName="WORDS" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_UI_CUSTOM_TEXT">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_UI_CUSTOM_TEXT">
+        <MappingFragment StoreEntitySet="ESM_UI_CUSTOM_TEXT">
+          <ScalarProperty Name="ROW_ID" ColumnName="ROW_ID" />
+          <ScalarProperty Name="CUSTOM_TEXT_ID" ColumnName="CUSTOM_TEXT_ID" />
+          <ScalarProperty Name="USER_GROUP_ID" ColumnName="USER_GROUP_ID" />
+          <ScalarProperty Name="COMPANY_ID" ColumnName="COMPANY_ID" />
+          <ScalarProperty Name="PROJECT_ID" ColumnName="PROJECT_ID" />
+          <ScalarProperty Name="PART_ID" ColumnName="PART_ID" />
+          <ScalarProperty Name="TEXT_VALUE" ColumnName="TEXT_VALUE" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_USERGROUP">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_USERGROUP">
+        <MappingFragment StoreEntitySet="ESM_USERGROUP">
+          <ScalarProperty Name="USERGROUP_ID" ColumnName="USERGROUP_ID" />
+          <ScalarProperty Name="COMP_USER_ID" ColumnName="COMP_USER_ID" />
+          <ScalarProperty Name="GROUP_ID" ColumnName="GROUP_ID" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ESM_USERS">
+      <EntityTypeMapping TypeName="ArgosyModel.ESM_USERS">
+        <MappingFragment StoreEntitySet="ESM_USERS">
+          <ScalarProperty Name="USER_ID" ColumnName="USER_ID" />
+          <ScalarProperty Name="USERNAME" ColumnName="USERNAME" />
+          <ScalarProperty Name="PASSWORD" ColumnName="PASSWORD" />
+          <ScalarProperty Name="FIRST_NAME" ColumnName="FIRST_NAME" />
+          <ScalarProperty Name="LAST_NAME" ColumnName="LAST_NAME" />
+          <ScalarProperty Name="EMAIL" ColumnName="EMAIL" />
+          <ScalarProperty Name="ACTIVE" ColumnName="ACTIVE" />
+          <ScalarProperty Name="EMAIL_DISTR" ColumnName="EMAIL_DISTR" />
+          <ScalarProperty Name="SITE_ID" ColumnName="SITE_ID" />
+          <ScalarProperty Name="FLAG_BACKEND_ADMIN" ColumnName="FLAG_BACKEND_ADMIN" />
+          <ScalarProperty Name="FLAG_SHIPPER_ONLY" ColumnName="FLAG_SHIPPER_ONLY" />
+          <ScalarProperty Name="FLAG_WMS_ONLY" ColumnName="FLAG_WMS_ONLY" />
+          <ScalarProperty Name="FLAG_WMS_ADMIN" ColumnName="FLAG_WMS_ADMIN" />
+          <ScalarProperty Name="FLAG_VIEW_CC" ColumnName="FLAG_VIEW_CC" />
+          <ScalarProperty Name="CERQA_ADMIN" ColumnName="CERQA_ADMIN" />
+          <ScalarProperty Name="FLAG_RFQ_MODULE" ColumnName="FLAG_RFQ_MODULE" />
+          <ScalarProperty Name="DATECREATED" ColumnName="DATECREATED" />
+          <ScalarProperty Name="CREATEDBY" ColumnName="CREATEDBY" />
+          <ScalarProperty Name="DATEMODIFIED" ColumnName="DATEMODIFIED" />
+          <ScalarProperty Name="MODIFIEDBY" ColumnName="MODIFIEDBY" />
+          <ScalarProperty Name="FLAG_EMAIL_CREATE_MESSAGE" ColumnName="FLAG_EMAIL_CREATE_MESSAGE" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_PLACED" ColumnName="FLAG_EMAIL_ORDER_PLACED" />
+          <ScalarProperty Name="FLAG_EMAIL_ORDER_SHIPPED" ColumnName="FLAG_EMAIL_ORDER_SHIPPED" />
+          <ScalarProperty Name="FLAG_EMAIL_INVENTORY_WARNING" ColumnName="FLAG_EMAIL_INVENTORY_WARNING" />
+          <ScalarProperty Name="FLAG_EMAIL_PROOF_RELATED" ColumnName="FLAG_EMAIL_PROOF_RELATED" />
+          <ScalarProperty Name="FLAG_LICENSING_EDIT" ColumnName="FLAG_LICENSING_EDIT" />
+          <ScalarProperty Name="FLAG_REPORTS_ADD" ColumnName="FLAG_REPORTS_ADD" />
+          <ScalarProperty Name="FLAG_HD_ACCESS" ColumnName="FLAG_HD_ACCESS" />
+          <ScalarProperty Name="FLAG_BILLING_ADMIN" ColumnName="FLAG_BILLING_ADMIN" />
+          <ScalarProperty Name="DATE_AGREE_SA" ColumnName="DATE_AGREE_SA" />
+          <ScalarProperty Name="DATE_AGREE_TU" ColumnName="DATE_AGREE_TU" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="ViewCompanyUserHierarchies">
+      <EntityTypeMapping TypeName="ArgosyModel.ViewCompanyUserHierarchy">
+        <MappingFragment StoreEntitySet="ViewCompanyUserHierarchies">
+          <ScalarProperty Name="CompanyUserId" ColumnName="CompanyUserId" />
+          <ScalarProperty Name="ManagerUserId" ColumnName="ManagerUserId" />
+          <ScalarProperty Name="CompanyId" ColumnName="CompanyId" />
+          <ScalarProperty Name="SiteId" ColumnName="SiteId" />
+          <ScalarProperty Name="UserName" ColumnName="UserName" />
+          <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+          <ScalarProperty Name="LastName" ColumnName="LastName" />
+          <ScalarProperty Name="IsActive" ColumnName="IsActive" />
+          <ScalarProperty Name="IsStore" ColumnName="IsStore" />
+          <ScalarProperty Name="SpendingLimit" ColumnName="SpendingLimit" />
+          <ScalarProperty Name="HasEmployees" ColumnName="HasEmployees" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+  </EntityContainerMapping>
+</Mapping>

@@ -1,0 +1,121 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.BusinessLogic.FrontEnd.Managers.HelpDeskManager.HdTicket
+<script type="text/javascript">
+    function submitForm() {
+        if ($("#HdEmail").val() == "") {
+            prompt.notify({
+                question: "Your Email is required.",
+                type: "error"
+            });
+            $("#HdEmail").focus();
+            return;
+        }
+
+        if (!isValidEmailAddress($("#HdEmail").val())) {
+            prompt.notify({
+                question: "Email is not valid.",
+                type: "error"
+            });
+            $("#HdEmail").focus();
+            return;
+        }
+
+        if ($("#Subject").val() == "") {
+            prompt.notify({
+                question: "Ticket Subject is required.",
+                type: "error"
+            });
+            $("#Subject").focus();
+            return;
+        }
+
+        if ($("#Details").val() == "") {
+            prompt.notify({
+                question: "Ticket Description is required.",
+                type: "error"
+            });
+            $("#Details").focus();
+            return;
+        }
+
+        if ($("#Details").val() == "") {
+            prompt.notify({
+                question: "Ticket Description is required.",
+                type: "error"
+            });
+            $("#Details").focus();
+            return;
+        }
+
+        if ($("select[data-argosy-view=HdTicketIssueTypeDropDown]").val() == "") {
+            prompt.notify({
+                question: "Please Select Issue Type.",
+                type: "error"
+            });
+
+            return;
+        }
+     
+        $("#HdProblemTypeId").val($("select[data-argosy-view=HdTicketIssueTypeDropDown]").val());
+        $("#HdPriority").val($("select[data-argosy-view=HdTicketPriorityDropDown]").val());
+
+        $("form.add-helpdeskticket")[0].submit();
+    }
+</script>
+
+<div class="fancy400">
+    <h3 style="text-align:center">~{HowCanWeHelpYou}~</h3>
+    @using (Html.BeginForm("Add", "HelpDesk", FormMethod.Post, new { role = "form", @class = "add-helpdeskticket" }))
+    {
+        @Html.ValidationSummary(true)
+        @Html.HiddenFor(m=>m.HdPriority)
+        @Html.HiddenFor(m => m.HdProblemTypeId)
+        <div class="row w100">
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{Email}~
+                </div>
+                <div class="">
+                    @Html.TextBox("HdEmail", FrontEndSession.Instance.User?.EMAIL, new { @class = "k-textbox" })
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{Subject}~
+                </div>
+                <div class="">
+                    @Html.TextBoxFor(m => m.Subject, new { placeholder = "", @class = "k-textbox" })
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="label-style ">
+                    ~{Description}~
+                </div>
+                <div class="w100">
+                    @Html.TextAreaFor(m => m.Details, new { placeholder = "", row = 5, @class = "k-textbox" })
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{Type}~
+                </div>
+                <div class="">
+                    <select data-argosy-control="HdTicketIssueTypeDropDown" data-argosy-view="HdTicketIssueTypeDropDown"></select>
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="label-style">
+                    ~{Priority}~
+                </div>
+                <div class="">
+                    <select data-argosy-control="HdTicketPriorityDropDown" data-argosy-view="HdTicketPriorityDropDown"></select>
+                </div>
+            </div>
+            <div class="padu5 clear">
+                <div class="text-center padu10">
+                    <a class="btn btn-default" onclick="submitForm()">~{CreateTicket}~</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>

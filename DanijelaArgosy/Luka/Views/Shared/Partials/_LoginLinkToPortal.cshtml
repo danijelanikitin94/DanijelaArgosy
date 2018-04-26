@@ -1,0 +1,15 @@
+@using Argosy.Web.FrontEnd.Models
+@using ServiceStack
+@model LoginViewModel
+@if (Model.Details.IsWhiteLabel)
+ {
+     if (!Model.Details.WhiteLabel.IsNullOrEmpty())
+     {
+          <b class="black">Marketing Portal by @Model.Details.WhiteLabel</b>
+     }
+   
+}
+else
+{
+    <a target="_blank" class="co-red"  href="http://www.propago.com"><b>Marketing Portal</b></a>@: by Propago
+}

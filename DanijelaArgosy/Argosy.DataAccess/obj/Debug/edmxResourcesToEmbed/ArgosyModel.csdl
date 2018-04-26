@@ -1,0 +1,1506 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="ArgosyModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="AspNetUserPassword">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UserId" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="AspNetUser" Relationship="Self.FK_AspNetUserPasswords_AspNetUsers" FromRole="AspNetUserPasswords" ToRole="AspNetUsers" />
+  </EntityType>
+  <EntityType Name="AspNetUser">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="SiteId" Type="Int32" Nullable="false" />
+    <Property Name="CompanyId" Type="Int32" Nullable="false" />
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="Email" Type="String" MaxLength="256" FixedLength="false" Unicode="true" />
+    <Property Name="EmailConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="PasswordHash" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="SecurityStamp" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumber" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="PhoneNumberConfirmed" Type="Boolean" Nullable="false" />
+    <Property Name="TwoFactorEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="LockoutEndDateUtc" Type="DateTime" Precision="3" />
+    <Property Name="LockoutEnabled" Type="Boolean" Nullable="false" />
+    <Property Name="AccessFailedCount" Type="Int32" Nullable="false" />
+    <Property Name="UserName" Type="String" MaxLength="256" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="UsergroupId" Type="Int32" Nullable="false" />
+    <Property Name="LastPasswordChangedDate" Type="DateTime" Precision="3" />
+    <Property Name="IsBackendAdmin" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="AspNetUserPasswords" Relationship="Self.FK_AspNetUserPasswords_AspNetUsers" FromRole="AspNetUsers" ToRole="AspNetUserPasswords" />
+  </EntityType>
+  <EntityType Name="ESM_COMP_USERGROUP">
+    <Key>
+      <PropertyRef Name="COMP_USERGROUP_ID" />
+    </Key>
+    <Property Name="COMP_USERGROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_ID" Type="Int32" Nullable="false" />
+    <Property Name="ASSET_ROLE_ID" Type="Int32" />
+    <Property Name="GROUP_NAME" Type="String" MaxLength="55" FixedLength="false" Unicode="false" />
+    <Property Name="GROUP_DESCRIPTION" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="MAXORDERAMOUNT" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="DIRECT_MAIL_SPENDING_MINIMUM" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ORDER_NUMBER_SUFIX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ORDER_NUMBER_PREFIX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CYCLE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="WAREHOUSE_ID" Type="Int32" />
+    <Property Name="LANDING_PAGE_SETTING" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ORDERUNITS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="ORDERSTATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="ORDERAPPROVAL" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="CHANGESHIPADDRESSTO" Type="Boolean" />
+    <Property Name="DESIREDSHIPDATE" Type="Boolean" />
+    <Property Name="CHANGESHIPVIA" Type="Boolean" />
+    <Property Name="SHOWPRICE" Type="Boolean" />
+    <Property Name="ENFORCEORDERQTY" Type="Boolean" />
+    <Property Name="SHOWNEWPRODUCTGROUP" Type="Boolean" />
+    <Property Name="SHIPPINGCOST" Type="Boolean" />
+    <Property Name="ESTIMATEDSHIPPINGDATE" Type="Boolean" />
+    <Property Name="SHOWINVENTORY" Type="Boolean" />
+    <Property Name="SHOWPARTTHUMBNAIL" Type="Boolean" />
+    <Property Name="BROWSEDISPLAY" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="CAPTURECREDITCARD" Type="Boolean" />
+    <Property Name="USEPRECLOSESTATUS" Type="Boolean" />
+    <Property Name="CREDITCARDPROCESS" Type="Boolean" />
+    <Property Name="PRICELISTID" Type="Int32" />
+    <Property Name="ISACTIVE" Type="Boolean" />
+    <Property Name="FLAG_CONSUMER_MODULE" Type="Boolean" />
+    <Property Name="FLAG_EMAIL_CREATE_MESSAGE" Type="Boolean" />
+    <Property Name="FLAG_EMAIL_ORDER_PLACED" Type="Boolean" />
+    <Property Name="FLAG_EMAIL_ORDER_SHIPPED" Type="Boolean" />
+    <Property Name="FLAG_EMAIL_INVENTORY_WARNING" Type="Boolean" />
+    <Property Name="FLAG_EMAIL_PROJECT_REVISION" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_LIST_PURCHASES" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_EXISTING_LIST" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_BUILD_LIST" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_UPLOAD_LIST" Type="Boolean" />
+    <Property Name="FLAG_SHOW_CORPORATE_LIST" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_MULTI_PRICE_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_PROMO_CODES" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_CREDIT_CARD_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_ECHECK_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_PO_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_BILL_LATER_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="IS_RETAIL" Type="Boolean" Nullable="false" />
+    <Property Name="IS_TAXABLE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ASSET_RESTRICTED" Type="Boolean" Nullable="false" />
+    <Property Name="IS_FREIGHT_ONLY_BILLING" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_INCLUDE_CUSTOM_FIELDS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SHIPPING_DAY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <Property Name="SHOWPARTCATEGORYTHUMBNAIL" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_EDIT_PRICE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_IS_SYSTEM_DOLLAR" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_STOP_ORDERS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="FLAG_SHOW_CROSS_SALE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_ALL_ORDERS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_AU" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_PART_THRESHHOLD" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_SPENDING_LIMIT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_BYPASS_APPROVAL_ON_CC" Type="Boolean" />
+    <Property Name="FLAG_APPROVAL_WORK_FLOW_TYPE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="MANAGE_BUDGET_LEVEL_SETTING" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="TIME_INTERVAL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="GROUP_MANAGER_ID" Type="Int32" />
+    <Property Name="USER_GROUP_BUDGET" Type="Int32" />
+    <Property Name="FLAG_SALES_TAX_TYPE" Type="Int32" Nullable="false" />
+    <Property Name="FLAT_SALES_TAX_RATE" Type="Decimal" Precision="14" Scale="4" />
+    <Property Name="THEME_ID" Type="Int32" />
+    <Property Name="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_ORDERS_PER_DAY" Type="Boolean" Nullable="false" />
+    <Property Name="INCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EXCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IS_PUBLIC" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_LOCK_ADDRESS" Type="Boolean" Nullable="false" />
+    <Property Name="IS_DYNAMIC_GROUP" Type="Boolean" Nullable="false" />
+    <Property Name="DISPLAY_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="DISPLAY_IMAGE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="PAYMENT_CO_OP_ONLY" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_LOCK_ADDRESS_BT" Type="Boolean" Nullable="false" />
+    <Property Name="COMPANY_LOGO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_COMP_USERGROUP_ESM_COMPANY" FromRole="ESM_COMP_USERGROUP" ToRole="ESM_COMPANY" />
+  </EntityType>
+  <EntityType Name="ESM_COMP_USERS">
+    <Key>
+      <PropertyRef Name="COMP_USER_ID" />
+    </Key>
+    <Property Name="COMP_USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="COMPANY_ID" Type="Int32" />
+    <Property Name="ADDRESS_ID" Type="Int32" />
+    <Property Name="SITE_ID" Type="Int32" />
+    <Property Name="MULTIPLIER_ID" Type="Int32" />
+    <Property Name="DEFAULT_SKIN_ID" Type="Int32" />
+    <Property Name="STYLE_SHEET_ID" Type="Int32" Nullable="false" />
+    <Property Name="THEME_ID" Type="Int32" />
+    <Property Name="USERNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASSWORD" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FIRST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TITLE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="zPHONE" Type="Decimal" Precision="15" Scale="0" />
+    <Property Name="PHONE_NUMBER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="NAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ADDRESS1" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ADDRESS2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ADDRESS3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CITY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="STATE" Type="Int32" />
+    <Property Name="COUNTRY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="ZIP" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SPENDING_LIMIT" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ADMIN_ACCESS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PROJECT_REVISION_ACCESS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="POWER_BUYER" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL_DISTR" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PRINT_ORDERS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="BILLING_ACCESS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DISCOUNT_LEVEL" Type="Int32" />
+    <Property Name="DISCOUNT_DOLLARS" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="REGISTER_DATE" Type="DateTime" Precision="3" />
+    <Property Name="DEFAULT_LOGO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DIVISION_NAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="WEBSITE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FAX" Type="Decimal" Precision="18" Scale="0" />
+    <Property Name="CUSTOM01" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM02" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM03" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="EXT_IDENTIFIER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_PROFILE_GROUP_ID" Type="Int32" />
+    <Property Name="COMP_USERGROUP_ID" Type="Int32" />
+    <Property Name="FLAG_RFQ_MODULE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_EMAIL_CREATE_MESSAGE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_ORDER_PLACED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_PROJECT_REVISION" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_ORDER_SHIPPED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_INVENTORY_WARNING" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_CONSUMER_MODULE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVALS" Type="Int32" Nullable="false" />
+    <Property Name="FLAG_AGREED_TO_USRAGR" Type="String" MaxLength="1" FixedLength="true" Unicode="false" />
+    <Property Name="FLAG_ALLOW_BULK_ORDER_PLACEMENT" Type="Boolean" Nullable="false" />
+    <Property Name="IS_STORE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_RETAIL" Type="Boolean" Nullable="false" />
+    <Property Name="EMAIL_SENT" Type="Boolean" Nullable="false" />
+    <Property Name="USRAGR_DATE" Type="DateTime" Precision="3" />
+    <Property Name="USRAGR_IP" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="USRAGR_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="USRAGR_COMPANY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="ACCOUNTING_UNIT_ID" Type="Int32" />
+    <Property Name="TITLE2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_PHOTO" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PHONE_NUMBER2" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PHONE_NUMBER3" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ASSET_ROLE_ID" Type="Int32" />
+    <Property Name="COMP_USER_GUID" Type="Guid" Nullable="false" />
+    <Property Name="IS_RETAIL_CONTRIBUTOR" Type="Boolean" />
+    <Property Name="COMP_USER_HASH" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="INCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EXCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EXTERNAL_ID" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="IS_SSO" Type="Boolean" Nullable="false" />
+    <Property Name="DYNAMIC_USERGROUP_ID" Type="Int32" />
+    <Property Name="IS_GENERIC_USER" Type="Boolean" Nullable="false" />
+    <Property Name="IS_PRICE_ADMIN" Type="Boolean" Nullable="false" />
+    <Property Name="CC_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="INVOICE_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="PAPER_INVOICE" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_COMP_USERS_ESM_COMPANY" FromRole="ESM_COMP_USERS" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_COMP_USERS_ESM_SITE" FromRole="ESM_COMP_USERS" ToRole="ESM_SITE" />
+    <NavigationProperty Name="ESM_HIERARCHY" Relationship="Self.FK_ESM_HIERARCHY_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_HIERARCHY" />
+    <NavigationProperty Name="ESM_HIERARCHY1" Relationship="Self.FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_HIERARCHY" />
+    <NavigationProperty Name="ESM_LOGIN_AUDIT" Relationship="Self.FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_LOGIN_AUDIT" />
+    <NavigationProperty Name="ESM_LOGIN_TOKEN" Relationship="Self.FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_LOGIN_TOKEN" />
+    <NavigationProperty Name="ESM_ORDERS" Relationship="Self.FK_ESM_ORDERS_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_ORDERS" />
+    <NavigationProperty Name="ESM_USERGROUP" Relationship="Self.FK_ESM_USERGROUP_ESM_COMP_USERS" FromRole="ESM_COMP_USERS" ToRole="ESM_USERGROUP" />
+    <NavigationProperty Name="ESM_USERGROUP1" Relationship="Self.FK_RefESM_COMP_USERS29" FromRole="ESM_COMP_USERS" ToRole="ESM_USERGROUP" />
+  </EntityType>
+  <EntityType Name="ESM_COMPANY">
+    <Key>
+      <PropertyRef Name="COMPANY_ID" />
+    </Key>
+    <Property Name="COMPANY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_CONTACT_ID" Type="Int32" />
+    <Property Name="PARTNER_ID" Type="Int32" />
+    <Property Name="IMAGE_ID" Type="Int32" />
+    <Property Name="THEME_ID" Type="Int32" />
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" />
+    <Property Name="DEFAULT_USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="WAREHOUSE_ID" Type="Int32" />
+    <Property Name="COMPANY_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="STORE_USER_ID" Type="Int32" />
+    <Property Name="DEFAULT_SKIN_ID" Type="Int32" />
+    <Property Name="STORE_GUID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="COMPANY_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM_LOGINPATH" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM_PACKLIST_PATH" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="REPORT_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="FILENAME" Type="String" MaxLength="200" FixedLength="false" Unicode="false" />
+    <Property Name="LEAD_TIME" Type="Int32" Nullable="false" />
+    <Property Name="CUSTOM_COUNT" Type="Int32" Nullable="false" />
+    <Property Name="PREPRESS_CHARGE" Type="Decimal" Precision="6" Scale="2" Nullable="false" />
+    <Property Name="ORDER_CHARGE" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+    <Property Name="LINE_CHARGE" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+    <Property Name="EACH_CHARGE" Type="Decimal" Precision="8" Scale="2" Nullable="false" />
+    <Property Name="MAX_ORDER_AMOUNT" Type="Decimal" Precision="18" Scale="2" Nullable="false" />
+    <Property Name="MIN_ORDER_AMT" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="EDELIVERY_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ECOMMERCE_ACCESS_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="LANDING_PAGE_HTML" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="LANDING_PAGE_SETTING" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FTP_SITE" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FTP_USERNAME" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FTP_PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="USER_DEFAULT_PART_IMAGE_MAX" Type="Int64" Nullable="false" />
+    <Property Name="USER_DEFAULT_PART_IMAGE_MIN" Type="Int64" Nullable="false" />
+    <Property Name="CYCLE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="ORDER_NUMBER_SUFIX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ORDER_MID_NUM" Type="Int32" />
+    <Property Name="ORDER_NUMBER_PREFIX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIME_EXPEDITE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIME_CUTOFF" Type="String" MaxLength="20" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="PAYMENT_CREDIT_CARD_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_ECHECK_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_PO_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="PAYMENT_BILL_LATER_IS_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="DIRECT_MAIL_SPENDING_MINIMUM" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="ISACTIVE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_TAXABLE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_FREIGHT_ONLY_BILLING" Type="Boolean" Nullable="false" />
+    <Property Name="IS_ECOMMERCE_CODE_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="ALLOW_PART_RESTRICTION" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_REQUIRE_PO" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVALS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SPENDING_LIMITS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ADDRESS_EDIT_ST" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHOW_PRICE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHOW_INV" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_PARTIAL_SHIP" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ORDER_UNITS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ORDER_QTY_MAX" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_EMAIL_HTML" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_GEN_XML" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_INCLUDE_CUSTOM_FIELDS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_VERIFY_ADDRESS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_AUTO_DEPLETE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_COLAB_TOOL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CUSTOMIZE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CARRIER" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ORDER_STATUS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHIPPING_COSTS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_DESIRED_SHIP_DATE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ESTIMATE_SHIP_DATE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_BROWSE_DISPLAY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CC_REQUIRED" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_USE_PRECLOSE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CC_PROCESS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHOW_PART_THUMBS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_EDIT_GROUP_TITLES" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_GEOROUT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SHOW_NEW_PRODUCTS_GROUP" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_FREE_CF_PARTS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_FAST_PICKPACK" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_FAST_PICKPACK_DEFAULT" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_SPLIT_SHIPPING" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_CONSOLIDATE_ORDERS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CONSUMER_MODULE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ASSET_MODULE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ASSET_RESTRICTED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_LIST_PURCHASES" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_UPLOAD_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_EXISTING_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_BUILD_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_USERS_CAN_EDIT_PERSONAL_INFORMATION" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_NEEDS_INVENTORY_APPROVAL" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_HAS_PART_LIMITS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_REQUIRE_SIGNATURE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_IS_SYSTEM_DOLLAR" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ECOMMERCE_CUSTOMER" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SHOW_PART_CATEGORY_THUMBS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHOW_CORPORATE_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_EDIT_PRICE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_MULTI_PRICE_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_PARTIAL_WAVE_FOR_KITS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_STOP_ORDERS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_REQUIRE_CARTONS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_USER_CAN_CHANGE_SKIN" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_PROMO_CODES" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SHOW_CROSS_SALE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_ALL_ORDERS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_AU" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_PART_THRESHHOLD" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_SPENDING_LIMIT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_BYPASS_APPROVAL_ON_CC" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_WORK_FLOW_TYPE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ALLOW_WEEKEND_SHIP" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHOW_HIGH_RES_PROOF" Type="Boolean" Nullable="false" />
+    <Property Name="SHIPPING_DAY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="TIME_INTERVAL" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CONSUMER_VIEW_RIGHTS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="RETAIL_SIGNATURE_NUMBER" Type="Int32" Nullable="false" />
+    <Property Name="IS_TEST_CUSTOMER" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_REGISTRATION" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SALES_TAX_TYPE" Type="Int32" Nullable="false" />
+    <Property Name="FLAT_SALES_TAX_RATE" Type="Decimal" Precision="14" Scale="4" />
+    <Property Name="FLAG_CREATE_PAY_REC_FOR_ALL" Type="Boolean" Nullable="false" />
+    <Property Name="COMPANY_GUID" Type="Guid" Nullable="false" />
+    <Property Name="FLAG_SAVE_ACCOUNTING_UNIT_TO_ORDERLINE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_CXML_PUNCHOUT" Type="Boolean" Nullable="false" />
+    <Property Name="RETURN_URL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="FLAG_LOCK_PROOF_NAME" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_OVERRIDE_PART_LIMIT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_APPROVAL_ON_ORDERS_PER_DAY" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SHOW_ALERT_IF_APPROVAL_TRIGGERED" Type="Boolean" Nullable="false" />
+    <Property Name="WHITE_LABEL" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="WHITE_LABEL_SITE_LOGO" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="WHITE_LABEL_LOADING_IMAGE" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="WHITE_LABEL_SITE_ICON" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="FLAG_LOCK_ADDRESS" Type="Boolean" Nullable="false" />
+    <Property Name="EXTERNAL_ID_1" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="EXTERNAL_ID_2" Type="String" MaxLength="250" FixedLength="false" Unicode="true" />
+    <Property Name="SITE_GATEWAY_ID" Type="Int32" />
+    <Property Name="PAYMENT_CO_OP_ONLY" Type="Boolean" Nullable="false" />
+    <Property Name="FULFILL_MIN_COST" Type="Decimal" Precision="10" Scale="2" />
+    <Property Name="FULFILL_MIN_ORDER_COST" Type="Decimal" Precision="18" Scale="2" />
+    <Property Name="ORDER_PAYMENT_TYPE" Type="Int32" />
+    <Property Name="EXPIRING_SOON_DAYS" Type="Int32" Nullable="false" />
+    <Property Name="NEW_SHOWS_CONTROL_FIELD" Type="Int32" Nullable="false" />
+    <Property Name="NEW_SHOWS_FOR_DAYS" Type="Int32" Nullable="false" />
+    <Property Name="UPDATED_SHOWS_CONTROL_FIELD" Type="Int32" Nullable="false" />
+    <Property Name="UPDATED_SHOWS_FOR_DAYS" Type="Int32" Nullable="false" />
+    <Property Name="FLAG_VIEW_SKU_ON_BROWSE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALWAYS_REQUIRE_SHIPPING_ADDRESS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALWAYS_REQUIRE_BILLING_ADDRESS" Type="Boolean" Nullable="false" />
+    <Property Name="IS_APPROVAL_WORKFLOW" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_LOCK_ADDRESS_BT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_SAVE_CC" Type="Boolean" Nullable="false" />
+    <Property Name="SHOW_PASSWORD_ON_WELCOME_EMAIL" Type="Boolean" Nullable="false" />
+    <Property Name="INVOICE_FEE" Type="Decimal" Precision="10" Scale="4" />
+    <Property Name="FLAG_SHOW_INVOICE_FEE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_USER_MANAGEMENT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_DEFAULT_SHIPPING" Type="Boolean" />
+    <Property Name="FLAG_DEFAULT_BILLING" Type="Boolean" />
+    <Property Name="PORTAL_DISPLAY_JSON" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="TAX_ENTITY_ID" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="IS_SHIPPING_HIDDEN" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_OPEN_PORTAL_COMPANY_NAME_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SHOW_ADDITIONAL_PART_DETAILS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALLOW_ADDITIONAL_ORDER_FILES" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_COMP_USERGROUP" Relationship="Self.FK_ESM_COMP_USERGROUP_ESM_COMPANY" FromRole="ESM_COMPANY" ToRole="ESM_COMP_USERGROUP" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_COMP_USERS_ESM_COMPANY" FromRole="ESM_COMPANY" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_COMPANY_ESM_SITE" FromRole="ESM_COMPANY" ToRole="ESM_SITE" />
+    <NavigationProperty Name="ESM_SITE_GATEWAY" Relationship="Self.FK_ESM_COMPANY_ESM_SITE_GATEWAY" FromRole="ESM_COMPANY" ToRole="ESM_SITE_GATEWAY" />
+    <NavigationProperty Name="ESM_ORDERS" Relationship="Self.FK_ESM_ORDERS_ESM_COMPANY" FromRole="ESM_COMPANY" ToRole="ESM_ORDERS" />
+    <NavigationProperty Name="ESM_PART" Relationship="Self.FK_ESM_PART_ESM_COMPANY" FromRole="ESM_COMPANY" ToRole="ESM_PART" />
+    <NavigationProperty Name="ESM_UI_CUSTOM_TEXT" Relationship="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY" FromRole="ESM_COMPANY" ToRole="ESM_UI_CUSTOM_TEXT" />
+  </EntityType>
+  <EntityType Name="ESM_COUNTRIES">
+    <Key>
+      <PropertyRef Name="COUNTRY_ID" />
+    </Key>
+    <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COUNTRY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="COUNTRY_CODE" Type="String" MaxLength="2" FixedLength="false" Unicode="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <Property Name="IS_STATE_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="IS_ZIP_REQUIRED" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_STATES" Relationship="Self.FK_ESM_PROVINCES_ESM_COUNTRIES" FromRole="ESM_COUNTRIES" ToRole="ESM_STATES" />
+  </EntityType>
+  <EntityType Name="ESM_GATEWAY_TYPE">
+    <Key>
+      <PropertyRef Name="GATEWAY_TYPE_ID" />
+    </Key>
+    <Property Name="GATEWAY_TYPE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DATE_UPDATED" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ESM_SITE_GATEWAY" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE" FromRole="ESM_GATEWAY_TYPE" ToRole="ESM_SITE_GATEWAY" />
+  </EntityType>
+  <EntityType Name="ESM_GROUPS">
+    <Key>
+      <PropertyRef Name="GROUP_ID" />
+    </Key>
+    <Property Name="GROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="PARENT_GROUP_ID" Type="Int32" Nullable="false" />
+    <Property Name="GROUP_NAME" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="GROUP_DESCRIP" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LONG_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="IMAGE_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GROUP_RANKING" Type="Int16" Nullable="false" />
+    <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="PRIVATE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="IS_ORDER_TEMPLATE" Type="Int32" />
+    <Property Name="IS_DEFAULT_OPEN" Type="Boolean" Nullable="false" />
+    <Property Name="IS_GRAPHICAL_INTERFACE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_DISTRIBUTION_PUSH" Type="Boolean" Nullable="false" />
+    <Property Name="AVAIL_DATE" Type="DateTime" Precision="3" />
+    <Property Name="EXPIRE_DATE" Type="DateTime" Precision="3" />
+    <Property Name="EST_SHIP_DATE" Type="DateTime" Precision="3" />
+    <Property Name="PRINT_DATE" Type="DateTime" Precision="3" />
+    <Property Name="LAST_ORDER_DATE" Type="DateTime" Precision="3" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <Property Name="COMMENTS" Type="String" MaxLength="2500" FixedLength="false" Unicode="false" />
+    <Property Name="COMPANY_PAGE_ID" Type="Int32" />
+    <Property Name="FLAG_HIDE_FROM_CATALOG_MENU" Type="Boolean" Nullable="false" />
+    <Property Name="COMPANY_LOGO" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="ESM_USERGROUP" Relationship="Self.FK_RefESM_GROUPS30" FromRole="ESM_GROUPS" ToRole="ESM_USERGROUP" />
+    <NavigationProperty Name="ESM_PARTGROUP" Relationship="Self.FK_RefESM_GROUPS31" FromRole="ESM_GROUPS" ToRole="ESM_PARTGROUP" />
+  </EntityType>
+  <EntityType Name="ESM_HIERARCHY">
+    <Key>
+      <PropertyRef Name="HIERARCHY_ID" />
+    </Key>
+    <Property Name="HIERARCHY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_USER_ID" Type="Int32" />
+    <Property Name="MGR_USER_ID" Type="Int32" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_HIERARCHY_ESM_COMP_USERS" FromRole="ESM_HIERARCHY" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_COMP_USERS1" Relationship="Self.FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS" FromRole="ESM_HIERARCHY" ToRole="ESM_COMP_USERS" />
+  </EntityType>
+  <EntityType Name="ESM_LOGIN_AUDIT">
+    <Key>
+      <PropertyRef Name="LOGIN_ID" />
+    </Key>
+    <Property Name="LOGIN_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_USER_ID" Type="Int32" />
+    <Property Name="USER_ID" Type="Int32" />
+    <Property Name="IP_ADDRESS" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SERVER_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SESSION_ID" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FAILED_ATTEMPT_COUNT" Type="Int32" Nullable="false" />
+    <Property Name="FLAG_LOCKED_ACCOUNT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_LOGGED_IN" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_RESET_PASSWORD" Type="Boolean" Nullable="false" />
+    <Property Name="DATE_PASSWORD_RESET" Type="DateTime" Precision="3" />
+    <Property Name="DATE_LAST_LOGIN" Type="DateTime" Precision="3" />
+    <Property Name="DATE_LAST_LOGIN_ATTEMPT" Type="DateTime" Precision="3" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS" FromRole="ESM_LOGIN_AUDIT" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_USERS" Relationship="Self.FK_ESM_LOGIN_AUDIT_ESM_USERS" FromRole="ESM_LOGIN_AUDIT" ToRole="ESM_USERS" />
+  </EntityType>
+  <EntityType Name="ESM_LOGIN_TOKEN">
+    <Key>
+      <PropertyRef Name="LOGIN_TOKEN_ID" />
+    </Key>
+    <Property Name="LOGIN_TOKEN_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USER_ID" Type="Int32" />
+    <Property Name="COMP_USER_ID" Type="Int32" />
+    <Property Name="REQUEST_IP" Type="String" MaxLength="16" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AUTH_TOKEN" Type="String" MaxLength="255" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATEEXPIRES" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="AUTHORIZED_PAGE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="FLAG_TOKEN_USED" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS" FromRole="ESM_LOGIN_TOKEN" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_USERS" Relationship="Self.FK_ESM_LOGIN_TOKEN_ESM_USERS" FromRole="ESM_LOGIN_TOKEN" ToRole="ESM_USERS" />
+  </EntityType>
+  <EntityType Name="ESM_ORDERS">
+    <Key>
+      <PropertyRef Name="ORDER_ID" />
+    </Key>
+    <Property Name="ORDER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="COMPANY_ID" Type="Int32" Nullable="false" />
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" />
+    <Property Name="TYPE_ID" Type="Int32" Nullable="false" />
+    <Property Name="STATUS_ID" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CARRIER_ID" Type="Int32" Nullable="false" />
+    <Property Name="CONSOLIDATE_ID" Type="Int32" />
+    <Property Name="RETAIL_PROJ_ID" Type="Int32" />
+    <Property Name="ACCOUNTING_UNIT_ID" Type="Int32" />
+    <Property Name="ORDER_DISP_NO" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PO_NUM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ORDER_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CLOSE_DATE" Type="DateTime" Precision="3" />
+    <Property Name="PICK_DATE" Type="DateTime" Precision="3" />
+    <Property Name="DESIRED_SHIP_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="INVOICE_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREDIT_CARD_INFO" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="COMMENTS" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EXPEDITE" Type="Boolean" Nullable="false" />
+    <Property Name="PRICE_TYPE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CZ" Type="Int32" />
+    <Property Name="PICKER" Type="Int32" />
+    <Property Name="EST_SHIPPING_COSTS" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="FULFILL_ORDER_COST" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="FULFILL_LINE_COST" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="FULFILL_EACH_COST" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="LIST_COST" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="DISCOUNT" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="SALES_TAX_CHARGES" Type="Decimal" Precision="15" Scale="2" Nullable="false" />
+    <Property Name="THIRD_PARTY_ACCOUNT_NUMBER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="INVOICE_STATUS" Type="Int32" Nullable="false" />
+    <Property Name="CONSUMER_ID" Type="Int32" />
+    <Property Name="PAYMENT_IS_COMPLETE" Type="Boolean" Nullable="false" />
+    <Property Name="IS_INCOMPLETE_ORDER" Type="Boolean" Nullable="false" />
+    <Property Name="EMAIL_SENT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_CONSOLIDATED" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_PARTIAL_SHIP" Type="Boolean" />
+    <Property Name="FLAG_ALLOW_CONSOLIDATE_ORDERS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_REQUIRE_CARTONS" Type="Boolean" />
+    <Property Name="IS_FREIGHT_ONLY_BILLING" Type="Boolean" Nullable="false" />
+    <Property Name="IS_PAID_IN_FULL_AT_TIME_OF_ORDER" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_PAYMENT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FAST_PICKPACK" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_REQUIRE_SIGNATURE" Type="Boolean" Nullable="false" />
+    <Property Name="APPROVAL_WORK_FLOW_TYPE" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="EXEMPT_SHIPPING_AND_HANDLING" Type="Boolean" Nullable="false" />
+    <Property Name="SHIPPING_AND_HANDLING_PAID_BY_THIRD_PARTY" Type="Boolean" Nullable="false" />
+    <Property Name="CUSTOM01" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM02" Type="String" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM03" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM04" Type="String" MaxLength="650" FixedLength="false" Unicode="false" />
+    <Property Name="CUSTOM05" Type="String" MaxLength="1500" FixedLength="false" Unicode="false" />
+    <Property Name="DATECREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="APPROVE_DENY_DATE" Type="DateTime" Precision="3" />
+    <Property Name="WAREHOUSE_ID" Type="Int32" />
+    <Property Name="PROMO_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="PROMO_CODE_DISCOUNT" Type="Decimal" Precision="15" Scale="2" />
+    <Property Name="DESIRE_PROD_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="APPROVAL_PENDING_REASON" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="ORDER_TAG" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="ORDER_WEIGHT" Type="Decimal" Precision="38" Scale="4" Nullable="false" />
+    <Property Name="ORDER_GUID" Type="Guid" Nullable="false" />
+    <Property Name="IS_TRANSMITTED" Type="Boolean" Nullable="false" />
+    <Property Name="APPROVAL_SUMMARY" Type="String" MaxLength="5000" FixedLength="false" Unicode="false" />
+    <Property Name="CURRANCY_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="LANGUAGE_CULTURE" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
+    <Property Name="CURRENCY_CODE" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="SHIPPING_ESTIMATE_CALC_JSON" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="INVOICE_FEE" Type="Decimal" Precision="10" Scale="4" />
+    <Property Name="MAIL_INVOICE" Type="Boolean" Nullable="false" />
+    <Property Name="INVOICE_EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_ORDERS_ESM_COMP_USERS" FromRole="ESM_ORDERS" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_ORDERS_ESM_COMPANY" FromRole="ESM_ORDERS" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_ORDERS_ESM_SITE" FromRole="ESM_ORDERS" ToRole="ESM_SITE" />
+  </EntityType>
+  <EntityType Name="ESM_PART">
+    <Key>
+      <PropertyRef Name="PART_ID" />
+    </Key>
+    <Property Name="PART_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" />
+    <Property Name="COMPANY_ID" Type="Int32" Nullable="false" />
+    <Property Name="VENDOR_ID" Type="Int32" />
+    <Property Name="CF_PART_ID" Type="Int32" />
+    <Property Name="ALIAS_PARENT_PART_ID" Type="Int32" />
+    <Property Name="SOFTPROOF_PROJECT_ID" Type="Int32" />
+    <Property Name="PART_BUYER_GROUP_ID" Type="Int32" />
+    <Property Name="DISPLAY_SKU" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PART_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DESCRIPTION" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LONG_DESCRIPTION" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PIECES" Type="Int32" Nullable="false" />
+    <Property Name="QTY_AVAIL" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+    <Property Name="QTY_ONHAND" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+    <Property Name="QTY_INPRODUCTION" Type="Int32" />
+    <Property Name="WEIGHT" Type="Decimal" Precision="8" Scale="4" Nullable="false" />
+    <Property Name="CPQ" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="ORDER_UNIT" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PRINT_FILE_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="TN_FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GI_FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="UNIT_PRICE" Type="Decimal" Precision="20" Scale="6" Nullable="false" />
+    <Property Name="UNIT_COST" Type="Decimal" Precision="20" Scale="6" Nullable="false" />
+    <Property Name="MIN_QTY" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+    <Property Name="MIN_QTY2" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+    <Property Name="MAX_QTY" Type="Decimal" Precision="20" Scale="0" Nullable="false" />
+    <Property Name="MAX_ORDER_QTY" Type="Int32" Nullable="false" />
+    <Property Name="APPROVAL_THRESHOLD_QUANTITY" Type="Int32" />
+    <Property Name="PART_LEAD_TIME" Type="Int32" Nullable="false" />
+    <Property Name="DEPLETE_CHILD" Type="Int32" Nullable="false" />
+    <Property Name="AVAIL_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="EXPIRATION_DATE" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="COMMENTS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VENDOR_SKU" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CLIENT_CODE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="INTERNAL_PART_ID" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FORM_NUM" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SHORT_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="COMMOD_CODE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ITEM_TYPE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="MANUFACTURER" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PLANT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="KIT_TYPE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" />
+    <Property Name="KIT_INSTR" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_CUSTOMIZE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_PREVIEW" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_OFFERED" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_PO_REQUIRED" Type="Boolean" />
+    <Property Name="FLAG_KIT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_EXPIRE_PART" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_IS_CUSTOMER_OWNED" Type="Boolean" Nullable="false" />
+    <Property Name="FEATURED_ITEM" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ALLOW_UPLOAD" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_ALIASED" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="DIRECT_MAIL_ALLOWED" Type="Boolean" Nullable="false" />
+    <Property Name="IS_RETAIL" Type="Boolean" Nullable="false" />
+    <Property Name="IS_SERVICE_CHARGE_PART" Type="Boolean" Nullable="false" />
+    <Property Name="IS_PRINT_WORK_FLOW" Type="Boolean" Nullable="false" />
+    <Property Name="HAS_SERIAL_NUMBER" Type="Boolean" Nullable="false" />
+    <Property Name="IS_FEATURED_PART" Type="Boolean" Nullable="false" />
+    <Property Name="MIN_ORDER_QTY" Type="Int32" Nullable="false" />
+    <Property Name="IS_LIMIT_PART_ORDERING_QTY" Type="Boolean" Nullable="false" />
+    <Property Name="CUSTOM01" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CUSTOM02" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CUSTOM03" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CUSTOM04" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CUSTOM05" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DATECREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="PART_PRICE_AGGREGATE_ID" Type="Int32" />
+    <Property Name="ALLOW_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="IS_MAILING_LIST" Type="Boolean" Nullable="false" />
+    <Property Name="ALLOW_LIST_PURCHASE" Type="Boolean" Nullable="false" />
+    <Property Name="LIST_IS_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="UPLOAD_IS_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_DELIVERY" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="DESIGN_XML" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PRINT_SPECS" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IS_LOT_NUMBER_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="FINISHED_DOCUMENT_NUMBER_OF_PAGES" Type="Int32" Nullable="false" />
+    <Property Name="FINISHED_TRIM_WIDTH" Type="Decimal" Precision="8" Scale="4" Nullable="false" />
+    <Property Name="FINISHED_TRIM_HEIGHT" Type="Decimal" Precision="8" Scale="4" Nullable="false" />
+    <Property Name="NO_PO_REQUIRED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_GRID_VIEW_CONFIGURATION" Type="Boolean" />
+    <Property Name="GLOBAL_FORMS_PROFILE_ID" Type="Int32" />
+    <Property Name="RET_SIGN_PACK_ID" Type="Int32" />
+    <Property Name="DAYS_OF_STOCK_MIN" Type="Int32" />
+    <Property Name="FLAG_SHOW_HIGH_RES_PROOF" Type="Boolean" Nullable="false" />
+    <Property Name="CUSTOMIZATION_TEMPLATE_ID" Type="Int32" />
+    <Property Name="NUMBER_OF_SERIALS" Type="Int32" Nullable="false" />
+    <Property Name="IS_PURCHASE_WORKFLOW" Type="Boolean" Nullable="false" />
+    <Property Name="PRODUCTION_QUEUE_ID" Type="Int32" />
+    <Property Name="PAPER_STOCK_ID" Type="Int32" />
+    <Property Name="KEYWORDS" Type="String" MaxLength="4000" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="LOCK_ORDER_QTY" Type="Int32" />
+    <Property Name="LG_FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GLOBAL_FORMS_ID" Type="Int32" />
+    <Property Name="OVERRIDE_FILENAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="DATE_REVISED" Type="DateTime" Precision="3" />
+    <Property Name="INCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="EXCLUSION_TAGS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="IS_DELETED" Type="Boolean" Nullable="false" />
+    <Property Name="COMMENTS_ADMIN" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="PERSONALIZATION_COMMENTS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="PS_DUPLEX" Type="Boolean" />
+    <Property Name="PS_BLEED" Type="Decimal" Precision="8" Scale="4" />
+    <Property Name="PS_FOLDS" Type="String" MaxLength="1000" FixedLength="false" Unicode="false" />
+    <Property Name="SITE_SHIPMENT_GROUP_ID" Type="Int32" />
+    <Property Name="BOX_SIZE_ID" Type="Int32" />
+    <Property Name="SECONDARY_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="CALL_TO_ACTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="SITE_UNIT_OF_MEASURE_ID" Type="Int32" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_PART_ESM_COMPANY" FromRole="ESM_PART" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_PART_ESM_SITE" FromRole="ESM_PART" ToRole="ESM_SITE" />
+    <NavigationProperty Name="ESM_PARTGROUP" Relationship="Self.FK_ESM_PARTGROUP_ESM_PART" FromRole="ESM_PART" ToRole="ESM_PARTGROUP" />
+    <NavigationProperty Name="ESM_UI_CUSTOM_TEXT" Relationship="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_PART" FromRole="ESM_PART" ToRole="ESM_UI_CUSTOM_TEXT" />
+  </EntityType>
+  <EntityType Name="ESM_PARTGROUP">
+    <Key>
+      <PropertyRef Name="PARTGROUP_ID" />
+    </Key>
+    <Property Name="PARTGROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="GROUP_ID" Type="Int32" />
+    <Property Name="PART_ID" Type="Int32" Nullable="false" />
+    <Property Name="ORDER_TEMPLATE_COLUMN_NUMBER" Type="Int32" />
+    <Property Name="ORDER_TEMPLATE_BOX_NUMBER" Type="Int32" />
+    <Property Name="ORDER_TEMPLATE_ITEM_RANK" Type="Int32" />
+    <Property Name="PART_RANKING" Type="Int16" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <NavigationProperty Name="ESM_GROUPS" Relationship="Self.FK_RefESM_GROUPS31" FromRole="ESM_PARTGROUP" ToRole="ESM_GROUPS" />
+    <NavigationProperty Name="ESM_PART" Relationship="Self.FK_ESM_PARTGROUP_ESM_PART" FromRole="ESM_PARTGROUP" ToRole="ESM_PART" />
+  </EntityType>
+  <EntityType Name="ESM_PAYMENT_AUTH">
+    <Key>
+      <PropertyRef Name="PAYMENT_AUTH_ID" />
+    </Key>
+    <Property Name="PAYMENT_AUTH_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="ORDER_ID" Type="Int32" />
+    <Property Name="PAYMENT_METHOD_ID" Type="Int32" />
+    <Property Name="CREDIT_CARD_TYPE_ID" Type="Int32" />
+    <Property Name="SITE_ID" Type="Int32" />
+    <Property Name="AUTHORIZATION_PNREF" Type="String" MaxLength="200" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ORIGINAL_ORDER_TOTAL_PRICE" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
+    <Property Name="CREDIT_CARD_ENDING_DIGITS" Type="String" MaxLength="4" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="STATUS" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATED_BY" Type="Int32" Nullable="false" />
+    <Property Name="DATE_MODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MODIFIED_BY" Type="Int32" Nullable="false" />
+    <Property Name="ERROR_MESSAGE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="EXCETPION_DETAILS" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="SPREEDLY_CARD_TOKEN" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="SPREEDLY_XML_RESPONSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="COMP_USER_PAYMENT_METHOD_ID" Type="Int32" />
+    <Property Name="BUCKET_ID" Type="Int32" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_PAYMENT_AUTH_ESM_SITE" FromRole="ESM_PAYMENT_AUTH" ToRole="ESM_SITE" />
+  </EntityType>
+  <EntityType Name="ESM_SITE">
+    <Key>
+      <PropertyRef Name="SITE_ID" />
+    </Key>
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="MP_ID" Type="Int32" />
+    <Property Name="PAYMENT_GATEWAY_ID" Type="Int32" />
+    <Property Name="SITE_COMPANY" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CC_SITENAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="IMG_FILENAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="UPLOAD_DIR" Type="String" MaxLength="500" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="REPORT_CODE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ARGOSY_WMS" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_ADDRESS_VERIFICATION" Type="Boolean" Nullable="false" />
+    <Property Name="SHIP_FROM_CONTACT" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SHIP_FROM_ADDRESS1" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SHIP_FROM_ADDRESS2" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SHIP_FROM_CITY" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SHIP_FROM_STATE" Type="Int32" />
+    <Property Name="SHIP_FROM_ZIP" Type="String" MaxLength="8" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SHIP_FROM_COUNTRY" Type="String" MaxLength="2" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SHIP_FROM_PHONE" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="SHIP_FROM_FAX" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="MINMAX_EMAIL" Type="String" MaxLength="1" FixedLength="true" Unicode="false" Nullable="false" />
+    <Property Name="VS_USER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VS_PARTNER" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VS_VENDOR" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VS_PWD" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VS_LIVE_SERVER" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_RFQ_MODULE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VIRTUAL_DIRECTORY" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="AMTREX_LOGIN" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="ORDER_MID_NUM" Type="Int32" />
+    <Property Name="PHONE" Type="String" MaxLength="15" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="VERSION" Type="Int32" Nullable="false" />
+    <Property Name="SOFTPROOFING_FTP_SITE" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="BATCH_PROCESSING_FOLDER" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="FLAT_RATE_CARRIER" Type="Boolean" Nullable="false" />
+    <Property Name="SITE_CC_CHARGE_NAME" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="INSTATE_TAX_RATE" Type="Double" />
+    <Property Name="IS_ACTIVE" Type="Boolean" Nullable="false" />
+    <Property Name="BATCH_SITE_CONNECTOR_ID" Type="Int32" />
+    <Property Name="SITE_URL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="SITE_LABEL" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="SITE_SQUARE_LOGO" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GUID" Type="Guid" Nullable="false" />
+    <Property Name="FAVORITE_ICON_FILE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="LOADING_IMAGE_FILE" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="FLAG_ALLOW_COMPANY_WHITE_LABEL" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_TRACK_INVENTORY_COST" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_COMP_USERS_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_COMPANY_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_ORDERS" Relationship="Self.FK_ESM_ORDERS_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_ORDERS" />
+    <NavigationProperty Name="ESM_PART" Relationship="Self.FK_ESM_PART_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_PART" />
+    <NavigationProperty Name="ESM_PAYMENT_AUTH" Relationship="Self.FK_ESM_PAYMENT_AUTH_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_PAYMENT_AUTH" />
+    <NavigationProperty Name="ESM_SITE_GATEWAY" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_SITE_GATEWAY" />
+    <NavigationProperty Name="ESM_USERS" Relationship="Self.FK_ESM_USERS_ESM_SITE" FromRole="ESM_SITE" ToRole="ESM_USERS" />
+  </EntityType>
+  <EntityType Name="ESM_SITE_GATEWAY">
+    <Key>
+      <PropertyRef Name="SITE_GATEWAY_ID" />
+    </Key>
+    <Property Name="SITE_GATEWAY_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" />
+    <Property Name="GATEWAY_TYPE_ID" Type="Int32" Nullable="false" />
+    <Property Name="SITE_GATEWAY_OPTION_ID" Type="Int32" Nullable="false" />
+    <Property Name="GATEWAY_TOKEN" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GATEWAY_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="GATEWAY_DESCRIPTION" Type="String" MaxLength="500" FixedLength="false" Unicode="false" />
+    <Property Name="GATEWAY_CREATE_RESPONSE" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="FLAG_TEST_MODE" Type="Boolean" Nullable="false" />
+    <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DATE_UPDATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DISPLAY_NAME" Type="String" MaxLength="250" FixedLength="false" Unicode="false" />
+    <Property Name="IS_DEFAULT" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_COMPANY_ESM_SITE_GATEWAY" FromRole="ESM_SITE_GATEWAY" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_GATEWAY_TYPE" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE" FromRole="ESM_SITE_GATEWAY" ToRole="ESM_GATEWAY_TYPE" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_SITE" FromRole="ESM_SITE_GATEWAY" ToRole="ESM_SITE" />
+    <NavigationProperty Name="ESM_SITE_GATEWAY_OPTION" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION" FromRole="ESM_SITE_GATEWAY" ToRole="ESM_SITE_GATEWAY_OPTION" />
+  </EntityType>
+  <EntityType Name="ESM_SITE_GATEWAY_OPTION">
+    <Key>
+      <PropertyRef Name="SITE_GATEWAY_OPTION_ID" />
+    </Key>
+    <Property Name="SITE_GATEWAY_OPTION_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FLAG_SUPPORTS_PURCHASE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_AUTHROIZE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_CAPTURE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_CREDITS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_GENERAL_CREDIT" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_VOID" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_VERIFY" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_REFERENCE_PURCHASE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_PURCHASE_VIA_PREAUTH" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_OFFSITE_PURCHASE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_OFFSITE_AUTHORIZE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_3DSECURE_PURCHASE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_3DSECURE_AUTHORIZE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_STORE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_REMOVE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_FRAUD_REVIEW" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_SUPPORTS_REFERENCE_AUTHORIZATION" Type="Boolean" Nullable="false" />
+    <Property Name="DATE_CREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="DATE_UPDATED" Type="DateTime" Nullable="false" Precision="3" />
+    <NavigationProperty Name="ESM_SITE_GATEWAY" Relationship="Self.FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION" FromRole="ESM_SITE_GATEWAY_OPTION" ToRole="ESM_SITE_GATEWAY" />
+  </EntityType>
+  <EntityType Name="ESM_STATES">
+    <Key>
+      <PropertyRef Name="STATE_ID" />
+    </Key>
+    <Property Name="STATE_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COUNTRY_ID" Type="Int32" Nullable="false" />
+    <Property Name="STATE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="STATE_CODE" Type="String" MaxLength="255" FixedLength="false" Unicode="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <NavigationProperty Name="ESM_COUNTRIES" Relationship="Self.FK_ESM_PROVINCES_ESM_COUNTRIES" FromRole="ESM_STATES" ToRole="ESM_COUNTRIES" />
+  </EntityType>
+  <EntityType Name="ESM_TYPEAHEAD">
+    <Key>
+      <PropertyRef Name="ID" />
+    </Key>
+    <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SITE_ID" Type="Int32" Nullable="false" />
+    <Property Name="COMPANY_ID" Type="Int32" />
+    <Property Name="TYPEAHEAD_TYPE_ID" Type="Int32" Nullable="false" />
+    <Property Name="WORDS" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+  </EntityType>
+  <EntityType Name="ESM_UI_CUSTOM_TEXT">
+    <Key>
+      <PropertyRef Name="ROW_ID" />
+    </Key>
+    <Property Name="ROW_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="CUSTOM_TEXT_ID" Type="Int32" Nullable="false" />
+    <Property Name="USER_GROUP_ID" Type="Int32" />
+    <Property Name="COMPANY_ID" Type="Int32" />
+    <Property Name="PROJECT_ID" Type="Int32" />
+    <Property Name="PART_ID" Type="Int32" />
+    <Property Name="TEXT_VALUE" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="ESM_COMPANY" Relationship="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY" FromRole="ESM_UI_CUSTOM_TEXT" ToRole="ESM_COMPANY" />
+    <NavigationProperty Name="ESM_PART" Relationship="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_PART" FromRole="ESM_UI_CUSTOM_TEXT" ToRole="ESM_PART" />
+  </EntityType>
+  <EntityType Name="ESM_USERGROUP">
+    <Key>
+      <PropertyRef Name="USERGROUP_ID" />
+    </Key>
+    <Property Name="USERGROUP_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="COMP_USER_ID" Type="Int32" Nullable="false" />
+    <Property Name="GROUP_ID" Type="Int32" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" />
+    <NavigationProperty Name="ESM_COMP_USERS" Relationship="Self.FK_ESM_USERGROUP_ESM_COMP_USERS" FromRole="ESM_USERGROUP" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_COMP_USERS1" Relationship="Self.FK_RefESM_COMP_USERS29" FromRole="ESM_USERGROUP" ToRole="ESM_COMP_USERS" />
+    <NavigationProperty Name="ESM_GROUPS" Relationship="Self.FK_RefESM_GROUPS30" FromRole="ESM_USERGROUP" ToRole="ESM_GROUPS" />
+  </EntityType>
+  <EntityType Name="ESM_USERS">
+    <Key>
+      <PropertyRef Name="USER_ID" />
+    </Key>
+    <Property Name="USER_ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="USERNAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="PASSWORD" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FIRST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LAST_NAME" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="ACTIVE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="EMAIL_DISTR" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="SITE_ID" Type="Int32" />
+    <Property Name="FLAG_BACKEND_ADMIN" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_SHIPPER_ONLY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_WMS_ONLY" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_WMS_ADMIN" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_VIEW_CC" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="CERQA_ADMIN" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_RFQ_MODULE" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="DATECREATED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="CREATEDBY" Type="Int32" Nullable="false" />
+    <Property Name="DATEMODIFIED" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="MODIFIEDBY" Type="Int32" Nullable="false" />
+    <Property Name="FLAG_EMAIL_CREATE_MESSAGE" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_ORDER_PLACED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_ORDER_SHIPPED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_INVENTORY_WARNING" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_EMAIL_PROOF_RELATED" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_LICENSING_EDIT" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_REPORTS_ADD" Type="String" MaxLength="1" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FLAG_HD_ACCESS" Type="Boolean" Nullable="false" />
+    <Property Name="FLAG_BILLING_ADMIN" Type="Boolean" Nullable="false" />
+    <Property Name="DATE_AGREE_SA" Type="DateTime" Precision="3" />
+    <Property Name="DATE_AGREE_TU" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="ESM_LOGIN_AUDIT" Relationship="Self.FK_ESM_LOGIN_AUDIT_ESM_USERS" FromRole="ESM_USERS" ToRole="ESM_LOGIN_AUDIT" />
+    <NavigationProperty Name="ESM_LOGIN_TOKEN" Relationship="Self.FK_ESM_LOGIN_TOKEN_ESM_USERS" FromRole="ESM_USERS" ToRole="ESM_LOGIN_TOKEN" />
+    <NavigationProperty Name="ESM_SITE" Relationship="Self.FK_ESM_USERS_ESM_SITE" FromRole="ESM_USERS" ToRole="ESM_SITE" />
+  </EntityType>
+  <EntityType Name="ViewCompanyUserHierarchy">
+    <Key>
+      <PropertyRef Name="CompanyUserId" />
+      <PropertyRef Name="UserName" />
+      <PropertyRef Name="FirstName" />
+      <PropertyRef Name="LastName" />
+      <PropertyRef Name="IsStore" />
+      <PropertyRef Name="SpendingLimit" />
+    </Key>
+    <Property Name="CompanyUserId" Type="Int32" Nullable="false" />
+    <Property Name="ManagerUserId" Type="Int32" />
+    <Property Name="CompanyId" Type="Int32" />
+    <Property Name="SiteId" Type="Int32" />
+    <Property Name="UserName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="IsActive" Type="Boolean" />
+    <Property Name="IsStore" Type="Boolean" Nullable="false" />
+    <Property Name="SpendingLimit" Type="Decimal" Precision="10" Scale="0" Nullable="false" />
+    <Property Name="HasEmployees" Type="Boolean" />
+  </EntityType>
+  <Association Name="FK_AspNetUserPasswords_AspNetUsers">
+    <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1" />
+    <End Role="AspNetUserPasswords" Type="Self.AspNetUserPassword" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="AspNetUsers">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="AspNetUserPasswords">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_COMP_USERGROUP_ESM_COMPANY">
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="1" />
+    <End Role="ESM_COMP_USERGROUP" Type="Self.ESM_COMP_USERGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMPANY">
+        <PropertyRef Name="COMPANY_ID" />
+      </Principal>
+      <Dependent Role="ESM_COMP_USERGROUP">
+        <PropertyRef Name="COMP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_COMP_USERS_ESM_COMPANY">
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="0..1" />
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMPANY">
+        <PropertyRef Name="COMPANY_ID" />
+      </Principal>
+      <Dependent Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMPANY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_COMP_USERS_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="0..1" />
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_COMP_USERS">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_HIERARCHY_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="0..1" />
+    <End Role="ESM_HIERARCHY" Type="Self.ESM_HIERARCHY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_HIERARCHY">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="0..1" />
+    <End Role="ESM_HIERARCHY" Type="Self.ESM_HIERARCHY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_HIERARCHY">
+        <PropertyRef Name="MGR_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="0..1" />
+    <End Role="ESM_LOGIN_AUDIT" Type="Self.ESM_LOGIN_AUDIT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_LOGIN_AUDIT">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="0..1" />
+    <End Role="ESM_LOGIN_TOKEN" Type="Self.ESM_LOGIN_TOKEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_LOGIN_TOKEN">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_ORDERS_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="1" />
+    <End Role="ESM_ORDERS" Type="Self.ESM_ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_ORDERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_USERGROUP_ESM_COMP_USERS">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="1" />
+    <End Role="ESM_USERGROUP" Type="Self.ESM_USERGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_USERGROUP">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RefESM_COMP_USERS29">
+    <End Role="ESM_COMP_USERS" Type="Self.ESM_COMP_USERS" Multiplicity="1" />
+    <End Role="ESM_USERGROUP" Type="Self.ESM_USERGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMP_USERS">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_USERGROUP">
+        <PropertyRef Name="COMP_USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_COMPANY_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="1" />
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_COMPANY">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_COMPANY_ESM_SITE_GATEWAY">
+    <End Role="ESM_SITE_GATEWAY" Type="Self.ESM_SITE_GATEWAY" Multiplicity="0..1" />
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE_GATEWAY">
+        <PropertyRef Name="SITE_GATEWAY_ID" />
+      </Principal>
+      <Dependent Role="ESM_COMPANY">
+        <PropertyRef Name="SITE_GATEWAY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_ORDERS_ESM_COMPANY">
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="1" />
+    <End Role="ESM_ORDERS" Type="Self.ESM_ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMPANY">
+        <PropertyRef Name="COMPANY_ID" />
+      </Principal>
+      <Dependent Role="ESM_ORDERS">
+        <PropertyRef Name="COMPANY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_PART_ESM_COMPANY">
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="1" />
+    <End Role="ESM_PART" Type="Self.ESM_PART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMPANY">
+        <PropertyRef Name="COMPANY_ID" />
+      </Principal>
+      <Dependent Role="ESM_PART">
+        <PropertyRef Name="COMPANY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY">
+    <End Role="ESM_COMPANY" Type="Self.ESM_COMPANY" Multiplicity="0..1" />
+    <End Role="ESM_UI_CUSTOM_TEXT" Type="Self.ESM_UI_CUSTOM_TEXT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COMPANY">
+        <PropertyRef Name="COMPANY_ID" />
+      </Principal>
+      <Dependent Role="ESM_UI_CUSTOM_TEXT">
+        <PropertyRef Name="COMPANY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_PROVINCES_ESM_COUNTRIES">
+    <End Role="ESM_COUNTRIES" Type="Self.ESM_COUNTRIES" Multiplicity="1" />
+    <End Role="ESM_STATES" Type="Self.ESM_STATES" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_COUNTRIES">
+        <PropertyRef Name="COUNTRY_ID" />
+      </Principal>
+      <Dependent Role="ESM_STATES">
+        <PropertyRef Name="COUNTRY_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE">
+    <End Role="ESM_GATEWAY_TYPE" Type="Self.ESM_GATEWAY_TYPE" Multiplicity="1" />
+    <End Role="ESM_SITE_GATEWAY" Type="Self.ESM_SITE_GATEWAY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_GATEWAY_TYPE">
+        <PropertyRef Name="GATEWAY_TYPE_ID" />
+      </Principal>
+      <Dependent Role="ESM_SITE_GATEWAY">
+        <PropertyRef Name="GATEWAY_TYPE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RefESM_GROUPS30">
+    <End Role="ESM_GROUPS" Type="Self.ESM_GROUPS" Multiplicity="1" />
+    <End Role="ESM_USERGROUP" Type="Self.ESM_USERGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_GROUPS">
+        <PropertyRef Name="GROUP_ID" />
+      </Principal>
+      <Dependent Role="ESM_USERGROUP">
+        <PropertyRef Name="GROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_RefESM_GROUPS31">
+    <End Role="ESM_GROUPS" Type="Self.ESM_GROUPS" Multiplicity="0..1" />
+    <End Role="ESM_PARTGROUP" Type="Self.ESM_PARTGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_GROUPS">
+        <PropertyRef Name="GROUP_ID" />
+      </Principal>
+      <Dependent Role="ESM_PARTGROUP">
+        <PropertyRef Name="GROUP_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_LOGIN_AUDIT_ESM_USERS">
+    <End Role="ESM_USERS" Type="Self.ESM_USERS" Multiplicity="0..1" />
+    <End Role="ESM_LOGIN_AUDIT" Type="Self.ESM_LOGIN_AUDIT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_USERS">
+        <PropertyRef Name="USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_LOGIN_AUDIT">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_LOGIN_TOKEN_ESM_USERS">
+    <End Role="ESM_USERS" Type="Self.ESM_USERS" Multiplicity="0..1" />
+    <End Role="ESM_LOGIN_TOKEN" Type="Self.ESM_LOGIN_TOKEN" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_USERS">
+        <PropertyRef Name="USER_ID" />
+      </Principal>
+      <Dependent Role="ESM_LOGIN_TOKEN">
+        <PropertyRef Name="USER_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_ORDERS_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="1" />
+    <End Role="ESM_ORDERS" Type="Self.ESM_ORDERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_ORDERS">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_PART_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="1" />
+    <End Role="ESM_PART" Type="Self.ESM_PART" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_PART">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_PARTGROUP_ESM_PART">
+    <End Role="ESM_PART" Type="Self.ESM_PART" Multiplicity="1" />
+    <End Role="ESM_PARTGROUP" Type="Self.ESM_PARTGROUP" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_PART">
+        <PropertyRef Name="PART_ID" />
+      </Principal>
+      <Dependent Role="ESM_PARTGROUP">
+        <PropertyRef Name="PART_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_UI_CUSTOM_TEXT_ESM_PART">
+    <End Role="ESM_PART" Type="Self.ESM_PART" Multiplicity="0..1" />
+    <End Role="ESM_UI_CUSTOM_TEXT" Type="Self.ESM_UI_CUSTOM_TEXT" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_PART">
+        <PropertyRef Name="PART_ID" />
+      </Principal>
+      <Dependent Role="ESM_UI_CUSTOM_TEXT">
+        <PropertyRef Name="PART_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_PAYMENT_AUTH_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="0..1" />
+    <End Role="ESM_PAYMENT_AUTH" Type="Self.ESM_PAYMENT_AUTH" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_PAYMENT_AUTH">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_SITE_GATEWAY_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="1" />
+    <End Role="ESM_SITE_GATEWAY" Type="Self.ESM_SITE_GATEWAY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_SITE_GATEWAY">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_USERS_ESM_SITE">
+    <End Role="ESM_SITE" Type="Self.ESM_SITE" Multiplicity="0..1" />
+    <End Role="ESM_USERS" Type="Self.ESM_USERS" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE">
+        <PropertyRef Name="SITE_ID" />
+      </Principal>
+      <Dependent Role="ESM_USERS">
+        <PropertyRef Name="SITE_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION">
+    <End Role="ESM_SITE_GATEWAY_OPTION" Type="Self.ESM_SITE_GATEWAY_OPTION" Multiplicity="1" />
+    <End Role="ESM_SITE_GATEWAY" Type="Self.ESM_SITE_GATEWAY" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="ESM_SITE_GATEWAY_OPTION">
+        <PropertyRef Name="SITE_GATEWAY_OPTION_ID" />
+      </Principal>
+      <Dependent Role="ESM_SITE_GATEWAY">
+        <PropertyRef Name="SITE_GATEWAY_OPTION_ID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="ArgosyEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="AspNetUserPasswords" EntityType="Self.AspNetUserPassword" />
+    <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUser" />
+    <EntitySet Name="ESM_COMP_USERGROUP" EntityType="Self.ESM_COMP_USERGROUP" />
+    <EntitySet Name="ESM_COMP_USERS" EntityType="Self.ESM_COMP_USERS" />
+    <EntitySet Name="ESM_COMPANY" EntityType="Self.ESM_COMPANY" />
+    <EntitySet Name="ESM_COUNTRIES" EntityType="Self.ESM_COUNTRIES" />
+    <EntitySet Name="ESM_GATEWAY_TYPE" EntityType="Self.ESM_GATEWAY_TYPE" />
+    <EntitySet Name="ESM_GROUPS" EntityType="Self.ESM_GROUPS" />
+    <EntitySet Name="ESM_HIERARCHY" EntityType="Self.ESM_HIERARCHY" />
+    <EntitySet Name="ESM_LOGIN_AUDIT" EntityType="Self.ESM_LOGIN_AUDIT" />
+    <EntitySet Name="ESM_LOGIN_TOKEN" EntityType="Self.ESM_LOGIN_TOKEN" />
+    <EntitySet Name="ESM_ORDERS" EntityType="Self.ESM_ORDERS" />
+    <EntitySet Name="ESM_PART" EntityType="Self.ESM_PART" />
+    <EntitySet Name="ESM_PARTGROUP" EntityType="Self.ESM_PARTGROUP" />
+    <EntitySet Name="ESM_PAYMENT_AUTH" EntityType="Self.ESM_PAYMENT_AUTH" />
+    <EntitySet Name="ESM_SITE" EntityType="Self.ESM_SITE" />
+    <EntitySet Name="ESM_SITE_GATEWAY" EntityType="Self.ESM_SITE_GATEWAY" />
+    <EntitySet Name="ESM_SITE_GATEWAY_OPTION" EntityType="Self.ESM_SITE_GATEWAY_OPTION" />
+    <EntitySet Name="ESM_STATES" EntityType="Self.ESM_STATES" />
+    <EntitySet Name="ESM_TYPEAHEAD" EntityType="Self.ESM_TYPEAHEAD" />
+    <EntitySet Name="ESM_UI_CUSTOM_TEXT" EntityType="Self.ESM_UI_CUSTOM_TEXT" />
+    <EntitySet Name="ESM_USERGROUP" EntityType="Self.ESM_USERGROUP" />
+    <EntitySet Name="ESM_USERS" EntityType="Self.ESM_USERS" />
+    <EntitySet Name="ViewCompanyUserHierarchies" EntityType="Self.ViewCompanyUserHierarchy" />
+    <AssociationSet Name="FK_AspNetUserPasswords_AspNetUsers" Association="Self.FK_AspNetUserPasswords_AspNetUsers">
+      <End Role="AspNetUsers" EntitySet="AspNetUsers" />
+      <End Role="AspNetUserPasswords" EntitySet="AspNetUserPasswords" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_COMP_USERGROUP_ESM_COMPANY" Association="Self.FK_ESM_COMP_USERGROUP_ESM_COMPANY">
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+      <End Role="ESM_COMP_USERGROUP" EntitySet="ESM_COMP_USERGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_COMP_USERS_ESM_COMPANY" Association="Self.FK_ESM_COMP_USERS_ESM_COMPANY">
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_COMP_USERS_ESM_SITE" Association="Self.FK_ESM_COMP_USERS_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_HIERARCHY_ESM_COMP_USERS" Association="Self.FK_ESM_HIERARCHY_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_HIERARCHY" EntitySet="ESM_HIERARCHY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS" Association="Self.FK_ESM_HIERARCHY_PARENT_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_HIERARCHY" EntitySet="ESM_HIERARCHY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS" Association="Self.FK_ESM_LOGIN_AUDIT_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_LOGIN_AUDIT" EntitySet="ESM_LOGIN_AUDIT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS" Association="Self.FK_ESM_LOGIN_TOKEN_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_LOGIN_TOKEN" EntitySet="ESM_LOGIN_TOKEN" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_ORDERS_ESM_COMP_USERS" Association="Self.FK_ESM_ORDERS_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_ORDERS" EntitySet="ESM_ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_USERGROUP_ESM_COMP_USERS" Association="Self.FK_ESM_USERGROUP_ESM_COMP_USERS">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_USERGROUP" EntitySet="ESM_USERGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RefESM_COMP_USERS29" Association="Self.FK_RefESM_COMP_USERS29">
+      <End Role="ESM_COMP_USERS" EntitySet="ESM_COMP_USERS" />
+      <End Role="ESM_USERGROUP" EntitySet="ESM_USERGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_COMPANY_ESM_SITE" Association="Self.FK_ESM_COMPANY_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_COMPANY_ESM_SITE_GATEWAY" Association="Self.FK_ESM_COMPANY_ESM_SITE_GATEWAY">
+      <End Role="ESM_SITE_GATEWAY" EntitySet="ESM_SITE_GATEWAY" />
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_ORDERS_ESM_COMPANY" Association="Self.FK_ESM_ORDERS_ESM_COMPANY">
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+      <End Role="ESM_ORDERS" EntitySet="ESM_ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_PART_ESM_COMPANY" Association="Self.FK_ESM_PART_ESM_COMPANY">
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+      <End Role="ESM_PART" EntitySet="ESM_PART" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY" Association="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_COMPANY">
+      <End Role="ESM_COMPANY" EntitySet="ESM_COMPANY" />
+      <End Role="ESM_UI_CUSTOM_TEXT" EntitySet="ESM_UI_CUSTOM_TEXT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_PROVINCES_ESM_COUNTRIES" Association="Self.FK_ESM_PROVINCES_ESM_COUNTRIES">
+      <End Role="ESM_COUNTRIES" EntitySet="ESM_COUNTRIES" />
+      <End Role="ESM_STATES" EntitySet="ESM_STATES" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE" Association="Self.FK_ESM_SITE_GATEWAY_ESM_GATEWAY_TYPE">
+      <End Role="ESM_GATEWAY_TYPE" EntitySet="ESM_GATEWAY_TYPE" />
+      <End Role="ESM_SITE_GATEWAY" EntitySet="ESM_SITE_GATEWAY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RefESM_GROUPS30" Association="Self.FK_RefESM_GROUPS30">
+      <End Role="ESM_GROUPS" EntitySet="ESM_GROUPS" />
+      <End Role="ESM_USERGROUP" EntitySet="ESM_USERGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_RefESM_GROUPS31" Association="Self.FK_RefESM_GROUPS31">
+      <End Role="ESM_GROUPS" EntitySet="ESM_GROUPS" />
+      <End Role="ESM_PARTGROUP" EntitySet="ESM_PARTGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_LOGIN_AUDIT_ESM_USERS" Association="Self.FK_ESM_LOGIN_AUDIT_ESM_USERS">
+      <End Role="ESM_USERS" EntitySet="ESM_USERS" />
+      <End Role="ESM_LOGIN_AUDIT" EntitySet="ESM_LOGIN_AUDIT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_LOGIN_TOKEN_ESM_USERS" Association="Self.FK_ESM_LOGIN_TOKEN_ESM_USERS">
+      <End Role="ESM_USERS" EntitySet="ESM_USERS" />
+      <End Role="ESM_LOGIN_TOKEN" EntitySet="ESM_LOGIN_TOKEN" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_ORDERS_ESM_SITE" Association="Self.FK_ESM_ORDERS_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_ORDERS" EntitySet="ESM_ORDERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_PART_ESM_SITE" Association="Self.FK_ESM_PART_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_PART" EntitySet="ESM_PART" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_PARTGROUP_ESM_PART" Association="Self.FK_ESM_PARTGROUP_ESM_PART">
+      <End Role="ESM_PART" EntitySet="ESM_PART" />
+      <End Role="ESM_PARTGROUP" EntitySet="ESM_PARTGROUP" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_UI_CUSTOM_TEXT_ESM_PART" Association="Self.FK_ESM_UI_CUSTOM_TEXT_ESM_PART">
+      <End Role="ESM_PART" EntitySet="ESM_PART" />
+      <End Role="ESM_UI_CUSTOM_TEXT" EntitySet="ESM_UI_CUSTOM_TEXT" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_PAYMENT_AUTH_ESM_SITE" Association="Self.FK_ESM_PAYMENT_AUTH_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_PAYMENT_AUTH" EntitySet="ESM_PAYMENT_AUTH" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_SITE_GATEWAY_ESM_SITE" Association="Self.FK_ESM_SITE_GATEWAY_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_SITE_GATEWAY" EntitySet="ESM_SITE_GATEWAY" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_USERS_ESM_SITE" Association="Self.FK_ESM_USERS_ESM_SITE">
+      <End Role="ESM_SITE" EntitySet="ESM_SITE" />
+      <End Role="ESM_USERS" EntitySet="ESM_USERS" />
+    </AssociationSet>
+    <AssociationSet Name="FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION" Association="Self.FK_ESM_SITE_GATEWAY_ESM_SITE_GATEWAY_OPTION">
+      <End Role="ESM_SITE_GATEWAY_OPTION" EntitySet="ESM_SITE_GATEWAY_OPTION" />
+      <End Role="ESM_SITE_GATEWAY" EntitySet="ESM_SITE_GATEWAY" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>

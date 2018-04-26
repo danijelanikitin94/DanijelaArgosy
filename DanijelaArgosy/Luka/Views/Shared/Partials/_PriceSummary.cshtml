@@ -1,0 +1,135 @@
+﻿@using Argosy.BusinessLogic.Extensions
+@using Argosy.BusinessLogic.FrontEnd.Security
+@using Argosy.Common.Contracts.Core.Enum
+@using Argosy.Web.FrontEnd.Core.Extensions
+@model Argosy.Web.FrontEnd.Areas.Store.Models.PlaceOrderViewModel
+<h3 class="padb10"><i class="fa fa-tag"></i> ~{PricingSummary}~</h3>
+<div class="price-bb">
+    @Html.DisplayFor(x => x.PricingSummary.SubTotal, "_Currency")
+</div>
+<br style="clear:both">
+<div class="price-bb @(SessionHelpers.AddHiddenClassIf(Model.PricingSummary.Tax <= 0))">
+    @Html.DisplayFor(x => x.PricingSummary.Tax, "_Currency")
+</div>
+<div class="price-bb @(SessionHelpers.AddHiddenClassIf(Model.PricingSummary.ShippingAndHandling <= 0))">
+    <div class="label-style">
+        <label>~{ShippingHandling}~</label>
+    </div>
+    <div class="input-style textr">
+        @if (FrontEndSession.Instance.UserSettings.IsPriceInformationVisible)
+        {
+            @:<b>
+            var carrier = Model.Carriers.FirstOrDefault(c => c.Id == Model.SelectedCarrierId);
+            if (carrier != null)
+            {
+                var price = (Model.PricingSummary.FulfillmentCost + carrier.Cost).ToString("C");
+                if (carrier.PaymentType == CarrierPaymentType.Exempt)
+                {
+                    if (carrier.ShowThirdPartyOption)
+                    {
+                        if (!string.IsNullOrEmpty(Model.ThirdPartyAccountNumber))
+                        {
+                            <span>@Model.PricingSummary.FulfillmentCost.ToString("C")</span>@:&nbsp;<span class="strikethrough">@price</span>
+                        }
+                        else
+                        {
+                            @price
+                        }
+                    }
+                    else
+                    {
+                        <span>@Model.PricingSummary.FulfillmentCost.ToString("C")</span>@:&nbsp;<span class="strikethrough">@price</span>
+                    }
+                }
+                else
+                {
+                    @price
+                }
+            }
+            @:</b>
+        }
+    </div>
+</div>
+<div class="price-bb @(SessionHelpers.AddHiddenClassIf(Model.PricingSummary.MailingServiceCharge <=0))">
+    @Html.DisplayFor(x => x.PricingSummary.MailingServiceCharge, "_Currency")
+</div>
+<div class="price-bb @(SessionHelpers.AddHiddenClassIf(Model.PricingSummary.ListCost <=0))">
+    @Html.DisplayFor(x => x.PricingSummary.ListCost, "_Currency")
+</div>
+<div class="price-bb @(SessionHelpers.AddHiddenClassIf(!Model.PricingSummary.ShowCoop))" id="pricingSumCoopContainer">
+    <div class="label-style">
+        @Html.LabelFor(m => m.PricingSummary.CoopFundsUsed)
+    </div>
+    <div class="input-style textr">
+        @{
+            var coopDisplay = Model.PricingSummary.BucketsUsed;
+            if (Model.ApplyCoopFunds) {coopDisplay += Model.PricingSummary.CoopFundsUsed;}
+        }
+        <b id="pricingSumCoopDollars" data-coop-funds-used="@Model.PricingSummary.CoopFundsUsed">-@($"{coopDisplay:C}")</b>
+    </div>
+</div>
+@if (Model.PricingSummary.Discount > 0)
+{
+    <div class="price-bb" id="_PricingsummaryDiscount">
+        <div class="label-style">
+            @Html.LabelFor(m => m.PricingSummary.Discount)
+        </div>
+        <div class="input-style textr">
+            <b>-@(Model.PricingSummary.Discount.ToString("c"))</b>
+        </div>
+    </div>
+}
+
+@if (FrontEndSession.Instance.UserSettings.ShowInvoiceOption)
+{
+    <div class="price-bb">
+        <div class="label-style">
+            @Html.LabelFor(m => m.PricingSummary.InvoiceFee)
+            <br />
+            <small>
+                <a class="removeInvoiceFee @(SessionHelpers.AddHiddenClassIf(!Model.PricingSummary.IsPaperInvoice))">~{RemoveInvoiceFee}~</a>
+                <a class="addInvoiceFee @(SessionHelpers.AddHiddenClassIf(Model.PricingSummary.IsPaperInvoice))">~{AddInvoiceFee}~</a>
+            </small>
+        </div>
+        <div class="input-style textr">
+            <span class="@SessionHelpers.AddHiddenClassIf(Model.PricingSummary.IsPaperInvoice) addInvoiceFee">@Html.EditorFor(a => a.InvoiceEmail)</span>
+            <b class="invoiceFeeAmount removeInvoiceFee @(SessionHelpers.AddHiddenClassIf(!Model.PricingSummary.IsPaperInvoice))">@(Model.PricingSummary.InvoiceFee.ToString("c"))</b>
+        </div>
+    </div>
+
+}
+else
+{
+    @Html.HiddenFor(a => a.InvoiceEmail)
+}
+
+<div>
+    <div class="input-style bundles-total-price padu20 upcase">~{Total}~</div>
+    <div class="label-style pull-right textr bundles-total-price padu20" id="pricingSumTotal" data-total="@Model.PricingSummary.Total">@Model.PricingSummary.Total.ToString("C")</div>
+</div>
+@Html.HiddenFor(m => m.PricingSummary.InvoiceFee)
+@Html.HiddenFor(m => m.PricingSummary.IsPaperInvoice)
+@Html.HiddenFor(m => m.PricingSummary.CoopFundsUsed)
+@Html.HiddenFor(m => m.PricingSummary.CoopFundsAvailable)
+@Html.HiddenFor(m => m.PricingSummary.BucketsUsed)
+@Html.HiddenFor(m => m.PricingSummary.FulfillmentCost)
+@Html.HiddenFor(m => m.PricingSummary.ListCost)
+@Html.HiddenFor(m => m.PricingSummary.MailingServiceCharge)
+@Html.HiddenFor(m => m.PricingSummary.Shipping)
+@Html.HiddenFor(m => m.PricingSummary.SubTotal)
+@Html.HiddenFor(m => m.PricingSummary.Total)
+@Html.HiddenFor(m => m.PricingSummary.Tax)
+<script type="text/javascript">
+    $("a.removeInvoiceFee").click(function() {
+        $("#@Html.IdFor(m => m.PricingSummary.IsPaperInvoice)").val("false");
+        $(".removeInvoiceFee").addClass("hidden");
+        $(".addInvoiceFee").removeClass("hidden");
+        updatePricingSummary();
+    });
+    $("a.addInvoiceFee").click(function() {
+        $("#@Html.IdFor(m => m.PricingSummary.IsPaperInvoice)").val("true");
+        $(".addInvoiceFee").addClass("hidden");
+        $(".removeInvoiceFee").removeClass("hidden");
+        updatePricingSummary();
+    });
+</script>

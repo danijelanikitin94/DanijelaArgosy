@@ -1,0 +1,59 @@
+﻿<style>
+    .k-dropzone, .k-upload-files {
+        background-color: #fafafa;
+        border: 1px solid #f1f1f1;
+        border-radius: 0px;
+    }
+</style>
+
+<script type="text/x-kendo-template" id="_MailingListUploadTemplate">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <h1 class="topmargin-sm">~{UploadSpreadsheetFileFor}~ <i>${Name}</i></h1>
+                <p class="padu10 padb10">~{DragDropFiles}~</p>
+                <p>~{UploadFilesSupported}~</p>
+            </div>
+        </div>
+    </div>
+    <div class="text-center">
+        <div class="padu10">
+            <input type="checkbox" id="listHasHeaders" checked /><label for="listHasHeaders">~{ListContainsHeaderRow}~</label>
+        </div>
+    </div>
+    <div class="maru20 marb20">
+        <div class="text-center">
+            <div class="container maru20 marb20">
+                <div data-hidden-field-name="listUploadImage"
+                     data-hidden-field-id="listUploadImage"
+                     data-role="imageeditor"
+                     data-starting-file=""
+                     data-fixed-aspect-ratio="false"
+                     data-max-image-size="999999999"
+                     data-resize-preview-image="true"
+                     data-preview-left-class="col-md-6"
+                     data-preview-right-class="col-md-6"
+                     data-show-fancybox-after-edit="false"
+                     data-accepted-extensions='#=JSON.stringify(AllowedExtensions)#'
+                     data-max-pdf-pages="999999999"
+                     #if (CustomizationState !=null && CustomizationState.Upload !=null) {#
+                     data-default-value="${CustomizationState.Upload.FilePath}"
+                     #}#
+                     id="proofingUploadImageControl">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12 text-center">
+                <p class="padu5"><b class="co-warning">~{MailingListMustIncludeNameAddressCityStateZip}~</b></p>
+            </div>
+            <div class="col-sm-12 text-center">
+                <a href="/Tools/Mailing" class="btn btn-default"><i class="fa fa-times"></i> ~{Cancel}~</a>
+            </div>
+        </div>
+    </div>
+</script>
+<style type="text/css">
+</style>

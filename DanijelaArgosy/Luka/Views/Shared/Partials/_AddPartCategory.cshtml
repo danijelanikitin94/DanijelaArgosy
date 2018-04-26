@@ -1,0 +1,50 @@
+﻿@model Argosy.BusinessLogic.FrontEnd.Managers.PartCategoryManager.PartCategory
+@{
+    var message = ViewBag.Result;
+}
+<script type="text/javascript">
+    function submitForm() {
+
+        $("form.add-partcategory")[0].submit();
+    }
+    var message = '@message';
+    if (message)
+        alert(message);
+</script>
+
+<section class="extra">
+    <div class="container">
+        @using (Html.BeginForm(
+            "Add",
+            "PartCategories",
+            FormMethod.Post,
+            new {role = "form", @class = "add-partcategory"}))
+        {
+            @Html.ValidationSummary(true)
+            <div class="row">
+                <div class="col-sm-7 padr20">
+                    <!--Order Details-->
+                    <div class="col-sm-6 clear">
+                        <div class="borderr">
+                            <div><h3>New Part Category Details</h3></div>
+
+                            <div class="padu5">
+                                <div class="label-style"><b>Group Name</b></div>
+                                <div class="input-style"> @Html.EditorFor(m => m.GroupName)  </div><br style="clear: both">
+                            </div>
+                            <div class="padu5">
+                                <div class="label-style"><b>Group Description</b></div>
+                                <div class="input-style"> @Html.EditorFor(m => m.GroupDescrip) </div><br style="clear: both">
+                            </div>
+                            <div class="padu5">
+                                <div class="label-style"><b>Long Description</b></div>
+                                <div class="input-style">@Html.EditorFor(m => m.LongDescrip)</div><br style="clear: both" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+        }
+    </div>
+</section>

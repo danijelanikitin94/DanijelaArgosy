@@ -1,0 +1,24 @@
+﻿<script type="text/x-kendo-tmpl" id="_UserProfileImageUploadControl">
+    <div data-default-value="${thumbnail}" 
+         class="submitAction upload_special" 
+         name="userUpload_${uid}" 
+         id="userUpload_${uid}" 
+         data-is-upload="true" 
+         data-role="imageeditor" 
+         data-min-height="50" 
+         data-min-width="50" 
+         data-fixed-aspect-ratio="false" 
+         data-disabled="${disabled}"
+         data-max-image-size="3145728"></div>
+</script>
+<script type="text/javascript">
+    function renderUploadControl(data) {
+        return kendo.Template.compile($("#_UserProfileImageUploadControl").html())(data);
+    }
+</script>
+<script id="_rowTemplate" type="text/x-kendo-tmpl">
+    <div class="input-style">
+        <h4>#= data.title#</h4>
+        #= renderUploadControl(data) #
+    </div>
+</script>

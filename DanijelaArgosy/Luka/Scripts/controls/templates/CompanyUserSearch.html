@@ -1,0 +1,27 @@
+﻿<script type="text/x-kendo-tmp" id="_CompanyUserSearchViewTemplate">
+    <div id="_CompanyUserBindContainer" >
+        <div class="input-style marb5">
+            <a class="btn btn-default fancybox" id="addUserBtn" href="#_CompanySearchModal">~{SelectUser}~</a>
+            <label id="UsersFullName" />
+            <input type="hidden" id="_hiddenUserId" value="0" />
+            <a id="clearUserBtn" class="hidden" data-bind="click:clearSelectedUser"><i class="fa fa-times" title="clear"></i></a><a  id="searchUserBtn" href="#_CompanySearchModal" class="hidden fancybox"><i class="fa fa-search" title="search users"></i></a>
+        </div>
+        <div style="display: none;" class="fancy800" id="_CompanySearchModal">
+            <div>
+                <h3>~{SearchUsers}~</h3><div id="_CompanySearchAlert" class="alert alert-warning alert-dismissible hidden" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    ~{NoUserSelected}~
+                </div>
+            </div>
+            <div class="padu10">
+                <div class="w98" data-argosy-view="CompanyUserSearch">
+                </div>
+            </div>
+            <div class="padu5">
+                <div class="text-center">
+                    <a class="btn btn-default" data-bind="click:addUsers" href="#"><i class="fa fa-plus"></i> ~{Add}~</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>

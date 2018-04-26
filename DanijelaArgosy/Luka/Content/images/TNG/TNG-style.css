@@ -1,0 +1,184 @@
+﻿body {
+        background-color: #FFFFFF;
+    }
+    .tng-bkg{
+        background: url(/Content/images/TNG/banner-bkg.jpg) bottom center no-repeat;
+   background-size: cover cover;
+         }
+
+    #slider {
+    padding-bottom: 0px;
+}
+
+    .white-box-sha {
+  display:none;
+}
+
+    .white-box {
+    border: 1px solid #d7d7d7;
+    -webkit-box-shadow: 0;
+    -moz-box-shadow: 0;
+    box-shadow: 0;
+}
+
+    .head-title {
+    color: #FFFFFF;
+    text-align: center;
+    font-size: 48px;
+    margin-top: 30px;
+    text-shadow: 2px 2px #000000;
+}
+
+    .mobile-nav {
+        display: none;
+    }
+
+    section {
+        padding-top: 0;
+    }
+
+    .btn {
+        padding: 15px 35px 15px 30px;
+    }
+
+    .k-upload .btn {
+        padding: 5px 15px 5px 15px;
+    }
+
+    .btn-primary {
+        background-color: #f89c1c;
+    }
+
+        .btn-primary:hover, .btn-primary:active:hover, .btn-primary.active:hover, .open > .dropdown-toggle.btn-primary:hover, .btn-primary:active:focus, .btn-primary.active:focus, .open > .dropdown-toggle.btn-primary:focus, .btn-primary:active.focus, .btn-primary.active.focus, .open > .dropdown-toggle.btn-primary.focus {
+            background-color: #ffc00f;
+        }
+
+    a, a:visited {
+        color: #3dcde7;
+    }
+
+        a:focus, a:hover {
+            color: #666;
+        }
+
+    .borderl {
+        border-left: 1px solid #ccc;
+    }
+
+        .borderl .padr40 {
+            padding-left: 40px;
+        }
+
+        .crp-btn .btn
+    {
+        padding: 5px 10px 5px 10px;
+    }
+
+        .fancy800{
+            width: auto
+        }
+
+    @media (max-width: 1315px) {
+        .registerform .col_half {
+            width: 48% !important;
+        }
+    }
+
+    @media (max-width: 1050px) {
+        .registerform .col_half {
+            width: 100% !important;
+            float: none;
+        }
+    }
+   
+
+    @media (max-width: 1024px) {
+       
+        .file-wrapper .w25 {
+            width: inherit;
+        }
+
+       .file-wrapper .floatr {
+            float: left;
+        }
+
+       .padr40
+       {
+           padding-right: 0px;
+       }
+    }
+
+    @media (max-width: 900px) {
+
+         .registerform .text-right {
+            text-align: left;
+        }
+    .head-title
+    {
+        padding-top: 45px;
+        font-size: 32px;
+    }
+    }
+
+     @media (max-width: 900px) {
+    .tng-bkg .col_one_fourth
+    {
+        padding-top: 45px;
+        font-size: 32px;
+    }
+    }
+    @media (min-width: 769px) and (max-width: 1024px) 
+    {
+        .input-style {
+            width: 30%;
+        }
+    }
+
+    @media (max-width: 640px) {
+        .borderl {
+            border-left: 0;
+        }
+
+            .borderl .padr40 {
+                padding-left: 0;
+            }
+
+        .w50 {
+            width: 50%;
+        }
+
+        .title-mobile {
+            display: block;
+            float: none;
+        }
+
+    }
+
+    @media (max-width: 760px) {
+       
+
+        .tng-bkg .topmargin-sm, .tng-bkg .bottommargin-xs
+        {
+            margin: 0 !important;
+        }
+        .tng-bkg img
+        {
+            height: 80px;
+        }
+
+        .tng-bkg .col_one_fourth
+        {width: 24% !important;
+         float: left !important;
+         padding-top: 10px;
+        }
+
+         .tng-bkg .col_three_fourth
+        {width: 74% !important;
+         float: left !important;
+        }
+        
+        .head-title{
+            padding-top: 10px;
+            font-size: 28px;
+        }
+    }

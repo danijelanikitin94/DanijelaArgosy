@@ -1,0 +1,31 @@
+﻿@*<script>
+    function onGetGlobalFormsStructAndDataSuccess(data) {
+        $("#divProjectRevision").html(data);
+        $(document).trigger(argosyEvents.END_LOADING, { element: $('#wrapcontainer'), message: 'loading revision...' });
+    }
+</script>
+<div id="divGlobalFormsStruct">
+    @using (Ajax.BeginForm("GetGlobalFormsStructAndData", "GlobalProfiles", new
+    {
+        Area = "Admin"
+    }, new AjaxOptions()
+    {
+        AllowCache = false,
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "divGlobalFormsStruct",
+        OnBegin = "$(document).trigger(argosyEvents.START_LOADING, { element:$('#wrapcontainer'),message:'loading profile data...'})",
+        OnSuccess = "onGetGlobalFormsStructAndDataSuccess(data)"
+    }, new
+    {
+        id = "_globalStructForm"
+    }))
+    {
+        <div>
+        
+            <h3>#:Category#</h3>
+
+
+
+        </div>
+    }
+</div>*@

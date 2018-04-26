@@ -1,0 +1,97 @@
+﻿<script type="text/x-kendo-tmp" id="_DamUserManagementBaseTemplate">
+    <div class="row">
+        <div class="col-sm-12" 
+             data-bind="source: getRoles, events: {dataBound: dataBound}" 
+             data-role="grid" 
+             data-row-template="_DamUserManagementRoleRow"
+             data-columns="[{field: 'Name', title: 'Role', width: '15%'}, {field: '', title: 'User Group'}, {field: '', title: 'Users'}]" >
+        </div>
+    </div>
+    <div class="hidden" id="_DamUserManagementModals">
+        <div id="_DamUserGroupSelect">
+            <div>
+                <h3>Add User Groups</h3>
+            </div>
+            <div class="padu10">
+                <div class="w98">
+                    <div data-argosy-control="GlobalUserGroupSelect" data-argosy-view="GlobalUserGroupSelect"></div>
+                </div>
+            </div>
+            <div class="padu5">
+                <div class="text-center padr20">
+                    <a class="btn btn-default" data-bind="click: addSelectedUserGroups"><i class="fa fa-plus"></i> Add</a>
+                </div>
+            </div>
+        </div>
+        <div id="_DamUserSelect">
+            <div>
+                <h3>Add Users</h3>
+            </div>
+            <div class="padu10">
+                <div class="w98">
+                    <div data-argosy-control="GlobalUserSelect" data-argosy-view="GlobalUserSelect"></div>
+                </div>
+            </div>
+            <div class="padu5">
+                <div class="text-center padr20">
+                    <a class="btn btn-default" data-bind="click: addSelectedUsers"><i class="fa fa-plus"></i> Add</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_DamUserManagementRoleRow">
+    <tr class="k-row">
+         <!--<td class="vtop">
+           <div data-role="toggleswitch" data-value="${IsSystemAdministrator}" data-property-name="Enabled" data-on-label="Admin" data-off-label="Not Admin"></div>
+        </td>-->
+        <td class="vtop"><div class="dam-large-text padu20">${Name}  <a class="dam-large-text" data-bind="click:showUpdateRole"><i class="fa fa-pencil"></i></a></div></td>
+        <td class="vtop">
+            <div data-role="assetroleusergroupgrid" data-asset-role-id="${Id}">
+            </div>
+        </td>
+        <td class="vtop">
+            <div data-role="assetroleusergrid" data-asset-role-id="${Id}">
+            </div>
+        </td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_DamUserManagementAddRole">
+    <h3>Create New Role</h3>
+    <div class="col-md-12 padb10">
+        <label class="col-md-4">Role <span class="text-danger">*</span></label>
+        <div class="col-md-8"><input type="text" class="k-textbox" maxlength="100" /></div>
+    </div>
+    <div class="col-md-12 padb10">
+        <label class="col-md-4">Sys&nbsp;Admin</label>
+        <div class="col-md-4">
+            <div  id="addRoleSysAdmin" data-role="toggleswitch" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 text-center">
+            <a class="btn btn-default" data-bind="click: createRole"><i class="fa fa-plus"></i> Create Role</a>
+            <a class="btn btn-default" onclick="$.fancybox.close();"><i class="fa fa-cancel"></i> Cancel</a>
+        </div>
+    </div>
+
+</script>
+<script type="text/x-kendo-tmp" id="_DamUserManagementUpdateRole">
+    <div id="_updateRole">
+        <h3>Update Role for: <span data-bind="text:data.Name"></span></h3>
+        <div class="row">
+            <div class="col-md-12 padb10">
+                <label class="col-md-4">Role  <span class="text-danger">*</span></label>
+                <div class="col-md-8"><input type="text" class="k-textbox focus-me" maxlength="100" data-bind="value:data.Name" /></div>
+            </div>
+            <div class="col-md-12 padb10">
+                <label class="col-md-4">Sys&nbsp;Admin</label>
+                <div class="col-md-4" id="updateRoleSysAdmin" data-role="toggleswitch" data-bind="value: data.IsSystemAdministrator" />
+                <div class="col-md-4"></div>
+            </div>
+            <div class="col-md-12 text-center">
+                <a class="btn btn-default" data-bind="click: updateRole"><i class="fa fa-plus"></i> Update Role</a>
+            </div>
+        </div>
+    </div>
+</script>

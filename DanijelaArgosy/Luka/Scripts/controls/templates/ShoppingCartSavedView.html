@@ -1,0 +1,142 @@
+﻿<script type="text/javascript">
+    function renderCrossSaleButtonViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductCartButtonsViewTemplate').html())(data);
+    }
+</script>
+<script type="text/x-kendo-template" id="_ShoppingCartSavedViewTemplate">
+    <div class="row hidden" id="_SavedShopingCartBindSection">
+        <div class="cart-information marb20 topmargin-lg">~{SavedItems}~</div>
+        <div class="col-sm-12  bottommargin-lg" id="_savedCartContainer">
+            <div class="col-md-12 empty-cart-parent-saved hidden">
+                <div class="center">
+                    <div class="f50 grayout topmargin-lg bottommargin-lg">~{CartEmpty}~</div>
+                    <a class="btn btn-primary hand" data-bind="click:goShopping"><i class="fa fa-chevron-left"></i> ~{Continue Shopping}~</a>
+                </div>
+            </div>
+            <div id="_SavedShoppingCartGrid" class="cartlines" style="overflow-y:hidden;">
+                <table class="cart-table table-responsive w100">
+                    <thead>
+                        <tr class="grid-menu-template">
+                            <td class="cart-img"></td>
+                            <td class="cart-item">~{Item}~</td>
+                            <td class="cart-accounting" data-bind="visible: hasAccountingUnits">~{AccountingUnit}~</td>
+                            <td class="cart-quantity" data-bind="visible: notAllConfiguredParts">~{Qty}~</td>
+                            <td class="cart-subtotal">&nbsp;</td>
+                        </tr>
+                    </thead>
+                    <tbody class="mar10" data-template="_SavedShoppingCartRowViewTemplate" data-bind="source: cartLines"></tbody>
+                    <tfoot>
+                        <tr class="hide-me-on-empty vtop">
+                            <td></td>
+                            <td data-bind="visible: notAllConfiguredParts"></td>
+                            <td data-bind="visible: hasAccountingUnits"></td>
+                            <td data-bind="visible: notAllConfiguredParts"><div style="display:none;"><a class="btn btn-default hidden-sm hidden-xs"><i class="fa fa-shopping-cart"></i> ~{BulkCheckout}~</a></div></td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+        <div id="_SavedModalProductContainer" style="display:none;"></div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_SavedShoppingCartRowViewTemplate">
+    #if (ParentPartId === 0) {#
+    <tr data-bind="css:{disabled:overPartLimit}" data-cart-status="${CartStatus}">
+        <!--THIS IS THE IMAGE COLUMN-->
+        <td class="td-img-rpsv padr20 borderb-solid">
+            <img class="max100 img-responsive img-border" src="${Part.ThumbnailFile}" alt="">
+        </td>
+        <!--THIS IS THE ITEM COLUMN-->
+        <td class="td-item-rpsv borderb-solid">
+            #if(Part.CanCustomize){#
+            <h4 style="display:inline;" class="text-center cart-item-name">#= renderProductNameViewTemplate(Part)#</h4><br class="hidden-lg hidden-md" />&nbsp;
+            #if(Part.IsPersonalizeable){#
+            <a href="${CustomizationUrl}">
+                <i class="fa fa-pencil" title="Edit"></i>
+            </a>
+            #}#
+            #if (IsMailingList) {#
+            &ensp;<a href="/Tools/Mailing/?Sku=${Part.Sku}&customizationStateId=${CustomizationStateId}"><i class="fa fa-file-excel-o" title="Edit List"></i></a>
+            #}#
+            #if(Part.CanPersonalize){#
+            &ensp;<a class="fancybox" href="${CustomThumbnail}"> <i class="fa fa-eye" title="View Proof"></i></a>
+            #}#
+            #} else {#
+            <h4 class="cart-item-name">
+                #if (ShowOverrideMessage) {#
+                <p class="co-warning">${OverrideCartMessage}</p>
+                #} else if ((CartStatus < 90 && CartStatus > 1)) {#
+                <p class="co-warning">${CartStatusMessage}</p>
+                #} else {#
+                #= renderProductNameViewTemplate(Part, DiscountName)#
+                #}#
+            </h4>
+            #}#
+            #if (OrderLineTag != null) {#
+            <em>${OrderLineTag}</em>
+            #}#
+            #if (DiscountName != null && DiscountName.trim().length > 0) {#<p class="text-danger bold"><strong>${DiscountName}</strong></p>#}#
+            <p class="hidden-xs hidden-sm padr5"> #=Part.Description#</p>
+            <div class="pad10 bkg-gray maru5" data-bind="css:{hidden:hiddenIfKitWithoutPersonalizedItems}">
+                <p><b>~{CustomizablePartsKit}~:</b></p>
+                <div data-bind="source:PersonalizedPartsInKit" data-template="_savedPersonalizedKitItemsRowTemplate"></div>
+            </div>
+            <div class="pad10 bkg-gray maru5" data-bind="visible: isConfiguredPart">
+                <div data-template="_savedConfiguredPartsItemsRowTemplate" data-bind="source: ConfiguredParts" />
+            </div>
+            <div data-bind="css:{hidden:hideInventory}, visible: isNotConfiguredPart" class="padu5">
+                #=renderProductQuantityOnHandTemplate(Part)##=renderProductMaxMinOrderTemplate(Part)#
+                <br style="clear:both" />
+            </div>
+            <div class="padu10 padb10">
+                <a class="co-warning" data-bind="click:deleteLine, visible: isNotConfiguredPart"><i class="fa fa-times-circle"></i> ~{Remove}~</a>
+            </div>
+        </td>
+
+        <!--THIS IS THE ACCOUNTING UNIT COLUMN-->
+        <td class="td-qty-rpsv text-center borderb-solid marb10 padr5" data-bind="visible: hasAccountingUnits">
+            <input data-role="dropdownlist"
+                   data-auto-bind="false"
+                   data-cart-id="${CartId}"
+                   data-text-field="Text"
+                   data-value-field="Value"
+                   data-bind="source: accountingUnits,events:{
+                   dataBound:accountingUnitsDataBound,
+                   change:accountingUnitsChange
+                   }"
+                   style="width: 100%;" />
+        </td>
+        <!--THIS IS THE QUANTITY COLUMN-->
+        <td class="td-qty-rpsv text-center borderb-solid" data-bind="css:{hidden:overPartLimit}, visible: notAllConfiguredParts">
+            #if (!IsEdelivery && data.parent().parent().isNotConfiguredPart(data)) {#
+            #= renderProductQuantityInput(Part, Quantity, IsEdelivery, CartId, "", "updateLine", "priceBreakDataBound", "priceBreakDropdownChange", "Part.Discounts",true, IsMailingList) #
+            #= renderProductOrderInfoTemplate(Part) #
+            #}#
+        </td>
+        <td class="borderb-solid">
+            <a class="btn btn-default pull-right" style="margin: 10px 0" data-bind="click:addSavedToCart">~{AddToCart}~</a>
+        </td>
+    </tr>
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_savedPersonalizedKitItemsRowTemplate">
+    <p class="padu5"><a href="${CustomizationUrl}"><i class="fa fa-pencil" title="Edit"></i></a>&nbsp;<a class="fancybox" href="${ThumbnailPath}"><i class="fa fa-eye" title="See Digital Proof"></i></a>&nbsp; #=PartName#</p>
+</script>
+<script type="text/x-kendo-template" id="_savedConfiguredPartsItemsRowTemplate">
+    <div class="row padu5">
+        <a class="padu5 co-warning pull-left" data-bind="click: parent().parent().parent().parent().deleteLine"><i class="fa fa-times-circle"></i> </a>
+        <p class="padu5 padl10 pull-left" data-bind="text: parent().parent().parent().parent().getConfiguredPartName"> </p>
+        <span class="padu5 pull-right padl5">
+            #
+            if (userSettings.IsPriceInformationVisible) {#
+            <span class="padl5">${kendo.toString(UnitPrice, "C")}</span>
+            #= renderProductDiscountsToolTip(Part, "", data.parent().parent().parent().parent().getTotalConfiguredParts(data)) #
+            #}#
+        </span>
+        <span class="pull-right"
+              data-value="${Quantity}"
+              data-part-id="${Part.PartId}"
+              data-cart-id="${CartId}"
+              data-role="partpricing"></span>
+    </div>
+</script>

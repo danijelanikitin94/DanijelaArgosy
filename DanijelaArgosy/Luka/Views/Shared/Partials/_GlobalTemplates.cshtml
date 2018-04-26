@@ -1,0 +1,1638 @@
+﻿<script type="text/javascript">
+    function getUnitOfMeasure(data, defaultValue, isPlural) {
+        if (data.UnitOfMeasure != null) {
+            return isPlural ? data.UnitOfMeasure.Plural : data.UnitOfMeasure.Name;
+        } else {
+            return defaultValue;
+        } 
+    }
+    
+    function getBasePrice(prices) {
+        if (prices != null && prices.length > 0) {
+            return prices[0];
+        }
+        return null;
+    }
+    
+    function getPriceBreakQuantityClass() {
+        if (userSettings.IsPriceInformationVisible) {
+            return "width: 33%;";
+        } else {
+            return "width: 100%;";
+        }
+    }
+    function getPriceBreakQuantitySizeClass(item) {
+        if (userSettings.IsPriceInformationVisible) {
+            return "price-break-" + item;
+        } else {
+            return "price-break-" + item + "-no-pricing";
+        }
+    }
+    
+    function renderDiscountText(discounts) {
+        var qty = 0, cost = 0;
+        $.each(discounts,
+            function (i) {
+                var item = this;
+                if (item.IsDefault) {
+                    qty = item.Quantity;
+                    cost = item.Discount;
+                }
+            });
+        if (qty === 0 && discounts && discounts.length > 0) {
+            qty = discounts[0].Quantity;
+            cost = discounts[0].Discount;
+        }
+        return qty + " for " + kendo.toString(cost * qty, "C");
+    }
+
+    function isAttributeSelected(attribute, attributeType) {
+        if (attribute.CurrentValue != null && attribute.CurrentValue == attributeType.Type.Name) {
+            return "selected=selected";
+        } else {
+            return "";
+        }
+    }
+
+    function getAttributeValueKey(attribute) {
+        return attribute.Type.Id + "-" + attribute.Value;
+    }
+
+    function parseAttributeCostFromValueKey(valueKey) {
+        var pieces = valueKey.split("-");
+        return parseFloat(pieces[pieces.length-1]);
+    }
+
+    function parseAttributeIdFromValueKey(valueKey) {
+        var pieces = valueKey.split("-");
+        return parseInt(pieces[0]);
+    }
+    
+    function renderEditAttributesModal(part, attributes, values) {
+        var data = {
+            Values: values,
+            PartAttributes: attributes,
+            Part: part
+        };
+        $.each(values, function(i, value) {
+            $.each(attributes, function(x, attribute) {
+                $.each(attribute.Attributes, function (z, attributeType) {
+                    if (value.AttributeId == attributeType.Type.Id) {
+                        attribute.CurrentValue = value.Name;
+                        attribute.CurrentCost = attributeType.Value
+                    }
+                });
+            });
+        });
+        return kendo.Template.compile($('#_GlobalEditAttributes').html())(data);
+    }
+    
+    function renderAttributesDisplay(data, values) {
+        $.each(data.PartAttributes, function(i, attribute) {
+            if (!attribute.hasOwnProperty('CurrentValue')) {
+                attribute.CurrentValue = "";
+                attribute.CurrentCost = 0;
+            }
+        });
+        return kendo.Template.compile($('#_GlobalAttributesDisplay').html())(data);
+    }
+
+    function getGroupPath(data) {
+        if (data.PageName != null) {
+            return "/Store/Browse/Page/" + data.PageName;
+        }
+        return "/Store#Category:" + data.GroupId + ":" + data.PartName;
+    }
+
+    function renderProductImageViewTemplate(data, linkCss, imageCss, argosyAction) {
+        if (linkCss == undefined) {
+            linkCss = "";
+        }
+        if (imageCss == undefined) {
+            imageCss = "";
+        }
+        if (argosyAction == undefined) {
+            argosyAction = "showProductDetails";
+        }
+        if (data.CustomizationStateId == undefined) {
+            data.CustomizationStateId = null;
+        }
+        data.linkCss = linkCss;
+        data.imageCss = imageCss;
+        data.argosyAction = argosyAction;
+        return kendo.Template.compile($('#_ProductImageViewTemplate').html())(data);
+    }
+
+    function isNullOrEmpty(data) {
+        return data != null && data != "null" ? data : "";
+    }
+
+    function hasImage(data) {
+        return data.ThumbnailFile != '' && data.ThumbnailFile.indexOf("image-not-found") < 0;
+    }
+
+    function renderProductNameViewTemplate(data, discountName, hideAddToCartButton) {
+        data.DiscountName = discountName;
+        data.hideAddToCartButton = hideAddToCartButton == null ? false : hideAddToCartButton;
+        return kendo.Template.compile($('#_ProductNameViewTemplate').html())(data);
+    }
+
+    function renderPriceBreakDropDown(data) {
+        var template = kendo.Template.compile($('#_ProductPriceBreakDropDown').html())(data);
+        /*if (window.location.toString().toLowerCase().indexOf("kit/builder") > 0) {
+            setTimeout(function() {
+                var element = $("#" + data.idBase),
+                    ddl = element.getKendoDropDownList();
+                ddl.value(data.Quantity);
+                ddl.trigger("change");
+                element.change();
+            }, 1000);
+        }*/
+        return template;
+    }
+
+    function renderProductQuantityInput(data, quantity, isEdelivery, cartId, idBase, changeEvent, priceBreakDataBound, priceBreakDropdownChange, dataSource, addValueBind, overrideQuantitySettings, isDisabled) {
+        if (isDisabled == null) {
+            isDisabled = false;
+        }
+        if (quantity == null) {
+            quantity = data.DefaultQuantity;
+        }
+        if (isEdelivery == null) {
+            isEdelivery = true;
+        }
+        if (cartId == null) {
+            cartId = 0;
+        }
+        if (overrideQuantitySettings == null) {
+            overrideQuantitySettings = false;
+        }
+        var renderPriceBreak = data.IsLimitPartOrderQuantity && data.Discounts && data.Discounts.length > 0;
+        data.changeEvent = changeEvent;
+        data.Quantity = quantity;
+        data.bindObject = "";
+        if (addValueBind != null || addValueBind !== undefined && addValueBind === true) {
+            data.bindObject = "value:Quantity,";
+        }
+        data.CartId = cartId;
+        data.priceBreakDataBound = priceBreakDataBound;
+        data.priceBreakDropdownChange = priceBreakDropdownChange;
+        data.IsEdelivery = isEdelivery;
+        data.isDisabled = isDisabled;
+        if (dataSource != null && dataSource != "") {
+            dataSource = "source:" + dataSource;
+        }
+        var events = [];
+        if (priceBreakDataBound != null && priceBreakDataBound != "") {
+            events.push("dataBound:" + priceBreakDataBound);
+        }
+        if (changeEvent != null && changeEvent != "") {
+            events.push("change:" + changeEvent);
+        } else if (priceBreakDropdownChange != null && priceBreakDropdownChange != "") {
+            events.push("change:" + priceBreakDropdownChange);
+        }
+        var eventString = "";
+        $(events).each(function (i) {
+            eventString += ((i != 0 ? "," : "") + this);
+        });
+
+
+        if (idBase != null && idBase.length === 0) {
+            data.idBase = cartId > 0 ? "priceBreakDropDown" + cartId : "addToCartQuantity_" + data.PartId;
+        } else {
+            data.idBase = idBase + data.PartId;
+        }
+
+        if (dataSource != null) {
+            data.bindObject += dataSource + (eventString.length > 0 ? ",events:{" + eventString + "}" : "");
+        } else {
+            data.bindObject += (eventString.length > 0 ? ",events:{" + eventString + "}" : "");
+        }
+        if (renderPriceBreak && !overrideQuantitySettings) {
+            return renderPriceBreakDropDown(data);
+        } else {
+            return renderQuantityInput(data, overrideQuantitySettings);
+        }
+    }
+
+    function renderProductDiscountsToolTip(data, message, highlightQuantity) {
+        data.message = message == null ? "~{ClickForDiscounts}~" : message;
+        data.showHighlight = highlightQuantity != null && highlightQuantity > 0;
+        data.highlightQuantity = highlightQuantity;
+        return kendo.Template.compile($('#_ProductDiscountsToolTip').html())(data);
+    }
+
+    function renderQuantityInput(data, isDisabled) {
+        if (isDisabled == null) {
+            isDisabled = false;
+        }
+        data.isDisabled = isDisabled;
+        return kendo.Template.compile($('#_ProductQuantityInput').html())(data);
+    }
+
+    function renderProductPriceViewTemplate(data, overridePrice, displayFee) {
+        if (overridePrice != null) {
+            data.BasePrice = data.Price;
+            data.Price = overridePrice;
+            data.IsPriceOverride = true;
+        } else {
+            data.IsPriceOverride = false;
+        }
+        var basePrice = getBasePrice(data.BasePrice);
+        if (basePrice != undefined && basePrice.FlatFee != null && displayFee != null && displayFee == true) {
+            data.FlatFee = basePrice.FlatFee;
+            data.FlatFeeLabel = basePrice.FlatFeeLabel;
+        } else {
+            data.FlatFee = 0;
+            data.FlatFeeLabel = "";
+        }
+        
+        return kendo.Template.compile($('#_ProductAlternatePriceViewTemplate').html())(data);
+    }
+
+    function renderKitBuilderGroupContainerTemplate(data) {
+        return kendo.Template.compile($('#_kitBuilderGroupContainerTemplate').html())(data);
+    }
+
+    function renderProductOrderInfoTemplate(data) {
+        return kendo.Template.compile($('#_ProductOrderInfoViewTemplate').html())(data);
+    }
+
+    function renderProductActionButtonViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductActionButtonsViewTemplate').html())(data);
+    }
+
+    function renderProductCartButtonViewTemplate(data, onClick) {
+        data.onClick = onClick == null ? "" : onClick;
+        return kendo.Template.compile($('#_ProductCartButtonsViewTemplate').html())(data);
+    }
+
+    function renderProductListViewProductPanel(data) {
+        return kendo.Template.compile($('#_ProductListViewProductPanel').html())(data);
+    }
+
+    function renderProductListViewCateogryPanel(data) {
+        return kendo.Template.compile($('#_ProductListViewCategoryPanel').html())(data);
+    }
+
+    function renderProductQuantityOnHandTemplate(data, showLabel) {
+        if (showLabel == null) {
+            showLabel = true;
+        }
+        data.showLabel = showLabel;
+        return kendo.Template.compile($('#_ProductQuantityOnHandViewTemplate').html())(data);
+    }
+
+    function renderCartProductQuantityOnAvailableViewTemplate(data, showLabel) {
+        if (showLabel == null) {
+            showLabel = true;
+        }
+        data.showLabel = showLabel;
+        return kendo.Template.compile($("#_CartProductQuantityOnAvailableViewTemplate").html())(data);
+    }
+
+    function renderProductMaxMinOrderTemplate(data) {
+        return kendo.Template.compile($('#_ProductMaxMinOrderViewTemplate').html())(data);
+    }
+
+    function renderProductQuantityAvailableTemplate(data, showLabel) {
+        if (showLabel == null) {
+            showLabel = true;
+        }
+        data.showLabel = showLabel;
+        return kendo.Template.compile($('#_ProductQuantityAvailableViewTemplate').html())(data);
+    }
+
+    function addDays(date, days) {
+        var result = new Date(date);
+        result.setDate(date.getDate() + days);
+        return result;
+    }
+
+    function getPartDatedBasedOnSettings(part,enumPartDateField) {
+        var date = null;
+        switch(enumPartDateField) {
+        case 1:
+            date =  new Date(part.DateCreated);
+            break;
+        case 2:
+            date =  new Date(part.AvailDate);
+            break;
+        case 3:
+            date =  new Date(part.ExpirationDate);
+            break;
+        case 4:
+            if(part.DateRevised !== null){
+                date =  new Date(part.DateRevised);
+            }
+            break;
+        }
+        return date;
+    }
+
+    function shouldShowImageOnPartImage(part, fieldEnum, days) {
+        if (fieldEnum !== 0) {
+            var todayDate = new Date();
+            var partDate = getPartDatedBasedOnSettings(part, fieldEnum);
+            if(partDate !== null) {    
+                var endDate = addDays(partDate, days);
+                if (dateCheck(partDate, endDate, todayDate)) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }    
+    
+    function dateCheck(from,to,check) {
+        var fDate,lDate,cDate;
+        fDate = $.type(from) == "date" ? from : Date.parse(from);
+        lDate = $.type(to) == "date" ? to : Date.parse(to);
+        cDate = $.type(check) == "date" ? check : Date.parse(check);
+        if((cDate <= lDate && cDate >= fDate)) {
+            return true;
+        }
+        return false;
+    }
+
+    function shouldShowUpdatedImage(data) {    
+        return shouldShowImageOnPartImage(data, userSettings.ShowUpdatedBasedOnField, userSettings.UpdatedShowsForDays);
+    } 
+
+    function shouldShowNewImage(data) {   
+        return shouldShowImageOnPartImage(data, userSettings.ShowNewBasedOnField, userSettings.NewShowsForDays);
+    }
+
+    function renderProductMinOrderViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductMinOrderViewTemplate').html())(data);
+    }
+
+    function renderProductPiecesViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductPiecesViewTemplate').html())(data);
+    }
+
+    function renderProductLeadTimeViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductLeadTimeViewTemplate').html())(data);
+    }
+
+    function renderProductPriceDiscounts(data) {
+        return kendo.Template.compile($('#_ProductPriceDiscounts').html())(data);
+    }
+
+    function renderProductQuantityInputViewTemplate(data, isEditable, quantity, showText) {
+        if (isEditable == null) {
+            isEditable = false;
+        }
+        if (quantity == null) {
+            quantity = 1;
+        }
+        if (showText == null) {
+            showText = true;
+        }
+        data.IsEditable = isEditable;
+        data.Quantity = quantity;
+        data.ShowText = showText;
+        return kendo.Template.compile($('#_ProductQuantityInputViewTemplate').html())(data);
+    }
+
+    function renderProductCartButtonModalViewTemplate(data) {
+        return kendo.Template.compile($('#_ProductModalCartButtonsViewTemplate').html())(data);
+    }
+
+
+    function renderProductGridViewProductRow(data) {
+        return kendo.Template.compile($('#_ProductGridViewProductRow').html())(data);
+    }
+
+    function renderProductGridViewCategoryRow(data) {
+        return kendo.Template.compile($('#_ProductGridViewCategoryRow').html())(data);
+    }
+
+    function getLoadingImagePath(data) {
+        if (data.CustomizationStateId != null && data.CustomizationStateId > 0) {
+            if (data.ProofingThumbnailFile != null) {
+                return data.ProofingThumbnailFile + "?w=250&h=250";
+            } else {
+                return "/content/images/loading-small.gif";
+            }
+        } else {
+            return data.ThumbnailFile + "?w=250&h=250";
+        }
+    }
+
+    function getLargerImageUrl(data) {
+        if (data.ProofingThumbnailFile != undefined) {
+            return data.ProofingThumbnailFile;
+        } else {
+            return data.LargeThumbnailFile;
+        }
+    }
+
+    function isNonRangeValue(range) {
+        return range.indexOf('-') < 0 && range.search(" and more") < 0;
+    }
+
+    function renderOrderStatus(status) {
+        var text = "";
+        switch (status) {
+        case "D":
+            text = "Approval Denied";
+            break;
+        case "W":
+            text = "Approval Pending";
+            break;
+        case "Q":
+            text = "Awaiting payment Authorization";
+            break;
+        case "A":
+            text = "Awaiting Shipment";
+            break;
+        case "G":
+            text = "Awaiting Serial Capture";
+            break;
+        case "S":
+            text = "Back Ordered";
+            break;
+        case "N":
+            text = "Batch Processing";
+            break;
+        case "X":
+            text = "Canceled";
+            break;
+        case "C":
+            text = "Closed";
+            break;
+        case "J":
+            text = "Consolidated Order";
+            break;
+        case "Y":
+            text = "Fast Pick Pack";
+            break;
+        case "U":
+            text = "Fast Pick Pack Not Printed";
+            break;
+        case "F":
+            text = "Firmed";
+            break;
+        case "I":
+            text = "Invoiced";
+            break;
+        case "B":
+            text = "On-Hold";
+            break;
+        case "P":
+            text = "Picking";
+            break;
+        case "E":
+            text = "Pre-Close";
+            break;
+        case "O":
+            text = "QuickShip";
+            break;
+        case "R":
+            text = "Released";
+            break;
+        case "V":
+            text = "Saved";
+            break;
+        case "Z":
+            text = "Shipping";
+            break;
+        case "T":
+            text = "Waved";
+            break;
+        default:
+            text = "NULL";
+            break;
+        }
+        return text;
+    }
+
+</script>
+
+<script type="text/x-kendo-template" id="_ProductGridViewProductRow">
+    <td class="center wimg">
+        #= renderProductImageViewTemplate(data, '','') #
+    </td>
+    <td> 
+        <p class="padu10"><a data-argosy-dataid="${PartId}" data-argosy-action="showProductDetails">#= renderProductNameViewTemplate(data)#</a></p>
+        <div><p class="product-price padu5 nowrap">#= renderProductPriceViewTemplate(data) #</p></div>
+        <p class="desc-ellp padb10">#= Description #</p>
+        #if (userSettings.ViewSkuOnBrowse) {#
+            <p class="desc-ellp padb10">${Sku}</p>
+        #}#
+    </td>
+    #if (userSettings.IsInventoryInformationVisible) {#
+    <td class="globals-qtyavailable center smallest_txt hidden-sm hidden-xs">#= renderProductQuantityAvailableTemplate(data, false) #</td>
+    <td class="center smallest_txt hidden-sm hidden-xs">#= renderProductQuantityOnHandTemplate(data, false) #</td>
+    #}#
+    <td class="center smallest_txt hidden-sm hidden-xs">#= renderProductLeadTimeViewTemplate(data) #</td>
+    <td class="textr">
+        <div class="marr20">
+            <div class="clearfix"> #= renderProductCartButtonViewTemplate(data) #  </div>
+        </div>
+    </td>
+</script>
+<script type="text/x-kendo-template" id="_ProductGridViewCategoryRow">
+    <td class="center wimg">
+        #= renderProductImageViewTemplate(data, '','') #
+    </td>
+    <td>
+        <p><a href="/Store\\#Category:${GroupId}:${PartName}">#= renderProductNameViewTemplate(data)#</a></p>
+        <p class="small_txt desc-ellp padu5">${isNullOrEmpty(Comments)}</p>
+    </td>
+    <td class="center"></td>
+    <td colspan="3" class="center hidden-sm hidden-xs"></td>
+</script>
+<script type="text/x-kendo-template" id="_ProductGridViewTemplate">
+    <tr class="vtop browse-grid ">
+        # if (ItemType == 2) {#
+        #= renderProductGridViewProductRow(data) #
+        #} else {#
+        #= renderProductGridViewCategoryRow(data) #
+        #}#
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_ProductQuantityInputViewTemplate">
+    <div class="row padb10">
+        #if (ShowText) {#
+        Qty
+        #}#
+        #if (!IsEditable) {#
+        <input type="number" value="${Quantity}" tabindex="1" class="qty_input textr"
+               name="quantity" autocomplete="off"
+               disabled="disabled"
+               data-link="order-quantity-${PartId}"
+               data-argosy-action="updatePartQuantities"
+               data-argosy-dataid="${PartId}" />
+        #} else {#
+        <input type="number" value="${Quantity}" tabindex="1" class="qty_input textr"
+               name="quantity" autocomplete="off"
+               data-link="order-quantity-${PartId}"
+               data-argosy-action="updatePartQuantities"
+               data-argosy-dataid="${PartId}" />
+        #}#
+    </div>
+
+</script>
+<script type="text/x-kendo-tmp" id="_ProductListViewProductPanel">
+    <div class="product-image-wrapper">
+        <div class="single-item">
+            <div class="productinfo text-center">
+                <div>
+                    #= renderProductImageViewTemplate(data, 'container-aspect','img-aspect') #
+                </div>
+                #if (userSettings.ViewCallToActionOnBrowse) {#
+                    #if(data.CallToAction !== null && data.CallToAction !=''){#
+                      <div class="desc-ellp padb10 callToAction-height product-callToAction">#=CallToAction#</div>
+                    #}else{#
+                      <div class="desc-ellp padb10 callToAction-height"></div>
+                    #}#
+                #}#
+                <div class="product-bkg">
+                    <a data-argosy-dataid="${PartId}" data-argosy-action="showProductDetails"><p class="product-name">#= renderProductNameViewTemplate(data)#</p></a>
+                    #if (userSettings.ViewSecondaryNameOnBrowse) {#
+                         #if(data.SecondaryName !== null && data.SecondaryName !=''){#
+                            <p class="desc-ellp padb10 secondName-height">#=SecondaryName#</p>
+                         #}else{#
+                           <p class="desc-ellp padb10 secondName-height"></p>
+                         #}#
+                    #}#
+                    <p class="product-price">#= renderProductPriceViewTemplate(data) #</p>
+                    <p class="product-ship">#= renderProductPiecesViewTemplate(data) #</p>
+                    <p class="product-ship">#= renderProductMinOrderViewTemplate(data) #</p>
+                    <p class="product-ship padb5">#= renderProductLeadTimeViewTemplate(data) #</p>
+                    <div class="clearfix padu10">
+                        #= renderProductCartButtonViewTemplate(data) #
+                    </div>
+                </div>
+                
+                <div class="choose clearfix">
+                    #= renderProductActionButtonViewTemplate(data) #
+                </div>
+                <div class="product-overlay">
+                    <div class="overlay-content">
+                        <p>#= Description #<br/><span class="f10 partdetails-displaysku"><b>SKU:</b> #= Sku #</span></p>
+                        <p class=" w100 text-center"><a data-argosy-action="addProductHover" class="co-white" data-argosy-target=".single-item"><i title="Close box" class="fa fa-close co-white"></i> CLOSE</a></p>
+                    </div>
+                </div>
+                #if (userSettings.ViewSkuOnBrowse) {#
+                    <span style="text-align: center" class="product-ship partdetails-displaysku">${Sku}</span>
+                #}#
+                # if (false) { #
+                <!-- where does the sale data come from? -->
+                <img src="/content/images/sale.png" class="accent" alt="On Sale" />
+                # } else if (IsKit) { #
+                <img src="/content/images/kit.png" class="accent" alt="Part Kit" />
+                # } else if (shouldShowNewImage(data)) { #
+                <img src="/content/images/new.png" class="accent" alt="New Item" />
+                # } else if (shouldShowUpdatedImage(data)) { #
+                <img src="/content/images/updated.png" class="accent" alt="Update Item" />
+                # } #
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProductListViewCategoryPanel">
+
+    <div class="productinfo text-center">
+        <div class="product-image-wrapper">
+            #= renderProductImageViewTemplate(data, 'container-aspect','img-aspect') #
+            <a href="/Store\\#Category:${GroupId}:${PartName}"><p class="product-name">#= renderProductNameViewTemplate(data)#</p></a>
+        </div>
+        <div class="clearfix nobkg">
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-tmp" id="_ProductListViewPanelTemplate">
+    <div>
+        <div id="listItem">
+            <div class="col-md-4">
+                #if (data.ItemType == 2) {#
+                #= renderProductListViewProductPanel(data)#
+                #} else {#
+                #= renderProductListViewCateogryPanel(data)#
+                #}#
+
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/x-kendo-template" id="_CategoryListViewTemplate">
+    <div>
+        <div id="listItem" data-argosy-action="showCategory" data-argosy-categoryshowgridview="${ShowGridView}" data-argosy-categoryid="${GroupId}" data-argosy-categoryname="${GroupName.trim()}" data-argosy-categorydesc="${Description} data-argosy-categorycomments=" ${CategoryComments}"">
+            <div class="col-md-4">
+                <div class="category-image-wrapper">
+                    <div class="single-item">
+                        <div class="categoryinfo text-center">
+                            <div>
+                                <a class="container-aspect">
+                                    <img class="img-responsive img-aspect" title="More Details" alt="Category Image" src="${ThumbnailFile}" />
+                                </a>
+                            </div>
+                            <div class="category-overlay">
+                                <div class="overlay-content">
+                                    <p class="category-thumb-name">#=Description#</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_PriceBreakGridViewtemplate">
+    <h3>~{Discounts}~</h3>
+    <div class="k-grid k-widget price-break-container">
+        <table role="grid">
+            <colgroup>
+                <col>
+                <col>
+            </colgroup>
+            <thead class="k-grid-header" role="rowgroup">
+                <tr role="row">
+                    <th rowspan="1" class="k-header">~{PriceLevel}~</th>
+                    <th rowspan="1" data-index="1" class="k-header textr">~{UnitPrice}~</th>
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                # for (var i = 0; i < data.length; i++) { #
+                <tr role="row" data-min-value="${data[i].MinValue}" data-max-value="${data[i].MaxValue}">
+                    <td role="gridcell">#= data[i].Range #</td>
+                    #if (data[i].Type == 37) /* percent */ {#
+                    #
+                    var discountAmount = data[i].CostPerEach - (data[i].Discount/100 * data[i].CostPerEach);
+                    #
+                    <td class="textr" role="gridcell">#= kendo.toString(discountAmount,"c") #</td>
+                    #} else {#
+                    <td class="textr" role="gridcell">#= kendo.toString(data[i].Discount,"c") #</td>
+                    #}#
+                </tr>
+                # } #
+            </tbody>
+        </table>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ProductDiscountsToolTip">
+    #if(Discounts && Discounts.length > 0) {#
+    <a class="divDiscount nowrap" data-bind="click:showToolTip" ><i class="fa fa-money" title="~{Discounts}~"></i> ${data.message}</a>
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductPriceDiscounts">
+    #if(Discounts && Discounts.length > 0) {#
+
+    <div class="k-grid k-widget price-break-container">
+        <table role="grid">
+            <colgroup>
+                <col>
+                #if (userSettings.IsPriceInformationVisible) {#
+                <col>
+                <col>
+                #}#
+            </colgroup>
+            <thead class="k-grid-header" role="rowgroup">
+                <tr role="row">
+                    <th class="k-header">~{OrderQty}~</th>
+                    #if (userSettings.IsPriceInformationVisible) {#
+                    <th class="k-header textr">~{UnitPrice}~</th>
+                    #if(isNonRangeValue(Discounts[0].Range)){#
+                    <th class="k-header textr">~{Price}~</th>
+                    #}#
+                    #}#
+                </tr>
+            </thead>
+            <tbody role="rowgroup">
+                # for (var i = 0; i < Discounts.length; i++) { #
+                <tr role="row">
+                    <td role="gridcell">#= Discounts[i].Range #</td>
+                    #if (userSettings.IsPriceInformationVisible) {#
+                        #if (Discounts[i].Type == 37) /* percent */ {#
+                            #
+                                var discountAmount = Discounts[i].CostPerEach - (Discounts[i].Discount/100 * Discounts[i].CostPerEach);
+                            #
+                            <td class="textr" role="gridcell">#= kendo.toString(discountAmount,"c4") #</td>
+                            #if(isNonRangeValue(Discounts[0].Range)){#
+                            <td class="textr" role="gridcell">#= kendo.toString(discountAmount * Discounts[i].Range,"c2") #</td>
+                            #}#
+                        #} else {#
+                        <td class="textr" role="gridcell">#= kendo.toString(Discounts[i].Discount,"c4") #</td>
+                            #if(isNonRangeValue(Discounts[0].Range)){#
+                            <td class="textr" role="gridcell">#= kendo.toString((Discounts[i].Discount * Discounts[i].Range),"c2") #</td>
+                            #}#
+                        #}#
+                    #}#
+                </tr>
+                # } #
+            </tbody>
+        </table>
+    </div>
+    #}#
+</script>
+
+<script type="text/x-kendo-template" id="_ProductPriceBreakDropDown">
+    <select id="${data.idBase}"
+            class="price-break-dropdown"
+            data-role="dropdownlist"
+            data-bind="${data.bindObject}"
+            data-header-template="_GlobalPriceBreakHeaderTemplate"
+            data-value-template="_GlobalPriceBreakValueTemplate"
+            data-template="_GlobalPriceBreakRowTemplate"
+            data-value-field="Quantity"
+            data-value="${Quantity}"
+            data-link="order-quantity-${PartId}"
+            data-argosy-action="updatePartQuantities"
+            data-argosy-dataid="${PartId}"
+            data-part-Id="${PartId}"
+            data-cart-qty="true"
+            ${(IsEdeliveryOnly||IsEdelivery||isDisabled?"disabled='disabled' ":" ")}></select>
+</script>
+<script type="text/x-kendo-template" id="_ProductQuantityInput">
+    <input id="${data.idBase}"
+           type="number"
+           class="qty_input submitAction"
+           value="${Quantity}"
+           data-min="0"
+           data-role="numerictextbox"
+           data-value="${Quantity}"
+           data-spinners="false"
+           data-step="1"
+           data-format="n0"
+           data-bind="${data.bindObject}"
+           data-link="order-quantity-${PartId}"
+           data-argosy-action="updatePartQuantities"
+           data-argosy-dataid="${PartId}"
+           data-part-Id="${PartId}"
+           data-cart-qty="true"
+           ${(IsEdeliveryOnly||IsEdelivery||isDisabled?"disabled='disabled' ":" ")} >
+</script>
+<script type="text/x-kendo-template" id="_ProductImageViewTemplate">
+    #if (ItemType == 3) {#
+    <a class="${data.linkCss}" href="${getGroupPath(data)}" title="Browse ${PartName}">
+        <img class="img-responsive ${data.imageCss}" title="Browse Category" alt="${Sku}" src="${ThumbnailFile}?w=250&h=250" data-large-image="${LargeThumbnailFile}" />
+    </a>
+    #} else if (CustomizationStateId != null && CustomizationStateId > 0) {#
+    <a class="${data.linkCss}" data-argosy-dataid="${PartId}" data-argosy-action="${argosyAction}" data-argosy-datahref="${getLargerImageUrl(data)}">
+        <img class="img-responsive ${data.imageCss}" title="More Details" alt="${Sku}" src="#= getLoadingImagePath(data)#" data-customization-state-id="${CustomizationStateId}" data-loaded="false" />
+    </a>
+    #} else {#
+    <a class="${data.linkCss}" data-argosy-dataid="${PartId}" data-argosy-action="${argosyAction}" data-argosy-datahref="${getLargerImageUrl(data)}">
+        <img class="img-responsive ${data.imageCss}" title="More Details" alt="${Sku}" src="${ThumbnailFile}?w=250&h=250" />
+    </a>
+    #}#
+
+</script>
+<script type="text/x-kendo-template" id="_ProductAlternatePriceViewTemplate">
+    #if(!IsBuildAKit){  #
+    #if(userSettings.IsPriceInformationVisible) {#
+        #if (IsConfigurable && (MinPrice != Price || MaxPrice != Price) && MaxPrice != MinPrice) {#
+            ${kendo.toString(MinPrice,"C")} - ${kendo.toString(MaxPrice,"C")} ${getUnitOfMeasure(data, "~{Ea}~", false)}
+        #} else if (IsLimitPartOrderQuantity && DefaultCartQty > 1 && !IsPriceOverride) {#
+            ${kendo.toString(Price,"C")} ~{For}~ ${kendo.toString(DefaultCartQty,"n0")} #if (Pieces > 1) {# ${getUnitOfMeasure(data, "~{Packs}~", true)} #}#
+        #} else if (!IsConfigurable && DefaultCartQty > 1 && !IsPriceOverride && !IsLimitPartOrderQuantity) {#
+            ${kendo.toString(Price*DefaultCartQty,"C")} ~{For}~ ${kendo.toString(DefaultCartQty,"n0")} #if (Pieces > 1) {# ${getUnitOfMeasure(data, "~{Packs}~", true)} #}#
+        #} else if (Pieces > 1) {#
+            ${kendo.toString(Price,"C")} ${getUnitOfMeasure(data, "~{PerPack}~", false)}
+        #} else {#
+            ${kendo.toString(Price,"C")} ${getUnitOfMeasure(data, "~{Ea}~", false)}
+        #}#
+    #} else if (!userSettings.IsPriceInformationVisible && Pieces > 1) {#
+        ${getUnitOfMeasure(data, "~{SoldInPacksOf}~", true)} ${kendo.toString(Pieces,"n0")}
+    #} else if (!userSettings.IsPriceInformationVisible && IsOrderByCPQ && CPQ > 1) {#
+        ${getUnitOfMeasure(data, "~{SoldInCasesOf}~", true)} ${kendo.toString(CPQ,"n0")}
+    #} else if (!userSettings.IsPriceInformationVisible && IsEdeliveryOnly) {#
+        ~{Edelivery}~
+    #} else {#
+        &nbsp;
+    #}#
+    #if(userSettings.IsPriceInformationVisible && FlatFee > 0) {#
+        <br />
+        <p class="smallest_txt">${kendo.toString(FlatFee, "C")}&nbsp;#if(FlatFeeLabel != null){#${FlatFeeLabel}#}#</p>
+    #}#
+    #} else {#
+        &nbsp;
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductPiecesViewTemplate">
+    #if (userSettings.IsPriceInformationVisible && Pieces > 1 & !IsOrderByCPQ) {#
+    ${kendo.toString(Pieces,"n0")} ${getUnitOfMeasure(data, "~{PerPack}~", false)}
+    #} else if (userSettings.IsPriceInformationVisible && IsOrderByCPQ && CPQ > 1) {#
+    ${kendo.toString(CPQ,"n0")} ${getUnitOfMeasure(data, "~{PerCase}~", false)}
+    #} else {#
+    &nbsp;
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductMinOrderViewTemplate">
+    #if (!IsLimitPartOrderQuantity && MinOrderQty > 1 && !IsOrderByCPQ) {#
+    ~{MinOrderOf}~ ${kendo.toString(MinOrderQty,"n0")} #if (Pieces > 1) {#${getUnitOfMeasure(data, "~{Packs}~", true)}#}#
+    #} else if (MinCartQty > 1 && !IsOrderByCPQ) {#
+    ~{MinOrderOf}~ ${kendo.toString(MinCartQty,"n0")} #if (Pieces > 1) {#${getUnitOfMeasure(data, "~{Packs}~", true)}#}#
+    #} else if (IsOrderByCPQ && CPQ > 0) {#
+    ~{MinOrderCaseOne}~
+    #} else {#
+    &nbsp;
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductLeadTimeViewTemplate">
+    #if (IsKit) {
+        if (AllKitPartsEdelivery) {#
+            ~{ElectronicallyDelivered}~
+        #} else if (KitStockMessage != null && KitStockMessage != "") {#
+            #=KitStockMessage#
+        #} else {#
+            &nbsp;
+        #}
+    } else if (IsConfigurable && ConfigurableStockMessage != null && ConfigurableStockMessage != "") {#
+        #=ConfigurableStockMessage#
+    #} else if (IsEdeliveryOnly) {#
+        ~{ElectronicallyDelivered}~
+    #} else if (IsExpired || !FlagOffered || !IsAvailable){#
+        &nbsp;
+    #} else if (QtyAvailable > 0 && !CanCustomize) {#
+        ~{InStock}~
+    #} else if (TotalLeadTime > 0 && userSettings.IsEstimateShipDateVisible) {
+        if (TotalLeadTime > 1) {#
+            ~{ShipsIn}~ #=TotalLeadTime# ~{Days}~
+        #} else {#
+            ~{ShipsIn}~ #=TotalLeadTime# ~{Day}~
+        #}
+    } else if (userSettings.IsEstimateShipDateVisible) {#
+        ~{ShipmentTimeVaries}~
+    #} else {#
+        &nbsp;
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductNameViewTemplate">
+    #if (PartName != null && PartName.trim().length > 0) {##= PartName##}else{##= Sku##}#
+</script>
+<script type="text/x-kendo-template" id="_ProductPriceViewTemplate">
+    #if(userSettings.IsPriceInformationVisible){
+    #
+    #if (MinCartQty > 1 && !IsPriceOverride){#
+    ${kendo.toString(Price/DefaultCartQty,"C")}
+    #} else {#
+    ${kendo.toString(Price,"C")}
+    #}#
+    #if (IsKit && !IsRegularKit) {#
+    <!-- just show pricing only -->
+    #} else if (IsEdeliveryOnly) {#
+    ~{Edelivery}~
+    #} else if (Pieces <= 1 || IsRegularKit) {#
+    ${getUnitOfMeasure(data, "~{Ea}~", false)}
+    #} else if (IsPriceOverride) {#
+    <p>${kendo.toString(BasePrice,"C")} ${getUnitOfMeasure(data, "~{PerPackOf}~", false)} ${kendo.toString(Pieces,"n0")}</p>
+    #} else {#
+    ${getUnitOfMeasure(data, "~{PerPackOf}~", false)} ${kendo.toString(Pieces,"n0")}
+    #}#
+    #} else {#
+    &nbsp;
+    #if (IsKit && !IsRegularKit) {#
+    <!-- just show pricing only -->
+    #} else if (IsEdeliveryOnly) {#
+    ~{Edelivery}~
+    #} else if (Pieces <= 1 || IsRegularKit) {#
+    <!--ea.-->
+    #} else {#
+    ${getUnitOfMeasure(data, "~{SoldInPacksOf}~", false)} ${kendo.toString(Pieces,"n0")}
+    #}#
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductQuantityAvailableViewTemplate">
+    #if (userSettings.IsInventoryInformationVisible) {#
+        #if (IsKit || IsConfigurable || IsEdeliveryOnly){#
+
+        #} else {#
+            #if (CanCustomize || IsPrintOnDemand || IsPurchaseWorkflow){#
+                #if (showLabel) {#~{Avail}~:#}#
+                <b><span style="font-family: Verdana, Tahoma, sans-serif; font-size: 150%">∞</span></b>
+            #} else {#
+                #if (showLabel) {#~{Avail}~:#}#
+                <b>${kendo.toString(QtyAvailable,"n0")}</b>
+            #}#
+        #}#
+    #}#
+
+</script>
+
+<script type="text/x-kendo-template" id="_ProductQuantityOnHandViewTemplate">
+    #if (userSettings.IsInventoryInformationVisible) {#
+        #if (IsEdeliveryOnly) {#
+        #} else if ((IsCustomizeable || CanCustomize) && !IsPurchaseWorkflow) {#
+            #if (showLabel) {#
+                ~{OnHand}~:
+            #}#
+            <b>~{OnDemand}~</b>
+        #} else if (IsConfigurable || IsKit) {#
+            #if (showLabel) {#
+                ~{OnHand}~:
+            #}#
+            <a data-argosy-dataid="${PartId}" data-argosy-action="showKitInventorymodal"><b>~{SeeInventory}~</b></a>
+        #} else if(IsPurchaseWorkflow || IsPrintOnDemand){#
+            #if(QtyOnHand > 0) {#
+                #if (showLabel) {#
+                    ~{OnHand}~:
+                #}#
+                <b>${kendo.toString(QtyOnHand,"n0")}</b>
+            #} else {#
+                #if (showLabel) {#
+                    ~{OnHand}~:
+                #}#
+                <b>~{OnDemand}~</b>
+            #}#
+        #} else {#
+            #if (showLabel) {#
+                ~{OnHand}~:
+            #}#
+            <b>${kendo.toString(QtyOnHand,"n0")}</b>
+        #}#
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_CartProductQuantityOnAvailableViewTemplate">
+	#if (userSettings.IsInventoryInformationVisible) {#
+		#if (!IsKit && !IsConfigurable && !IsEdeliveryOnly){#
+			#if(showLabel) {#
+				~{Available}~
+			#}#
+			#if (CanCustomize || IsPrintOnDemand || IsPurchaseWorkflow){#
+				<b><span style="font-family: Verdana, Tahoma, sans-serif; font-size: 150%">∞</span></b>
+			#} else {#
+				<b>${kendo.toString(QtyAvailable,"n0")}</b>
+			#}#
+		#}#
+	#}#
+</script>
+<script type="text/x-kendo-template" id="_ProductMaxMinOrderViewTemplate">
+    #if (userSettings.IsMaxOrderQtyVisible) {#
+    #if (MinOrderQty > 0) {#
+    <span class=".text-nowrap">~{MinOrderQuantity}~:</span>
+    <b>${MinOrderQty}</b>#}# #if (MaxOrderQty > 0 && MaxOrderQty < 99999) {#
+    <span class=".text-nowrap">~{MaxOrderQuantity}~:</span>
+    <b>${MaxOrderQty}</b>#}#
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductActionButtonsViewTemplate">
+        # if (true) { #
+        <!-- what part colum should trigger this? -->
+        <div class="hidden-xs hidden-sm"><a data-argosy-action="addProductHover" class="sm-icon" data-argosy-target=".single-item"><i title="More Details" class="fa fa-info-circle"></i></a></div>
+        # } #
+        #if (ItemType == 2) {#
+        #if (!IsKit && userSettings.IsInventoryInformationVisible) {#
+        <div class="hidden-xs hidden-sm"><a data-argosy-dataid="${PartId}" data-argosy-partname="${PartName}" data-argosy-action="showProductUsageHistory" class="sm-icon"><i title="Part History" class="fa fa-bar-chart-o"></i></a></div>
+        #}#
+        # if (IsFavorite) { #
+        <div class="hidden-xs hidden-sm"><a data-argosy-action="addRapidOrder" data-argosy-dataid="${PartId}" class="sm-icon selected"><i title="Favorite" class="fa fa-star"></i></a></div>
+        # } else { #
+        <div class="hidden-xs hidden-sm"><a data-argosy-action="addRapidOrder" class="sm-icon" data-argosy-dataid="${PartId}"><i title="Favorite" class="fa fa-star"></i></a></div>
+        # } #
+        # if (userSettings.IsAdmin) { #
+        <div class="hidden-xs hidden-sm">
+            <a data-argosy-action="showViewingRights"
+               data-part-id="${PartId}"
+               data-part-name="${PartName}"
+               data-company-id="${CompanyId}"
+               data-inclusion-tags="${InclusionTags}"
+               data-exclusion-tags="${ExclusionTags}"
+               class="sm-icon">
+                <i title="Viewing Rights" class="fa fa-eye"></i>
+            </a>
+        </div>
+        # } #
+        #}#
+</script>
+<script type="text/x-kendo-template" id="_ProofingApproveProofTemplate">
+    <div id="divApproveProof" class="hide fancy800">
+        <h3>~{ProofApproval}~</h3>
+        <div class=""></div>
+        #if (userSettings.ApprovalMessage != null && userSettings.ApprovalMessage.trim().length > 0) {#
+        <p class="padb10">#=userSettings.ApprovalMessage#</p>
+        #} else {#
+        <p class="padb10"><b>I agree with the statements below:</b></p>
+        <p class="padb10">I have verified that all spelling and content are correct.</p>
+        <p class="padb10">I am satisfied with how this proof represents the high resolution print job.</p>
+        <p class="padb10"><b>I understand I cannot make changes after I place this order, and I assume all responsibility for any errors.</b></p>
+        #}#
+        <div class="form padu10 clear">
+            <div class="row padb10">
+                <div class="label-style">~{InitialHere}~ <b class="co-warning">*</b></div>
+                <div class="input-style"><input style="width: 60px;" type="text" id="approvalProofInitial" maxlength="3" class="defaultFancyboxFocus" /></div>
+            </div>
+            <div class="row" id="divProofName">
+                <div class="label-style">~{ProofName}~</div>
+                <div class="input-style"><input type="text" id="approvalProofName" /></div>
+            </div>
+        </div>
+        <div class="clear">
+            <div class="floatl padu10"><a onclick="$.fancybox.close();" class="btn btn-default"><i class="fa fa-chevron-left"></i> ~{Cancel}~</a></div>
+
+            <div class="floatr padu10"><a class="btn btn-default" id="approvalProofAcceptButton"> ~{Accept}~ <i class="fa fa-chevron-right"></i></a></div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ProductCartButtonsViewTemplate">
+    <div class="trigger">
+        # if(!IsExpired && IsAvailable && FlagOffered){#
+            # if (typeof(ButtonAction) != "undefined"){#
+                #if(ButtonAction == "AddToKit"){ #
+                    <a class="btn btn-primary btn-sm" onclick="${AddToKitAction };">~{AddToKit}~</a>
+            # }} else if (IsBundleKit) { #
+                <a href="/Store/Proofing/BundleBuilder/${Sku}" class="fancybox btn btn-primary  btn-sm" data-bind="events: {click: ${onClick}}">~{OrderBundle}~</a>
+            # } else if (IsDynamicKit || IsBuildAKit) { #
+                <a href="/Store/Kit/Builder/${Sku}/" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{BuildKit}~</a>
+            # } else if (IsRegularKit) { #
+                <a data-argosy-dataid="${PartId}" data-argosy-action="showPartQuantityModal" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{AddToCart}~</a>
+            # } else if (Options.AllowNegativeDemand == null || (Options.AllowNegativeDemand == true || (Options.AllowNegativeDemand == false && QtyAvailable > 0))) { #
+                #if (CanUpload & ProjectFileName != null && !(IsConfigurable || IsAttributeConfigured )) {#
+                    <a href="/Store/Proofing/Customization/${Sku}/" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{OrderNow}~</a>
+                # } else if (CanDirectMail && !IsPersonalizeable) { #
+                    <a data-argosy-dataid="${PartId}" data-argosy-action="addtocart" data-argosy-qty="1" data-argosy-partname="${PartName}" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{OrderNow}~</a>
+                # } else if (IsConfigurable || IsAttributeConfigured) { #
+                    <a data-argosy-dataid="${PartId}" data-argosy-action="showPartConfigureOptions" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{OrderNow}~</a>
+                # } else if (CanCustomize && !CanUpload) { #
+                    <a href="/Store/Proofing/Customization/${Sku}/" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{Personalize}~</a>
+                # } else if (CanCustomize && CanUpload) { #
+                    <a href="/Store/Proofing/Upload/${Sku}/" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{UploadNow}~</a>
+                # } else { #
+                    <a data-argosy-dataid="${PartId}" data-argosy-action="showPartQuantityModal" class="btn btn-primary btn-sm" data-bind="events: {click: ${onClick}}">~{AddToCart}~</a>
+                # } #
+            # } else { #
+                <span class="padr5 btn btn-sm text-danger f12">Out of Stock</span>
+            # } #
+        # } else if (IsExpired) {#
+            <span class="padr5 btn btn-sm text-danger f12">~{Exp}~ ${kendo.toString(kendo.parseDate(ExpirationDate),"MM/dd/yyyy")}</span>
+        # } #
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ProductQuantityModalViewTemplate">
+    <div id="_ProductQtyBindHref" class="mw300">
+        <h2 class="center nopadding nomargin">#= renderProductNameViewTemplate(data)#</h2>
+        <div class="center padu5 padb10"><p class="big-price nowrap">#= renderProductPriceViewTemplate(data) #</p></div>
+        #if (hasImage(data)) {#<div class="center"><img class="img-responsive hidden-xs  img-border center-image" style="max-height: 300px" src="${ThumbnailFile}" /></div>#}#
+
+        <div class="clearfix summary-information maru10">
+            <div class="col-sm-12 lg-floatl text-center clearfix">
+                <div class="floatl padu5">
+                    <b>~{Qty}~</b>
+                </div>
+                <div class="floatr marr5">
+                    #= renderProductQuantityInput(data, data.DefaultQuantity, data.IsEdeliveryOnly, 0, "", "updateQuantity", "priceBreakDataBound", null, "part.Discounts") #
+                    <div>#= renderProductOrderInfoTemplate(data) #</div>
+                </div>                
+                #if (!data.IsLimitPartOrderQuantity && userSettings.IsMaxOrderQtyVisible && (data.MinOrderQty > 1 || (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999))) {#
+                <div class="floatr marr5 padu5 small">
+                    #if (data.MinOrderQty > 1 && (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999)) {#
+                    <em>Min: ${kendo.toString(data.MinOrderQty, "n0")}, Max: ${kendo.toString(data.MaxOrderQty, "n0")}</em>                    
+                    #} else if (data.MinOrderQty > 1) {#    
+                    <em>Minimum ${kendo.toString(data.MinOrderQty, "n0")}.</em>                            
+                    #} else if (data.MaxOrderQty > 1 && data.MaxOrderQty < 99999) {#
+                    <em>Maximum ${kendo.toString(data.MaxOrderQty, "n0")}.</em>           
+                    #}#
+                </div>
+                #}#
+                <br style="clear:both" />
+            </div>
+            <div class="col-sm-12 nobottompadding mobileu10 vtop">
+                <a data-bind="click:addToCart" class="btn btn-primary btn-block fancyboxDefaultSubmit"><i class="fa fa-shopping-cart"></i> ~{AddToCart}~</a>
+            </div>
+            
+        </div>
+        <div id="_ProductQuantityModalAlert" class="alert alert-danger alert-dismissible hide alert-qty-modal" role="alert">
+            <p  class="hide _alertModalMsgs _ProductQuantityModalAlertForZero">~{PartAlertZeroQty}~</p>
+            <p  class="hide _alertModalMsgs _ProductQuantityModalAlertForMin">~{PartAlertForMin}~</p>
+            <p  class="hide _alertModalMsgs _ProductQuantityModalAlertForMax">~{PartAlertForMax}~</p>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ProductOrderInfoViewTemplate">
+    #if(IsOrderByCPQ){#
+    <p class="text-center smallest_txt italic "> ~{Multiples}~ ${CPQ}</p>
+    # } else if (Pieces <= 1) { #
+
+    # } else { #
+    <p class="text-center smallest_txt italic ">${getUnitOfMeasure(data, "~{PacksOf}~", true)} ${kendo.toString(Pieces,"n0")}</p>
+    #}#
+</script>
+<script type="text/x-kendo-template" id="_ProductModelViewTemplate">
+    <div class="hide">
+        <div data-argosy-modal="ModalPartQuantity">
+            <div class="k-content">
+                <div data-argosy-view="ModalPartQuantityView"></div>
+            </div>
+        </div>
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_ProductModalCartButtonsViewTemplate">
+    # if(!IsExpired && IsAvailable && FlagOffered){#
+        # if (IsBundleKit) { #
+            <a href="/Store/Proofing/BundleBuilder/${Sku}" class="fancybox btn btn-primary fancyboxDefaultSubmit  btn-sm">~{OrderBundle}~</a>
+        # } else if (IsDynamicKit || IsBuildAKit) { #
+            <a href="/Store/Kit/Builder/${Sku}" class="btn btn-primary fancyboxDefaultSubmit">~{BuildKit}~</a>
+        # } else if (IsRegularKit) { #
+            <a data-argosy-dataid="${PartId}" data-argosy-action="addToCart" data-argosy-partname="${PartName}" class="btn btn-primary fancyboxDefaultSubmit">~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+        # } else if (CanDirectMail && !IsPersonalizeable && !(IsConfigurable || IsAttributeConfigured )) { #
+            <a data-argosy-dataid="${PartId}" data-argosy-action="addToCart" data-argosy-partname="${PartName}" class="btn btn-primary fancyboxDefaultSubmit">~{OrderNow}~</a>
+        # } else if (Options.AllowNegativeDemand == null || (Options.AllowNegativeDemand == true || (Options.AllowNegativeDemand == false && QtyAvailable > 0))) { #
+            #if (CanUpload & ProjectFileName != null && !(IsConfigurable || IsAttributeConfigured )) {#
+                <a href="/Store/Proofing/Customization/${Sku}/" class="btn btn-primary btn-sm">~{OrderNow}~</a>
+            # } else  if (IsConfigurable || IsAttributeConfigured ) { #
+                <a onclick="$(document).trigger(argosyEvents.SHOW_PART_CONFIGURATION_MODAL,${PartId})" class="btn btn-primary fancyboxDefaultSubmit">~{OrderNow}~</a>
+            #} else if (CanCustomize && CanUpload) { #
+                <a href="/Store/Proofing/Upload/${Sku}/" class="btn btn-primary btn-sm">~{UploadNow}~</a>
+            # }else if (CanCustomize) { #
+                <a href="/Store/Proofing/Customization/${Sku}/" class="btn btn-primary fancyboxDefaultSubmit">~{Personalize}~</a>
+            # } else { #
+                <a data-argosy-dataid="${PartId}" data-argosy-action="addToCart" data-argosy-partname="${PartName}" class="btn btn-primary fancyboxDefaultSubmit">~{AddToCart}~ <i class="fa fa-chevron-right"></i></a>
+            # } #
+        # } else {#
+            <h5 class="important padr5">Out of Stock</h5>
+        # } #
+    #} else{#
+        <h5 class="important padr5">~{NotAvailable}~</h5>
+    #}#
+</script>
+<script type="text/x-kendo-tmp" id="_ModalProductEnlargeImageViewTemplate">
+    <div class="enlargeimg"> <img class="img-responsive" title="Enlarge Image" alt="${Sku}" src="${LargeThumbnailFile}"></div>
+    <div class="center padu10 hide"><a class="btn btn-default" data-argosy-dataid="${PartId}" data-argosy-action="showProductDetails"><i class="fa fa-chevron-left"></i> Return to Details</a></div>
+</script>
+<script type="text/x-kendo-tmp" id="_ModalProductConfigurationEnlargeImageViewTemplate">
+    <div class="enlargeimg"><img class="img-responsive" title="Enlarge Image" alt="${Sku}" src="${LargeThumbnailFile}"></div>
+    <div class="center padu10"><a class="btn btn-default" data-argosy-dataid="${PartId}" data-argosy-action="showPartConfigureOptions"><i class="fa fa-chevron-left"></i> Return to Configuration</a></div>
+</script>
+<script type="text/x-kendo-template" id="_ProductViewTemplate">
+    <div id="_productContainerHeader">
+        <h2 class="title" data-argosy-view="MvcProductViewTitle"></h2>
+        <div class="floatr toggle-view  padl10">
+            <!--<a title="Masonry view" class="btn btn-link" data-argosy-view="MvcProductMasonryViewSelector"><i class="fa fa-align-left fa-rotate-90"></i></a>-->
+            <a title="Grid view" class="btn btn-link selected  hidden-xs" data-argosy-view="MvcProductListViewSelector"><i class="fa fa-th"></i></a>
+            <a title="List view" class="btn btn-link hidden-xs" data-argosy-view="MvcProductGridViewSelector"><i class="fa fa-th-list"></i></a>
+            <a title="Show Filters" class="btn btn-link hidden-xs" data-argosy-view="MvcProductCompanyLinkViewSelector" onclick="$(document).trigger(argosyEvents.EVENT_TOGGLE_COMPANY_FILTERS)"><i class="fa fa-filter"></i></a>
+            <a title="Show Links" class="btn btn-link hidden-xs" data-argosy-view="MvcProductPageLinkViewSelector"><i class="fa fa-caret-square-o-left"></i></a>
+        </div>
+        <div class="floatr">
+            <select placeholder data-argosy-view="MvcProductViewSort" class="mobile100">
+                <option data-argosy-sort="rank" selected="selected">~{SortBy}~</option>
+                <option data-argosy-sort="price-asc">~{PriceSortHighest}~</option>
+                <option data-argosy-sort="price-desc">~{PriceSortLowest}~</option>
+                <option data-argosy-sort="new-desc">~{ProductsSortNewest}~</option>
+                <option data-argosy-sort="new-asc">~{ProductsSortOldest}~</option>
+                <option data-argosy-sort="name-asc">~{ProductsSortAZ}~</option>
+                <option data-argosy-sort="name-desc">~{ProductsSortZA}~</option>
+            </select>
+        </div>
+        <div class="floatr padu5 padr10" style="white-space: nowrap" data-argosy-view="MvcProductViewSortText"></div>
+        <br style="clear: both">
+    </div>
+    <div class="padl10 padr10 hidden-xs" data-argosy-view="MvcProductViewComments"></div>
+    <div data-argosy-view="MvcProductListView"></div>
+    <div class="padu10" data-argosy-view="MvcProductGridView"></div>
+    <div class="padu10" data-argosy-view="MvcCategoryGridView"></div>
+    <div class="padu10" data-argosy-view="MvcProductMasonryView"></div>
+    <div data-argosy-view="MvcHotProductsView"></div>
+    <div data-argosy-view="MvcProductViewPager"></div>
+</script>
+<div id="_ModalProductEnlargeImage" style="display:none;"></div>
+<div id="_ModalProductContainer" style="display:none;"></div>
+<script type="text/x-kendo-tmp" id="_ModalProductDetailKitGridTemplate">
+    <tr>
+        <td>
+            <img style="max-height: 50px;max-width: 50px;" class="img-responsive" alt="Part Image" src="${ChildPart.ThumbnailFile}" />
+        </td>
+        <td>
+            <p>#=ChildPartName#</p>
+            #if (ChildPart.ClientCode != null && ChildPart.ClientCode.trim().length > 0) {#
+            <p>~{ClientCode}~: ${ChildPart.ClientCode}</p>
+            #}#           
+            #
+            var todayYear = new Date().getFullYear();
+            var dateRevisedYear = new Date(ChildPart.DateRevised).getFullYear();
+            var expirationDateYear = new Date(ChildPart.ExpirationDate).getFullYear();
+            #
+            #if (dateRevisedYear > (todayYear - 5) && dateRevisedYear < (todayYear + 5)) {#
+            <p class="partdetails-revisiondate">~{RevisionDate}~: #=kendo.toString(kendo.parseDate(ChildPart.DateRevised), "d")#</p>
+            #}#
+            #if (expirationDateYear > (todayYear - 5) && expirationDateYear < (todayYear + 5)) {#
+            <p>~{ExpirationDate}~: #=kendo.toString(kendo.parseDate(ChildPart.ExpirationDate), "d")#<p>
+            #}#
+        </td>
+        <td class="globals-qtyavailable textr">
+            #= renderProductQuantityAvailableTemplate(ChildPart, false)#
+        </td>
+        <td class="textr">
+            #= renderProductQuantityOnHandTemplate(ChildPart, false)#
+        </td>
+        <td>
+            <p class="textr">${Quantity}</p>
+        </td>
+    </tr>
+</script>
+<script type="text/x-kendo-tmp" id="_ModalProductDetailConfigurationGridTemplate">
+    <tr>
+        <td>
+            <img style="max-height: 50px;max-width: 50px;" class="img-responsive" alt="Part Image" src="${ThumbnailFile}" />
+        </td>
+        <td>
+            <p>#= PartName # </p>
+        </td>
+        <td class="globals-qtyavailable textr">
+            #= renderProductQuantityAvailableTemplate(data, false)#
+        </td>
+        <td class="textr">
+            #= renderProductQuantityOnHandTemplate(data, false)#
+        </td>
+    </tr>
+</script>
+<script id="upload-template-form" type="text/x-tmpl">
+    <form id="fileupload" action="/UploadHandler.ashx" method="POST" enctype="multipart/form-data">
+        <div class="row fileupload-buttonbar fancy600">
+            <div class="col-md-12">
+                <!-- The fileinput-button span is used to style the file input field as button -->
+                <span class="btn btn-success fileinput-button">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Add files...</span>
+                    <input type="file" name="files[]" multiple>
+                    <input type="hidden" name="ValidationKey" />
+                </span>
+                <!--<button type="button" class="btn btn-success save">
+                    <i class="glyphicon glyphicon-plus"></i>
+                    <span>Save Assets</span>
+                </button>-->
+                <span class="fileupload-process"></span>
+            </div>
+            <div class="col-md-12 fileupload-progress fade">
+                <!-- The global progress bar -->
+                <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar progress-bar-success" style="width:0%;"></div>
+                </div>
+                <div class="progress-extended">&nbsp;</div>
+            </div>
+        </div>
+        <table role="presentation" class="table table-striped"><tbody class="files"></tbody></table>
+    </form>
+    <h3 class="text-center">~{DragDropFiles}~</h3>
+</script>
+
+<script id="template-upload" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-upload fade">
+        <td>
+            <span class="preview"></span>
+        </td>
+        <td>
+            <p class="name">{%=file.name%}</p>
+            <strong class="error text-danger"></strong>
+        </td>
+        <td>
+            <p class="size">Processing...</p>
+            <div class="progress progress-striped active" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="progress-bar progress-bar-success" style="width:0%;"></div></div>
+        </td>
+        <!--<td>
+            {% if (!i && !o.options.autoUpload) { %}
+            <button class="btn btn-primary start" disabled>
+                <i class="glyphicon glyphicon-upload"></i>
+                <span>Start</span>
+            </button>
+            {% } %}
+            {% if (!i) { %}
+            <button class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>Cancel</span>
+            </button>
+            {% } %}
+        </td>-->
+    </tr>
+    {% } %}
+</script>
+<!-- The template to display files available for download -->
+<script id="template-download" type="text/x-tmpl">
+    {% for (var i=0, file; file=o.files[i]; i++) { %}
+    <tr class="template-download fade">
+        <td>
+            <span class="preview">
+                {% if (file.thumbnailUrl) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" data-gallery><img src="{%=file.thumbnailUrl%}"></a>
+                {% } %}
+            </span>
+        </td>
+        <td>
+            <p class="name">
+                {% if (file.url) { %}
+                <a href="{%=file.url%}" title="{%=file.name%}" download="{%=file.name%}" {%=file.thumbnailUrl?'data-gallery':''%}>{%=file.name%}</a>
+                <input type="hidden" value="{%=file.url%}" class="file" />
+                {% } else { %}
+                <span>{%=file.name%}</span>
+                {% } %}
+            </p>
+            {% if (file.error) { %}
+            <div><span class="label label-danger">~{Error}~</span> {%=file.error%}</div>
+            {% } %}
+        </td>
+        <td>
+            <span class="size">{%=o.formatFileSize(file.size)%}</span>
+        </td>
+        <td>
+            {% if (file.deleteUrl) { %}
+            <button class="btn btn-default delete" data-type="{%=file.deleteType%}" data-url="{%=file.deleteUrl%}" {% if (file.deletewithcredentials) { %} data-xhr-fields='{"withCredentials":true}' {% } %}>
+                <i class="glyphicon glyphicon-trash"></i>
+                <span>~{Remove}~</span>
+            </button>
+            <input type="checkbox" name="delete" value="1" class="toggle">
+            {% } else { %}
+            <button class="btn btn-warning cancel">
+                <i class="glyphicon glyphicon-ban-circle"></i>
+                <span>~{Cancel}~</span>
+            </button>
+            {% } %}
+        </td>
+    </tr>
+    {% } %}
+</script>
+
+<script type="text/x-kendo-template" id="_GlobalNoResultsTemplate">
+    <div>
+        <h3 class="text-center">${Message}</h3>
+    </div>
+</script>
+
+<script type="text/x-kendo-template" id="_GlobalPricingTemplate">
+    #if(!data.part.isExpired && (!data.part.isExpired && data.part.flagOffered)){#
+        #if (data.options.renderPriceBreak) {#
+            <div data-template="_GlobalPriceBreakTemplate" data-bind="source: this"></div>
+        #} else if (data.options.renderPriceInput) {#
+            <div data-template="_GlobalPriceInputTemplate" data-bind="source: this"></div>
+        #}#
+        #if(data.part.isOrderByCpq){#
+            <div>
+                <span class="small">
+                    <i>Multiples of ${kendo.toString(data.part.cpq,'n0')}</i>
+                </span>
+            </div>
+        #}#
+    #} else {#
+        #if(data.part.isExpired) {#
+            ~{Exp}~
+            <span>${kendo.toString(kendo.parseDate(data.part.expirationDate),'MM/dd/yyyy')}</span>
+        #} else {#
+            ~{NotOffered}~
+        #}#
+    #}#
+
+</script>
+<script type="text/x-kendo-template" id="_GlobalPriceBreakTemplate">
+    <select class="price-break-dropdown"
+            data-role="dropdownlist"
+            data-bind="source: discounts, value: value, disabled: data.isInputDisabled, events: {select: change, dataBound: dataBound}"
+            data-part-id="${data.part.partId}"
+            data-part-sku="${data.part.sku}"
+            data-part-name="${data.part.name}"
+            data-cart-qty="${data.options.isCartQty}"
+            data-cart-input="true"
+            data-value="${value}"
+            data-header-template="_GlobalPriceBreakHeaderTemplate"
+            data-value-template="_GlobalPriceBreakValueTemplate"
+            data-template="_GlobalPriceBreakRowTemplate"
+            data-value-field="Quantity"
+            data-text-field="Quantity"
+            data-cart-id="${data.options.cartId}"
+            data-part-rank="${data.part.rank}"
+            data-value-primitive="true"></select>
+
+</script>
+<script type="text/x-kendo-template" id="_GlobalPriceInputTemplate">
+    <input type="number"
+           class="qty_input submitAction"
+           data-role="numerictextbox"
+           data-spinners="false"
+           data-step="1"
+           data-format="n0"
+           data-cart-input="true"
+           data-part-id="${data.part.partId}"
+           data-part-sku="${data.part.sku}"
+           data-part-name="${data.part.name}"
+           data-cart-qty="${data.options.isCartQty}"
+           data-cart-id="${data.options.cartId}"
+           data-part-rank="${data.part.rank}"
+           data-min="${data.part.minQty}"
+           data-max="${data.part.maxQty}"
+           data-bind="disabled: isInputDisabled, value: value, events: {change: change, dataBound: dataBound, spin: spin}">
+
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalPriceBreakHeaderTemplate">
+    <div class="row ${getPriceBreakQuantitySizeClass("header")}">
+        <div style="${getPriceBreakQuantityClass()}" class="floatl k-state-default price-break-dropdown-item">~{Quantity}~</div>
+        #if (userSettings.IsPriceInformationVisible) {#
+        <div style="width: 33%;" class="floatl k-state-default price-break-dropdown-item">~{UnitPrice}~</div>
+        <div style="width: 33%;" class="floatl k-state-default price-break-dropdown-item">Price</div>
+        #}#
+    </div>
+
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalPriceBreakValueTemplate">
+    <span class="selected-value">${data.Quantity}</span>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalPriceBreakRowTemplate">
+    <div class="row  ${getPriceBreakQuantitySizeClass("row")}">
+        <div style="${getPriceBreakQuantityClass()}" class="floatl k-state-default price-break-dropdown-item">${Quantity}</div>
+        
+        #if (userSettings.IsPriceInformationVisible) {#
+        <div style="width: 33%;" class="floatl col-sm-4 k-state-default price-break-dropdown-item">
+        #if (Type == 37) {#
+        ${kendo.toString(Discount/100,"p2")}
+        #} else {#
+        ${kendo.toString(Discount,"C4")}
+        #}#
+        </div>
+        
+        #if (Type == 37) {#
+            <div style="width: 33%;" class="floatl k-state-default price-break-dropdown-item">#= kendo.toString(((CostPerEach * (1-data.Discount/100)) * data.Quantity),"c2") #</div>
+        #} else {#
+            #if(isNonRangeValue(data.Range)){#
+            <div style="width: 33%;" class="floatl k-state-default price-break-dropdown-item">#= kendo.toString((data.Discount * data.Range),"c2") #</div>
+            #}#
+        #}#
+        #}#
+    </div>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalEditAttributes">
+    <div class="row fancywidth">
+        <div class="col-md-4">
+            #=renderProductImageViewTemplate(data.Part)#
+        </div>
+        <div class="col-md-8">
+            #=renderAttributesDisplay(data)#
+        </div>
+    </div>
+    <div class="row text-center padu10">
+        <a data-bind="click:updateAttributes" class="btn btn-primary hand">Save <i class="fa fa-floppy-o"></i></a>
+    </div>
+</script>
+<script type="text/x-kendo-tmpl" id="_GlobalAttributesDisplay">
+    <div class="clearfix  information " style="max-height:300px;overflow-x:auto;overflow-y:auto">
+        #for(var i = 0; i < data.PartAttributes.length; i++) {
+         var attribute = data.PartAttributes[i];
+        #
+        <br />
+        <div class="clearfix col-md-12 padb10">
+            <label class="col-md-5">${attribute.Name} #if (attribute.IsRequired) {#<span class="text-danger">*</span>#}#</label>
+            <div class="col-md-7">
+                #if (attribute.ControlType.toLowerCase() == "textbox") {#
+                <input type="text"
+                       class="attributeOptions w100"
+                       data-bind="events: {change: onTextBoxChange}"
+                       data-type-id="${attribute.Attributes[0].Type.Id}"
+                       data-cost="${attribute.Attributes[0].Value}"
+                       data-type-name="${attribute.Name}"
+                       value="${attribute.CurrentValue}"
+                       #if (attribute.IsRequired) {#required#}# />
+                #} else {#
+                <select class="pull-left attributeOptions w100"
+                        data-role="dropdownlist"
+                        data-bind="events: {change: onAttributeChange}"
+                        data-template="_PartConfigurationAttributesDropdownTemplate"
+                        data-current-value="${attribute.CurrentValue}"
+                        data-type-name="${attribute.Name}"
+                        data-option-label="Select an Option..."
+                        #if (attribute.IsRequired) {#required#}#>
+                    #for (var x = 0; x < attribute.Attributes.length; x++) {#
+                    <option value="${getAttributeValueKey(attribute.Attributes[x])}" #=isAttributeSelected(attribute, attribute.Attributes[x])#>${attribute.Attributes[x].Type.Name}</option>
+                    #}#
+                </select>
+                #}#
+                <span class="col-md-4 attributeCost">
+                #if (attribute.CurrentCost != null && attribute.CurrentCost > 0) {#
+                ${kendo.toString(attribute.CurrentCost, "c")}
+                #}#
+                </span>
+            </div>
+        </div>
+        #}#
+    </div>
+</script>
+<script type="text/x-kendo-template" id="_PartConfigurationAttributesDropdownTemplate">
+    #
+    var attributeCost = parseAttributeCostFromValueKey(value);
+    #
+    <span>
+        ${text} #if (attributeCost != "0" && attributeCost != "" && attributeCost > 0) {#<span class="pull-right">+${kendo.toString(attributeCost, "c")}</span>#}#
+    </span>
+</script>
+<script type="text/x-kendo-template" id="_OrderUserName">
+    <span>${FirstName} ${LastName}</span>
+</script>
+<script type="text/x-kendo-template" id="_OrderStatus">
+    #= renderOrderStatus(status)#</span>
+</script>
+<script type="text/x-kendo-template" id="_KitItemTypeViewTemplate">
+
+</script>
+
+<script id="_cartLineResponseTemplate" type="text/x-kendo-tmpl">
+<div class=" fancy600">
+    <div class="row">
+        <div class="col-md-12" style="text-align: center">
+            <hr data-bind="visible: lineErrorsHrVisible" />
+            <button class="btn btn-primary hand center-image"
+                    data-bind="events: { click: clearCartResponse }">
+                ~{PleaseCorrectItemsBelow}~
+            </button>
+            <br/>
+
+            <div class="alert alert-danger">
+                <i class="fa fa-exclamation-triangle" style="color: red" aria-hidden="true"></i>
+                <span style="font-weight: bold; color: red"> Please correct these Item(s) to continue</span>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div data-role="grid"
+                 data-id="lineErrorsGrid"
+                 data-groupable="false"
+                 data-columns="[
+                            {
+                                title: '~{Item}~',
+                                field: 'PartName'
+                            }, {
+                                title: '~{Message}~',
+                                field: 'Error',
+                                aggregates: ['count'],
+                                groupHeaderTemplate: '#=value#'
+                            }
+                        ]"
+                 data-bind="source: lineErrors"
+                 data-sortable="true"
+                 data-selectable="false"
+                 data-row-template="_lineResponseRowTemplate">
+              
+            </div>
+        </div>
+    </div>
+    <div class="padu10">
+        <div class="row">
+            <div class="col-md-12" style="text-align: right; padding-right: 10px">
+                <button class="btn btn-primary hand center-image"
+                        data-bind="events: { click: clearCartResponse }">
+                    ~{Cancel}~
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+</script>
+<script id="_lineResponseRowTemplate" type="text/x-kendo-tmpl">
+    <tr data-uid="${uid}">
+        #if (this.group != null){#
+            #=new Array(this.group().length + 1).join('<td class="k-group-cell"></td>')#
+        #}#
+        <td>
+            <b>#= PartName#</b>
+        </td>
+        <td>
+            #if (CustomError != null) {#
+            <i>#=CustomError#</i>
+            #} else {#
+            <i>#=Error#</i>
+            #}#
+        </td>
+    </tr>
+</script>

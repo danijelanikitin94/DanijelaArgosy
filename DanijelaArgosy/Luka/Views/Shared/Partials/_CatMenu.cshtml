@@ -1,0 +1,12 @@
+﻿@using Argosy.Web.FrontEnd.Core.Extensions
+@using Argosy.Web.FrontEnd.Core.Helpers
+@{
+    var menuItems = new MenuHelper().GetMenu();
+}
+@menuItems.RenderMenu("menu")
+
+<script type="text/javascript">
+    $(function() {
+        
+    });
+</script>

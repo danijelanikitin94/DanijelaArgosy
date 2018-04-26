@@ -1,0 +1,171 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{984C5D8E-D206-4AA2-A673-006DB0117C8B}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Argosy.DataAccess</RootNamespace>
+    <AssemblyName>Argosy.DataAccess</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ArgosyModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArgosyModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ArgosyModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ArgosyModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ArgosyModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUser.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="AspNetUserPassword.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Class1.cs" />
+    <Compile Include="ESM_COMPANY.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_COMP_USERGROUP.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_COMP_USERS.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_COUNTRIES.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_GATEWAY_TYPE.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_GROUPS.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_HIERARCHY.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_LOGIN_AUDIT.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_LOGIN_TOKEN.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_ORDERS.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_PART.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_PARTGROUP.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_PAYMENT_AUTH.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_SITE.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_SITE_GATEWAY.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_SITE_GATEWAY_OPTION.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_STATES.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_TYPEAHEAD.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_UI_CUSTOM_TEXT.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_USERGROUP.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="ESM_USERS.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewCompanyUserHierarchy.cs">
+      <DependentUpon>ArgosyModel.tt</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="ArgosyModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ArgosyModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
+    <None Include="ArgosyModel.edmx.diagram">
+      <DependentUpon>ArgosyModel.edmx</DependentUpon>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="ArgosyModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ArgosyModel.Context.cs</LastGenOutput>
+      <DependentUpon>ArgosyModel.edmx</DependentUpon>
+    </Content>
+    <Content Include="ArgosyModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ArgosyModel.edmx</DependentUpon>
+      <LastGenOutput>ArgosyModel.cs</LastGenOutput>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

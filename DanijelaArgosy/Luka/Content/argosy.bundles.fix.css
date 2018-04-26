@@ -1,0 +1,161 @@
+﻿/*
+
+    Path cleanup to resolve issues with 
+
+
+
+
+@font-face {
+    font-family: 'FontAwesome';
+    src: url('/fonts/fontawesome-webfont.eot?v=4.2.0');
+    src: url('/fonts/fontawesome-webfont.eot?#iefix&v=4.2.0') format('embedded-opentype'), url('/fonts/fontawesome-webfont.woff?v=4.2.0') format('woff'), url('/fonts/fontawesome-webfont.ttf?v=4.2.0') format('truetype'), url('/fonts/fontawesome-webfont.svg?v=4.2.0#fontawesomeregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.k-header,
+.k-grid-header,
+.k-toolbar,
+.k-dropdown-wrap,
+.k-picker-wrap,
+.k-numeric-wrap,
+.k-grouping-header,
+.k-pager-wrap,
+.k-textbox,
+.k-button,
+.k-progressbar,
+.k-draghandle,
+.k-autocomplete,
+.k-state-highlight,
+.k-tabstrip-items .k-item,
+.k-panelbar .k-tabstrip-items .k-item,
+.km-pane-wrapper > .km-pane > .km-view > .km-content {
+    background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+
+.k-widget.k-tooltip {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-icon,
+.k-tool-icon,
+.k-grouping-dropclue,
+.k-drop-hint,
+.k-column-menu .k-sprite,
+.k-grid-mobile .k-resize-handle-inner:before,
+.k-grid-mobile .k-resize-handle-inner:after {
+  background-image: url('/content/kendo/2017.2.504/Default/sprite.png');
+}
+/* IE will ignore the above selectors if these are added too 
+.k-mobile-list .k-check:checked,
+.k-mobile-list .k-edit-field [type=checkbox]:checked,
+.k-mobile-list .k-edit-field [type=radio]:checked {
+  background-image: url('/content/kendo/2017.2.504/Default/sprite.png');
+}
+.k-loading,
+.k-state-hover .k-loading {
+  background-image: url('/content/kendo/2017.2.504/Default/loading.gif');
+}
+.k-loading-image {
+  background-image: url('/content/kendo/2017.2.504/Default/loading-image.gif');
+}
+.k-event,
+.k-task-complete {
+  background: #ffdac1 0 -257px url('/content/kendo/2017.2.504/textures/highlight.png') repeat-x;
+}
+.k-button[disabled],
+.k-button.k-state-disabled,
+.k-state-disabled .k-button,
+.k-state-disabled .k-button:hover,
+.k-button.k-state-disabled:hover,
+.k-state-disabled .k-button:active,
+.k-button.k-state-disabled:active {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-button:hover,
+.k-button.k-state-hover,
+.k-button:focus,
+.k-button.k-state-focused,
+.k-textbox:hover,
+.k-state-hover,
+.k-state-hover:hover,
+.k-pager-wrap .k-link:hover,
+.k-other-month.k-state-hover .k-link,
+div.k-filebrowser-dropzone em,
+.k-draghandle:hover {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-state-selected,
+.k-button:active,
+.k-button.k-state-active,
+.k-draghandle.k-state-selected:hover {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-tool-icon {
+  background-image: url('/content/kendo/2017.2.504/Default/sprite.png');
+}
+.k-autocomplete.k-state-hover,
+.k-autocomplete.k-state-focused,
+.k-picker-wrap.k-state-hover,
+.k-picker-wrap.k-state-focused,
+.k-numeric-wrap.k-state-hover,
+.k-numeric-wrap.k-state-focused,
+.k-dropdown-wrap.k-state-hover,
+.k-dropdown-wrap.k-state-focused {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+/* Progressbar 
+.k-progressbar-indeterminate {
+  background: url('/content/kendo/2017.2.504/Default/indeterminate.gif');
+}
+.k-slider-horizontal .k-tick {
+  background-image: url('/content/kendo/2017.2.504/Default/slider-h.gif');
+}
+.k-slider-vertical .k-tick {
+  background-image: url('/content/kendo/2017.2.504/Default/slider-v.gif');
+}
+.k-tile .k-folder,
+.k-tile .k-file {
+  background-image: url('/content/kendo/2017.2.504/Default/imagebrowser.png');
+}
+.k-primary,
+.k-overflow-container .k-primary {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-primary:focus,
+.k-primary.k-state-focused {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-primary:hover {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+
+.k-primary:active {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+.k-primary.k-state-disabled,
+.k-state-disabled .k-primary,
+.k-primary.k-state-disabled:hover,
+.k-state-disabled .k-primary:hover,
+.k-primary.k-state-disabled:hover,
+.k-state-disabled .k-primary:active,
+.k-primary.k-state-disabled:active {
+  background-image: url('/content/kendo/2017.2.504/textures/highlight.png');
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2), only screen and (min-device-pixel-ratio: 2) {
+    .k-icon:not(.k-loading),
+    .k-grouping-dropclue,
+    .k-drop-hint,
+    .k-callout,
+    .k-tool-icon,
+    .k-state-hover .k-tool-icon,
+    .k-state-active .k-tool-icon,
+    .k-state-active.k-state-hover .k-tool-icon,
+    .k-state-selected .k-tool-icon,
+    .k-state-selected.k-state-hover .k-tool-icon,
+    .k-column-menu .k-sprite,
+    .k-mobile-list .k-check:checked,
+    .k-mobile-list .k-edit-field [type=checkbox]:checked,
+    .k-mobile-list .k-edit-field [type=radio]:checked {
+        background-image: url('/content/kendo/2017.2.504/Default/sprite_2x.png');
+    }
+}*/

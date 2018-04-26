@@ -1,0 +1,65 @@
+﻿<div>
+    <div id="GridItem">
+        <div class="table-responsive grid_info">
+            <table class="table table-condensed ">
+                <tr>
+                    <td class="grid_product">
+                        <a href="">
+                            <img class="img-responsive" src="/content/images/placeholder/product2.png" alt="">
+                        </a>
+                    </td>
+                    <td>
+                        <p class="product-name">
+                            <b>${title}</b>
+                        </p>
+                        <p class="product-description">
+                            ${description}
+                        </p>
+                        <p class="product-price">
+                            ${kendo.toString(price,"C")}
+                        </p>
+                        <p class="product-ship">
+                            Ships in 5 days
+                        </p>
+                    </td>
+                    <td class="textr">
+                        ${qtyavailable}
+                    </td>
+                    <td class="textr">
+                        ${qtyonhand}
+                    </td>
+                    <td class="textr">
+                        # if (isBundle) { # <a href="#divGlobalForm" class="fancybox btn btn-primary btn-sm">
+                            <i title="Order Bundle"
+                               class="fa fa-gift"></i> Order Bundle
+                        </a> # } else if (isKit) { # <a href="build-kit.html"
+                                                        class="btn btn-primary btn-sm"><i class="fa fa-archive"></i>Build a Kit</a> # } else
+                        if (isCustomizeable) { # <a href="/mockups/personalize.html" class="btn btn-primary btn-sm">
+                            <i title="Personalize"
+                               class="fa fa-pencil"></i> Personalize
+                        </a> # } else { # <a href="" class="btn btn-primary btn-sm">
+                            <i class="fa fa-shopping-cart"></i> Add To Cart
+                        </a> # } #
+                        <div class="choose2">
+                            <ul class="nav nav-justified textr">
+                                <li>
+                                    <a data-argosy-action="addProductHover" data-argosy-target=".single-item" href="#">
+                                        <i title="More Details" class="fa fa-info-circle"></i>
+                                    </a>
+                                </li>
+                                <li><a href="#"></a></li>
+                                <li><a href="#"><i id="starFavorite" title="Favorite" class="fa fa-star"></i></li>
+                            </ul>
+                        </div>
+                    </td>
+                    # if (isSale) { #
+                    <img src="/content/images/sale.png" class="accent" alt="On Sale" />
+                    # } else if (isKit) { #
+                    <img src="/content/images/kit.png" class="accent" alt="Part Kit" />
+                    # }#
+                </tr>
+            </table>
+        </div>
+
+    </div>
+</div>

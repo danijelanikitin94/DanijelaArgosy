@@ -1,0 +1,134 @@
+﻿@model Argosy.BusinessLogic.FrontEnd.Managers.ProjectRevisionManager.ProjectRevision
+@using Argosy.BusinessLogic.FrontEnd.Security;
+@using Cerqa.Common.V5.ArgosyFile;
+@using Argosy.Common.Contracts.Core.Enum;
+<script>
+    $(function () {
+        $('#btnSeePrevious').click(function (e) {
+            $(document).trigger(argosyEvents.PROJECT_REVISION_CHANGE, $("#PreviousRevisionId").val());
+            $("#btnSendComments").attr("Revisionid", $("#PreviousRevisionId").val());
+            e.preventDefault();
+            $("#_projectRevForm").attr("action", "/Projects/GetPreviousRevision");
+            if ($("#_projectRevForm").validate()) {
+                $("#_projectRevForm").submit();
+            }
+        });
+
+        $('#btnSeeNext').click(function (e) {
+            $(document).trigger(argosyEvents.PROJECT_REVISION_CHANGE, $("#NextRevisionId").val());
+            $("#btnSendComments").attr("Revisionid", $("#NextRevisionId").val());
+            $("#_projectRevForm").attr("action", "/Projects/GetNextRevision");
+            if ($("#_projectRevForm").validate()) {
+                $("#_projectRevForm").submit();
+            }
+
+        });
+        //Test comments for checkin
+    });
+    function onGetRevisionSuccess(data) {
+        $("#divProjectRevision").html(data);
+        $(document).trigger(argosyEvents.END_LOADING, { element: $('#wrapcontainer'), message: 'loading revision...' });
+
+        if ($("#IsLastRevision").val() == "False") {
+            $("#divAddComments").hide();
+            $(".btn-success").hide();
+        } else {
+            $("#divAddComments").show();
+
+            if ($("#IsPricingApproved").val() == "True") {
+                $("a.btn-success:contains('Approve Pricing')").hide();
+            } else {
+                $("a.btn-success:contains('Approve Pricing')").show();
+            }
+
+            if ($("#IsArtWorkApproved").val() == "True") {
+                $("a.btn-success:contains('Approve Artwork')").hide();
+            } else {
+                $("a.btn-success:contains('Approve Artwork')").show();
+            }
+
+            if ($("#IsPricingApproved").val() == "False" && $("#IsArtWorkApproved").val() == "False") {
+                $("a.btn-success:contains('Approve All')").show();
+            }
+        }
+    }
+</script>
+<div id="divProjectRevision">
+    @using (Ajax.BeginForm("GetRevision", "Projects", new { Area = "Tools" }, new AjaxOptions()
+    {
+        AllowCache = false,
+        InsertionMode = InsertionMode.Replace,
+        UpdateTargetId = "divProjectRevision",
+        OnBegin = "$(document).trigger(argosyEvents.START_LOADING, { element:$('#wrapcontainer'),message:'~{MsgLoadingRevision}~'})",
+        OnSuccess = "onGetRevisionSuccess(data)"
+    }, new { id = "_projectRevForm" }))
+    {
+        @Html.HiddenFor(m => m.RevisionId)
+        @Html.HiddenFor(m => m.ProjectId)
+        @Html.HiddenFor(m => m.RevisionName)
+        @Html.HiddenFor(m => m.PreviousRevisionId)
+        @Html.HiddenFor(m => m.NextRevisionId)
+        @Html.HiddenFor(m => m.IsLastRevision)
+        @Html.HiddenFor(m => m.IsArtWorkApproved)
+        @Html.HiddenFor(m => m.IsPricingApproved)
+        <div>
+            <div class="clearfix padu20 border-top-dashed ">
+                <div class="floatl"><h3>Revisions</h3></div>
+                @if (!Model.IsLastRevision)
+                {
+                    <div class="floatr padr10">
+                        <a href="#" id="btnSeeNext"> See Next <i class="fa fa-arrow-circle-right"></i></a>
+                    </div>
+                }
+                @if (!Model.IsFirstRevision)
+                {
+                    <div class="floatr padr10">
+                        <a href="#" id="btnSeePrevious"><i class="fa fa-arrow-circle-left"></i> See Previous</a>
+                    </div>
+                }
+            </div>
+            <div class="padu5">
+                @Html.LabelFor(m => m.RevisionName, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.RevisionName, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+            <div class="padu5">
+                @Html.LabelFor(m => m.IsArtWorkApproved, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.ArtWorkApprovalStatus, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+            <div class="padu5">
+                @Html.LabelFor(m => m.IsPricingApproved, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.PricingApprovalStatus, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+            <div class="padu5">
+                @Html.LabelFor(m => m.DateCreated, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.DateCreated, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+            <div class="padu5">
+                @Html.LabelFor(m => m.RevisionUserName, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.RevisionUserName, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+
+            <div class="padu5">
+                @Html.LabelFor(m => m.DateModified, new { @class = "label-style", @style = "font-weight: bold" })
+                @Html.DisplayFor(m => m.DateModified, new { @class = "input-style" })
+                <br style="clear:both">
+            </div>
+            @if (!string.IsNullOrEmpty(Model.FilePath)) {
+
+                var filePath = FileFactory.GetInstance(FileLocations.ProjectRevision, Model.FilePath, FrontEndSession.Instance.SiteId.GetValueOrDefault()).Uri.AbsoluteUri;
+               
+                <div class="maru20">
+                    <img class="img-responsive information" id="DesignDisplay" src="@filePath" alt="Project Revision Design Image" />
+                </div>
+                <div class="padu5">
+                    <a href="@filePath" target="_blank"><i class="fa fa-expand"></i> Click to Enlarge</a>
+                </div>
+            }
+        </div>
+    }
+</div>

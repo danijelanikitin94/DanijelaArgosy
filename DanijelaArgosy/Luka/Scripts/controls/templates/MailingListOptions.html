@@ -1,0 +1,69 @@
+﻿<script type="text/x-kendo-template" id="_MailingListOptionsTemplate">
+    <div class="row">
+        <div id="divMailingOptions" class="">
+            <div class="divider-clear padb20">
+                <h1 class="bottommargin-sm">~{ChooseMailingOptionFor}~ <i>${Name}</i></h1>
+                <div>
+                    #if (corporateList) {#
+                    <div class="pad5 ${colClass}">
+                        <a href="/Tools/Mailing/Existing/?Sku=${Sku}&customizationStateId=${CustomizationStateId}" class="maru10">
+                            <div class="text-center summary-information ">
+                                <i class="topmargin-sm fa fa-suitcase f80"></i><br />
+                                <p class="bottommargin padu20 text-center f24">~{CorporateList}~</p>
+                            </div>
+                        </a>
+                    </div>
+                    #}#                    
+                    #if (uploadList) {#
+                    <div class="pad5 ${colClass}">
+                        <a href="/Tools/Mailing/Upload/?Sku=${Sku}&customizationStateId=${CustomizationStateId}" class="maru10">
+                            <div class="text-center summary-information ">
+                                <i class="topmargin-sm fa fa-cloud-upload f80"></i><br />
+                                <p class="bottommargin padu20 text-center f24">~{UploadList}~</p>
+                            </div>
+                        </a>
+                    </div>                    
+                    #}#
+                    #if (purchaseList) {#
+                    <div class="pad5 ${colClass}">
+                        <a href="/Tools/Mailing/PurchaseList/?Sku=${Sku}&customizationStateId=${CustomizationStateId}" class="maru10">
+                            <div class="text-center summary-information ">
+                                <i class="topmargin-sm fa fa-dollar f80"></i><br />
+                                <p class="bottommargin padu20 text-center f24">~{BuyList}~</p>
+                            </div>
+                        </a>
+                    </div>                    
+                    #}#
+                    #if (directMail) {#
+                    <div class="pad5 ${colClass}">
+                        <a href="/Tools/Mailing/DirectMail/?Sku=${Sku}&customizationStateId=${CustomizationStateId}" class="maru10">
+                            <div class="text-center summary-information ">
+                                <i class="topmargin-sm fa fa-paper-plane f80"></i><br />
+                                <p class="bottommargin padu20 text-center f24">~{DirectMail}~</p>
+                            </div>
+                        </a>
+                    </div>                    
+                    #}#
+                    #if (uploadList && !uploadOnly) {#
+                    <div class="pad5 ${colClass}">
+                        <a href="/Tools/Mailing/Existing/?Sku=${Sku}&customizationStateId=${CustomizationStateId}" class="maru10">
+                            <div class="text-center summary-information ">
+                                <i class="topmargin-sm fa fa-list f80"></i><br />
+                                <p class="bottommargin padu20 text-center f24">~{ExistingList}~</p>
+                            </div>
+                        </a>
+                    </div>                    
+                    #}#
+
+                </div>
+            </div>
+            <div class="text-center"> 
+                #if (!mailingListRequired && !uploadOnly) {#
+                <a class="btn btn-primary skip-to-cart f18 padl20 padr20">~{WillMailMyself}~</a>
+                #} else if (!mailingListRequired) {#
+                <a class="btn btn-primary skip-to-cart f18 padl20 padr20">~{SkipToCart}~</a>
+                #}#
+            </div>
+        </div>
+    </div>
+</script>

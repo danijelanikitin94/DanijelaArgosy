@@ -1,0 +1,133 @@
+﻿@using Argosy.BusinessLogic.FrontEnd.Security
+@model Argosy.BusinessLogic.FrontEnd.Managers.OrderManager.Order
+@*Address Information*@
+
+		<div id="OrderShippingAddress">
+ 			<div id="divAddressInfo" class="padl10" style="display: table">
+				 <p class="padu10"><b>~{ShippingAddress}~</b>
+				 </p>
+				 <div>
+					 <div>@Html.DisplayFor(m => m.ShipToCompany)</div>
+					 <div>@Html.DisplayFor(m => m.Contact)</div>
+					 @if (!Model.IsEdeliveryOnly)
+					 {
+						 <div>@Html.DisplayFor(m => m.Address1)</div>
+						 <div>@Html.DisplayFor(m => m.Address2)</div>
+						 <div>@Model.Address3</div>
+						 <div>@Model.City, @Model.StateName, @Model.Zip</div>
+						 <div>@Model.CountryName</div>
+						 <div>
+							 @if ((Model.PhoneNumber != null) && (Model.PhoneNumber.Length > 6))
+							 {
+								 @($"{Model.PhoneNumber: (###) ###-####}")
+							 }
+							 else
+							 {
+								 @Model.PhoneNumber
+							 }
+						 </div>
+						 if (!string.IsNullOrEmpty(Model.AddressCode))
+						 {
+							 <div><i>@Model.AddressCode</i>
+							 </div>
+						 }
+					 }
+					 else
+					 {
+						 <div>@Html.DisplayFor(m => m.Email)</div>
+					 }
+				 </div>
+				@*<p class="padu10"><b>Billing Information</b></p>
+					<div>
+						<div>@Model.BContact</div>
+						<div>@Model.BAddress1</div>
+						<div>@Model.BAddress2</div>
+						<div>@Model.BCity, @Model.BStateName, @Model.BZip</div>
+						<div>@Model.BCountryName</div>
+						<div>
+							@if ((Model.BPhoneNumber != null) && (Model.BPhoneNumber.Length > 6))
+							{
+								@:@($"{Model.BPhoneNumber: (###) ###-####}")
+							}
+							else
+							{
+								@Model.BPhoneNumber
+							}
+						</div>
+					</div>*@
+			</div>
+			<!--Edit address information modal-->
+			<div id="divShipAddress" class="fancy400 hide">
+				<h3>~{EditShippingAddress}~</h3>
+				<div class="form-one">
+					<div class="form padu10">
+						<div>
+                            @Html.EditorFor(m => m.ShipToCompany, "NewString", "Company")
+							@Html.EditorFor(m => m.Contact, "NewString", "Name")
+							@Html.EditorFor(m => m.Address1, "NewString", "AddressLine1")
+							@Html.EditorFor(m => m.Address2, "NewString", "AddressLine2")
+							@Html.EditorFor(m => m.Address3, "NewString", "AddressLine3")
+							@Html.EditorFor(m => m.City, "NewString")
+							@Html.EditorFor(m => m.State, "State", new { StateId = Model.State})
+							@Html.EditorFor(m => m.Country, "Country", new { CountryId = Model.Country })
+							@Html.EditorFor(m => m.Zip, "NewString", "ZipCode")
+							@Html.EditorFor(m => m.PhoneNumber, "NewString")
+						</div>
+					</div>
+				</div>
+				<div class="floatr padu10">
+					<a class="btn btn-default" onclick="updateShippingAddress(); return false;"><i class="fa fa-chevron-right"></i> ~{Update}~</a>
+				</div>
+			</div>
+
+			<script type="text/javascript">
+				$(function () {
+					$(".address-edit").prev().css("pointer-events", "none");
+				});
+
+				function showShipAddressModal() {
+					$("#divShipAddress").removeAttr('style');
+					$.fancybox({
+						href: "#divShipAddress"
+					});
+				}
+
+				function updateShippingAddress() {
+					var form = $("#divShipAddress");
+					var kendoValidator = form.kendoValidator({
+						errorTemplate: "<span>#=message#</span>",
+						rules: {
+							rule1: function (input) {
+								var isHidden = input.is(":hidden");
+								var requiredAttr = input.attr("required") || input.attr("data-val-required");
+								var isRequired = typeof requiredAttr !== typeof undefined && requiredAttr !== false;
+								if (isRequired && !isHidden) {
+									return $.trim(input.val()) !== "";
+								}
+								return true;
+							}
+						}
+					}).data("kendoValidator");
+					kendoValidator.validate();
+					var shipToState = $("#State").val();
+					var hasShippingState = shipToState === undefined || (shipToState != null && shipToState !== "");
+
+					if (kendoValidator.errors().length == 0 && hasShippingState) {
+						kendoValidator.destroy();
+						$(document).trigger(argosyEvents.EVENT_UPDATE_ORDER_CALCULATION, {
+							shippingAddress: "[" + JSON.stringify(serializeObject($("#divShipAddress"))) + "]"
+						});
+					} else {
+						if (!hasShippingState) {
+							$('[data-valmsg-for="State"]')
+								.html("<span>~{StateSelectionRequired}~</span>")
+								.removeClass("field-validation-valid")
+								.addClass("field-validation-error")
+								.show();
+						} else {
+							$('[data-valmsg-for="State"]').html('').addClass("field-validation-valid").removeClass("field-validation-error");
+						}
+					}
+				}
+			</script>
+		</div>
